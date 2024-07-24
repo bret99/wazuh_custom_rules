@@ -78,6 +78,7 @@ For group "openvpn_status" one should make the next:
 		<location>/var/log/openvpn/users_connections.json</location>
 	</localfile>
 </agent_config>
+
 5. add host with preinstalled wazuh agent to the group from 3rd point.
 
 # Mail alerts for found secrets in Jira and Confluence tasks
