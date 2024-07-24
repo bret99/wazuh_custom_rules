@@ -1,7 +1,12 @@
 # Jira tasks
+Prerequisite:
+Jira user account should be synchronized to Active Directory and have Jira admin rights. 
+
+
 1. mv get_jira_tasks.py /usr/local/bin && chown root:root /usr/local/bin/get_jira_tasks.py
-2. mv get_jira_tasks.sh /usr/local/bin && chown root:root /usr/local/bin/get_jira_tasks.sh && chmod +x /usr/local/bin/get_jira_tasks.sh
-3. make Wazuh agents group called as one like and add the next lines to agent.conf:
+2. mv secret_tokens.py /usr/local/bin
+3. mv get_jira_tasks.sh /usr/local/bin && chown root:root /usr/local/bin/get_jira_tasks.sh && chmod +x /usr/local/bin/get_jira_tasks.sh
+4. make Wazuh agents group called as one like and add the next lines to agent.conf:
 <agent_config>
 	<!-- Shared agent configuration here -->
 	<localfile>
@@ -21,9 +26,14 @@
 4. add host with preinstalled wazuh agent to the group from 3rd point.
    
 # Confluence tasks
+Prerequisite:
+Jira user account should be synchronized to Active Directory and have Jira admin rights.
+
+
 1. mv get_confluence_tasks.py /usr/local/bin && chown root:root /usr/local/bin/get_confluence_tasks.py
-2. mv get_confluence_tasks.sh /usr/local/bin && chown root:root /usr/local/bin/get_confluence_tasks.sh && chmod +x /usr/local/bin/get_confluence_tasks.sh
-3. make Wazuh agents group called as one like and add the next lines to agent.conf:
+2. mv secret_tokens.py /usr/local/bin
+3. mv get_confluence_tasks.sh /usr/local/bin && chown root:root /usr/local/bin/get_confluence_tasks.sh && chmod +x /usr/local/bin/get_confluence_tasks.sh
+4. make Wazuh agents group called as one like and add the next lines to agent.conf:
 <agent_config>
 	<!-- Shared agent configuration here -->
 	<localfile>
@@ -68,15 +78,16 @@ For group "openvpn_status" one should make the next:
 5. add host with preinstalled wazuh agent to the group from 3rd point.
 
 # Mail alerts for found secrets in Jira and Confluence tasks
-This option will allow to get alerts if any of secrets in secret_tokens.py is in Jira/Confluence tasks.
+This option will allow to get alerts if any of list "secret_tokens" in secret_tokens.py is in Jira/Confluence tasks.
 
 1. preconfigure postfix
-2. mv get_jira_secrets_mail_alert.py /usr/local/bin
-3. mv get_confluence_secrets_mail_alert.py /usr/local/bin
-4. mv get_jira_secrets_mail_alert.sh /usr/local/bin
-5. mv get_confluence_secrets_mail_alert.sh /usr/local/bin
-6. chown root:root /usr/local/bin/get_jira_secrets_mail_alert.sh
-7. chown root:root /usr/local/bin/get_confluence_secrets_mail_alert.sh
-8. mv secret_tokens.py /usr/local/bin
-9. substitute mails in get_jira_secrets_mail_alert.sh and get_confluence_secrets_mail_alert.sh to actual ones
+2. mv secret_tokens.py /usr/local/bin
+3. mv get_jira_secrets_mail_alert.py /usr/local/bin
+4. mv get_confluence_secrets_mail_alert.py /usr/local/bin
+5. mv get_jira_secrets_mail_alert.sh /usr/local/bin
+6. mv get_confluence_secrets_mail_alert.sh /usr/local/bin
+7. chown root:root /usr/local/bin/get_jira_secrets_mail_alert.sh
+8. chown root:root /usr/local/bin/get_confluence_secrets_mail_alert.sh
+9. mv secret_tokens.py /usr/local/bin
+10. substitute mails in get_jira_secrets_mail_alert.sh and get_confluence_secrets_mail_alert.sh to actual ones
 
