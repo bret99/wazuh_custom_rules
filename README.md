@@ -2,6 +2,7 @@
 Prerequisite:
 Jira user account should be synchronized to Active Directory and have Jira admin rights. 
 
+On Wazuh-manager:
 
 1. mv get_jira_tasks.py /usr/local/bin && chown root:root /usr/local/bin/get_jira_tasks.py
 2. mv secret_tokens.py /usr/local/bin
@@ -41,6 +42,7 @@ Jira user account should be synchronized to Active Directory and have Jira admin
 Prerequisite:
 Jira user account should be synchronized to Active Directory and have Jira admin rights.
 
+On Wazuh-manager:
 
 1. mv get_confluence_tasks.py /usr/local/bin && chown root:root /usr/local/bin/get_confluence_tasks.py
 2. mv secret_tokens.py /usr/local/bin
@@ -83,6 +85,8 @@ One should get malware IPs list from source one prefer and move this list to /va
 For groups "cisco" and "openvpn_corp" one should substitute values to actual in lines with respectve comments.
 
 # Connections from not corporate hosts
+On Wazuh-manager:
+
 1. mv get_ad_hostnames.py /usr/local/bin && chown root:root /usr/local/bin/get_ad_hostnames.py
 2. mv get_ad_hostnames.sh /usr/local/bin && chown root:root /usr/local/bin/get_ad_hostnames.sh && chmod +x /usr/local/bin/get_ad_hostnames.sh
 3. crontab -e
@@ -94,7 +98,8 @@ For groups "cisco" and "openvpn_corp" one should substitute values to actual in 
 
    
 # OpenVPN connections
-For group "openvpn_status" one should make the next:
+For group "openvpn_status" one should make the next on Wazuh-manager:
+
 1. mv get_openvpn_users_connections.py /usr/local/bin && chown root:root /usr/local/get_openvpn_users_connections.py
 2. mv get_openvpn_users_connections.sh /usr/local/bin && chown root:root /usr/local/bin/get_openvpn_users_connections.sh && chmod +x /usr/local/bin/get_openvpn_users_connections.sh
 3. substitute path to OpenVPN connections log (not syslog) to actual one
@@ -117,6 +122,8 @@ For group "openvpn_status" one should make the next:
 
 # Mail alerts for found secrets in Jira and Confluence tasks
 This option will allow to get alerts if any of list "secret_tokens" in secret_tokens.py is in Jira/Confluence tasks for 24 hours.
+
+On Wazuh-manager:
 
 1. preconfigure postfix
 2. mv secret_tokens.py /usr/local/bin
