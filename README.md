@@ -42,3 +42,8 @@
    
 # Malware IPs
 One should get malware IPs list from source one prefer and move this list to /var/ossec/etc/lists/malware_ips. Do not forget add ":" to the end of each line and restart wazuh-manager.
+
+# OpenVPN and Cisco connections
+For groups "cisco" and "openvpn_corp" one should substitute values to actual in lines with respectve comments.
+
+# Connections from not corporate hosts
