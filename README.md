@@ -7,6 +7,7 @@ Jira user account should be synchronized to Active Directory and have Jira admin
 2. mv secret_tokens.py /usr/local/bin
 3. mv get_jira_tasks.sh /usr/local/bin && chown root:root /usr/local/bin/get_jira_tasks.sh && chmod +x /usr/local/bin/get_jira_tasks.sh
 4. make Wazuh agents group called as one like and add the next lines to agent.conf:
+
 <agent_config>
 	<!-- Shared agent configuration here -->
 	<localfile>
@@ -34,6 +35,7 @@ Jira user account should be synchronized to Active Directory and have Jira admin
 2. mv secret_tokens.py /usr/local/bin
 3. mv get_confluence_tasks.sh /usr/local/bin && chown root:root /usr/local/bin/get_confluence_tasks.sh && chmod +x /usr/local/bin/get_confluence_tasks.sh
 4. make Wazuh agents group called as one like and add the next lines to agent.conf:
+
 <agent_config>
 	<!-- Shared agent configuration here -->
 	<localfile>
@@ -69,6 +71,7 @@ For group "openvpn_status" one should make the next:
 3. substitute path to OpenVPN connections log (not syslog) to actual one
 
 4. make Wazuh agents group called as one like and add the next lines to agent.conf:
+
 <agent_config>
 	<localfile>
 		<log_format>json</log_format>
