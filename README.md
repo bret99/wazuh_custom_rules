@@ -66,3 +66,17 @@ For group "openvpn_status" one should make the next:
 	</localfile>
 </agent_config>
 5. add host with preinstalled wazuh agent to the group from 3rd point.
+
+# Mail alerts for found secrets in Jira and Confluence tasks
+This option will allow to get alerts if any of secrets in secret_tokens.py is in Jira/Confluence tasks.
+
+1. preconfigure postfix
+2. mv get_jira_secrets_mail_alert.py /usr/local/bin
+3. mv get_confluence_secrets_mail_alert.py /usr/local/bin
+4. mv get_jira_secrets_mail_alert.sh /usr/local/bin
+5. mv get_confluence_secrets_mail_alert.sh /usr/local/bin
+6. chown root:root /usr/local/bin/get_jira_secrets_mail_alert.sh
+7. chown root:root /usr/local/bin/get_confluence_secrets_mail_alert.sh
+8. mv secret_tokens.py /usr/local/bin
+9. substitute mails in get_jira_secrets_mail_alert.sh and get_confluence_secrets_mail_alert.sh to actual ones
+
