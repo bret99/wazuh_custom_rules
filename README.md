@@ -53,7 +53,7 @@ For groups "cisco" and "openvpn_corp" one should substitute values to actual in 
 2. mv get_ad_hostnames.sh /usr/local/bin && chown root:root /usr/local/bin/get_ad_hostnames.sh && chmod +x /usr/local/bin/get_ad_hostnames.sh
    
 # OpenVPN connections
-For group "openvpn_status" one shuld make the next:
+For group "openvpn_status" one should make the next:
 1. mv get_openvpn_users_connections.py /usr/local/bin && chown root:root /usr/local/get_openvpn_users_connections.py
 2. mv get_openvpn_users_connections.sh /usr/local/bin && chown root:root /usr/local/bin/get_openvpn_users_connections.sh && chmod +x /usr/local/bin/get_openvpn_users_connections.sh
 3. substitute path to OpenVPN connections log (not syslog) to actual one
