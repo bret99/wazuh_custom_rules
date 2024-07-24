@@ -49,3 +49,17 @@ For groups "cisco" and "openvpn_corp" one should substitute values to actual in 
 # Connections from not corporate hosts
 1. mv get_ad_hostnames.py /usr/local/bin && chown root:root /usr/local/bin/get_ad_hostnames.py
 2. mv get_ad_hostnames.sh /usr/local/bin && chown root:root /usr/local/bin/get_ad_hostnames.sh && chmod +x /usr/local/bin/get_ad_hostnames.sh
+   
+# OpenVPN connections
+For group "openvpn_status" one shuld make the next:
+1. mv get_openvpn_users_connections.py /usr/local/bin && chown root:root /usr/local/get_openvpn_users_connections.py
+2. mv get_openvpn_users_connections.sh /usr/local/bin && chown root:root /usr/local/bin/get_openvpn_users_connections.sh && chmod +x /usr/local/bin/get_openvpn_users_connections.sh
+3. substitute path to OpenVPN connections log (not syslog) to actual one
+4. make Wazuh agents group called as one like and add the next lines to agent.conf:
+<agent_config>
+	<localfile>
+		<log_format>json</log_format>
+		<location>/var/log/openvpn/users_connections.json</location>
+	</localfile>
+</agent_config>
+5. add host with preinstalled wazuh agent to the group from 3rd point.
