@@ -17,6 +17,7 @@
 		<location>/var/log/confluence/tasks.json</location>
 	</localfile>
 </agent_config>
+
 4. add host with preinstalled wazuh agent to the group from 3rd point.
    
 # Confluence tasks
@@ -38,6 +39,7 @@
 		<location>/var/log/confluence/tasks.json</location>
 	</localfile>
 </agent_config>
+
 4. add host with preinstalled wazuh agent to the group from 3rd point.
    
 # Malware IPs
@@ -55,6 +57,7 @@ For group "openvpn_status" one shuld make the next:
 1. mv get_openvpn_users_connections.py /usr/local/bin && chown root:root /usr/local/get_openvpn_users_connections.py
 2. mv get_openvpn_users_connections.sh /usr/local/bin && chown root:root /usr/local/bin/get_openvpn_users_connections.sh && chmod +x /usr/local/bin/get_openvpn_users_connections.sh
 3. substitute path to OpenVPN connections log (not syslog) to actual one
+
 4. make Wazuh agents group called as one like and add the next lines to agent.conf:
 <agent_config>
 	<localfile>
