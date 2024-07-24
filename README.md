@@ -92,9 +92,9 @@ On Wazuh-manager:
 3. crontab -e
 4. add:
 
-0 0 * * * sudo bash -c "/root/get_ad_hostnames.sh"
+0 0 * * * sudo bash -c "/usr/local/bin/get_ad_hostnames.sh"
 
-0 12 * * * sudo bash -c "/root/get_ad_hostnames.sh"
+0 12 * * * sudo bash -c "/usr/local/bin/get_ad_hostnames.sh"
 
    
 # OpenVPN connections
@@ -117,7 +117,7 @@ For group "openvpn_status" one should make the next on Wazuh-manager:
 6. crontab -e
 7. add:
 
-*/5 * * * * sudo bash -c "/root/get_openvpn_users_connections.sh"
+*/5 * * * * sudo bash -c "/usr/local/bin/get_openvpn_users_connections.sh"
 
 
 # Mail alerts for found secrets in Jira and Confluence tasks
@@ -138,7 +138,7 @@ On Wazuh-manager:
 11. cronatb -e
 12. add:
 
-0 12 * * * sudo bash -c "/root/get_jira_secrets.sh"
+0 12 * * * sudo bash -c "/usr/local/bin/get_jira_secrets.sh"
 
-0 11 * * * sudo bash -c "/root/get_confluence_secrets.sh"
+0 11 * * * sudo bash -c "/usr/local/bin/get_confluence_secrets.sh"
 
