@@ -47,3 +47,5 @@ One should get malware IPs list from source one prefer and move this list to /va
 For groups "cisco" and "openvpn_corp" one should substitute values to actual in lines with respectve comments.
 
 # Connections from not corporate hosts
+1. mv get_ad_hostnames.py /usr/local/bin && chown root:root /usr/local/bin/get_ad_hostnames.py
+2. mv get_ad_hostnames.sh /usr/local/bin && chown root:root /usr/local/bin/get_ad_hostnames.sh && chmod +x /usr/local/bin/get_ad_hostnames.sh
