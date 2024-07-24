@@ -24,7 +24,14 @@ Jira user account should be synchronized to Active Directory and have Jira admin
 	</localfile>
 </agent_config>
 
-4. add host with preinstalled wazuh agent to the group from 3rd point.
+4. add host with preinstalled wazuh agent to the group from 3rd point
+5. crontab -e
+6. add:
+
+0 1 * * * sudo bash -c "/usr/local/bin/get_jira_tasks.sh"
+0 7 * * * sudo bash -c "/usr/local/bin/get_jira_tasks.sh"
+0 13 * * * sudo bash -c "/usr/local/bin/get_jira_tasks.sh"
+0 19 * * * sudo bash -c "/usr/local/bin/get_jira_tasks.sh"
    
 # Confluence tasks
 Prerequisite:
@@ -52,7 +59,14 @@ Jira user account should be synchronized to Active Directory and have Jira admin
 	</localfile>
 </agent_config>
 
-4. add host with preinstalled wazuh agent to the group from 3rd point.
+4. add host with preinstalled wazuh agent to the group from 3rd point
+5. crontab -e
+6. add:
+
+0 1 * * * sudo bash -c "/usr/local/bin/get_confluence_tasks.sh"
+0 7 * * * sudo bash -c "/usr/local/bin/get_confluence_tasks.sh"
+0 13 * * * sudo bash -c "/usr/local/bin/get_confluence_tasks.sh"
+0 19 * * * sudo bash -c "/usr/local/bin/get_confluence_tasks.sh"
    
 # Malware IPs
 One should get malware IPs list from source one prefer and move this list to /var/ossec/etc/lists/malware_ips. Do not forget add ":" to the end of each line and restart wazuh-manager.
@@ -63,6 +77,11 @@ For groups "cisco" and "openvpn_corp" one should substitute values to actual in 
 # Connections from not corporate hosts
 1. mv get_ad_hostnames.py /usr/local/bin && chown root:root /usr/local/bin/get_ad_hostnames.py
 2. mv get_ad_hostnames.sh /usr/local/bin && chown root:root /usr/local/bin/get_ad_hostnames.sh && chmod +x /usr/local/bin/get_ad_hostnames.sh
+3. crontab -e
+4. add:
+
+0 0 * * * sudo bash -c "/root/get_ad_hostnames.sh"
+0 12 * * * sudo bash -c "/root/get_ad_hostnames.sh"
    
 # OpenVPN connections
 For group "openvpn_status" one should make the next:
@@ -79,10 +98,14 @@ For group "openvpn_status" one should make the next:
 	</localfile>
 </agent_config>
 
-5. add host with preinstalled wazuh agent to the group from 3rd point.
+5. add host with preinstalled wazuh agent to the group from 3rd point
+6. crontab -e
+7. add:
+
+*/5 * * * * sudo bash -c "/root/get_openvpn_users_connections.sh"
 
 # Mail alerts for found secrets in Jira and Confluence tasks
-This option will allow to get alerts if any of list "secret_tokens" in secret_tokens.py is in Jira/Confluence tasks.
+This option will allow to get alerts if any of list "secret_tokens" in secret_tokens.py is in Jira/Confluence tasks for 24 hours.
 
 1. preconfigure postfix
 2. mv secret_tokens.py /usr/local/bin
@@ -94,4 +117,8 @@ This option will allow to get alerts if any of list "secret_tokens" in secret_to
 8. chown root:root /usr/local/bin/get_confluence_secrets_mail_alert.sh
 9. mv secret_tokens.py /usr/local/bin
 10. substitute mails in get_jira_secrets_mail_alert.sh and get_confluence_secrets_mail_alert.sh to actual ones
+11. cronatb -e
+12. add:
 
+0 12 * * * sudo bash -c "/root/get_jira_secrets.sh"
+0 11 * * * sudo bash -c "/root/get_confluence_secrets.sh"
