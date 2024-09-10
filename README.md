@@ -183,7 +183,7 @@ On Wazuh-manager:
 11. cronatb -e
 12. add:
 
-0 12 * * * sudo bash -c "/usr/local/bin/get_jira_secrets.sh"
+0 12 * * * sudo bash -c "/usr/local/bin/get_jira_secrets_mail_alert.sh"
 
-0 11 * * * sudo bash -c "/usr/local/bin/get_confluence_secrets.sh"
+0 11 * * * sudo bash -c "/usr/local/bin/get_confluence_secrets_mail_alert.sh"
 
