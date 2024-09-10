@@ -8,7 +8,7 @@ url = "https://192.168.36.41:55000/security/user/authenticate"
 
 # Wazuh credentials
 username = "wazuh-wui"
-password = "mdZ86R+xOUp1v9LLz35ORkhT?liQUKjV"
+password = ""
 
 # Disable the InsecureRequestWarning
 warnings.filterwarnings("ignore", category=requests.packages.urllib3.exceptions.InsecureRequestWarning)
@@ -24,7 +24,7 @@ else:
 
 
 # 2. Get a list of active Wazuh agents
-agents_url = "https://192.168.36.41:55000/agents?status=active"
+agents_url = "https://192.168.36.241:55000/agents?status=active"
 agents_headers = {"Authorization": f"Bearer {wazuh_token}"}
 agents_response = requests.get(agents_url, headers=agents_headers, verify=False)
 agents_response.raise_for_status()
