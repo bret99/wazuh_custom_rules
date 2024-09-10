@@ -218,3 +218,13 @@
     <description>OpenVPN connection of $(src_user) from $(srcip):$(src_port) $(timestamp) established.</description>
   </rule>
 </group>
+
+
+  <!-- Wazuh suspicious processes -->
+<group name="agents_processes,">
+  <rule id="100123" level="10">
+    <decoded_as>json</decoded_as>
+    <field name="process_found">\.+</field>
+    <description>Suspicious process $(process_found) found in agent with id=$(agent_id).</description>
+  </rule>
+</group>
