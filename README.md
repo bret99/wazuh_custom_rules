@@ -2,6 +2,8 @@
 Prerequisite:
 Jira user account should be synchronized to Active Directory and have Jira admin rights. 
 
+Scenario 1 [get full Jira tasks content for all Jira events every 6 hours]
+
 On Wazuh-manager:
 
 1. mv get_jira_tasks.py /usr/local/bin && chown root:root /usr/local/bin/get_jira_tasks.py
@@ -14,10 +16,6 @@ On Wazuh-manager:
 	<localfile>
 		<log_format>json</log_format>
 		<location>/var/log/jira/tasks.json</location>
-	</localfile>
-	<localfile>
-		<log_format>json</log_format>
-		<location>/var/log/confluence/tasks.json</location>
 	</localfile>
 </agent_config>
 
@@ -33,10 +31,41 @@ On Wazuh-manager:
 
 0 19 * * * sudo bash -c "/usr/local/bin/get_jira_tasks.sh"
 
-   
+Scenario 2 [get Jira tasks generation alerts and full jira tasks content only for found secrets every 6 hours]
+
+On Wazuh-manager:
+
+1. mv get_jira_tasks2.py /usr/local/bin && chown root:root /usr/local/bin/get_jira_tasks2.py
+2. mv secret_tokens.py /usr/local/bin
+3. mv get_jira_tasks2.sh /usr/local/bin && chown root:root /usr/local/bin/get_jira_tasks2.sh && chmod +x /usr/local/bin/get_jira_tasks2.sh
+4. make Wazuh agents group called as one like and add the next lines to agent.conf:
+
+<agent_config>
+	<!-- Shared agent configuration here -->
+	<localfile>
+		<log_format>json</log_format>
+		<location>/var/log/jira/tasks.json</location>
+	</localfile>
+</agent_config>
+
+4. add host with preinstalled wazuh agent to the group from 3rd point
+5. crontab -e
+6. add:
+
+0 1 * * * sudo bash -c "/usr/local/bin/get_jira_tasks2.sh"
+
+0 7 * * * sudo bash -c "/usr/local/bin/get_jira_tasks2.sh"
+
+0 13 * * * sudo bash -c "/usr/local/bin/get_jira_tasks2.sh"
+
+0 19 * * * sudo bash -c "/usr/local/bin/get_jira_tasks2.sh"
+
+
 # Confluence tasks
 Prerequisite:
-Jira user account should be synchronized to Active Directory and have Jira admin rights.
+Confluence user account should be synchronized to Active Directory and have Confluence admin rights.
+
+Scenario 1 [get full Confluence tasks content for all Confluence events every 6 hours]
 
 On Wazuh-manager:
 
@@ -47,10 +76,6 @@ On Wazuh-manager:
 
 <agent_config>
 	<!-- Shared agent configuration here -->
-	<localfile>
-		<log_format>json</log_format>
-		<location>/var/log/jira/tasks.json</location>
-	</localfile>
 	<localfile>
 		<log_format>json</log_format>
 		<location>/var/log/confluence/tasks.json</location>
@@ -69,7 +94,35 @@ On Wazuh-manager:
 
 0 19 * * * sudo bash -c "/usr/local/bin/get_confluence_tasks.sh"
 
-   
+Scenario 2 [get Confluence tasks generation alerts and full Confluence tasks content only for found secrets every 6 hours]
+
+On Wazuh-manager:
+
+1. mv get_confluence_tasks2.py /usr/local/bin && chown root:root /usr/local/bin/get_confluence_tasks2.py
+2. mv secret_tokens.py /usr/local/bin
+3. mv get_confluence_tasks2.sh /usr/local/bin && chown root:root /usr/local/bin/get_confluence_tasks2.sh && chmod +x /usr/local/bin/get_confluence_tasks2.sh
+4. make Wazuh agents group called as one like and add the next lines to agent.conf:
+
+<agent_config>
+	<!-- Shared agent configuration here -->
+	<localfile>
+		<log_format>json</log_format>
+		<location>/var/log/confluence/tasks.json</location>
+	</localfile>
+</agent_config>
+
+4. add host with preinstalled wazuh agent to the group from 3rd point
+5. crontab -e
+6. add:
+
+0 1 * * * sudo bash -c "/usr/local/bin/get_confluence_tasks2.sh"
+
+0 7 * * * sudo bash -c "/usr/local/bin/get_confluence_tasks2.sh"
+
+0 13 * * * sudo bash -c "/usr/local/bin/get_confluence_tasks2.sh"
+
+0 19 * * * sudo bash -c "/usr/local/bin/get_confluence_tasks2.sh"
+
 # Malware IPs
 One should get malware IPs list from source one prefer and move this list to /var/ossec/etc/lists/malware_ips. Do not forget add ":" to the end of each line and restart wazuh-manager.
 
