@@ -126,7 +126,7 @@
   <!--  For Windows -->
   <rule id="100016" level="7">
     <if_group>authentication_success|authentication_failures|authentication_failed</if_group>
-    <field name="win.eventdata.targetUserName" negate="yes">jsoc_aduser|jsoc_qluser</field>
+    <field name="win.eventdata.targetUserName" negate="yes">test|test2</field>
     <match negate="yes">10.10.11|10.5.</match> <!-- Write here your OpenVPN|Cisco IP octets -->
     <list field="win.eventdata.workstationName" lookup="not_match_key">etc/lists/ad_hostnames</list>
     <mitre>
@@ -165,7 +165,7 @@
   <!-- Get Jira tasks with potential sensitive data publication -->
   <rule id="100019" level="10">
     <if_sid>100018</if_sid>
-    <match>api_key|access_token|password|docs.google.com|drive.google.com|пароль|Пароль|ПАРОЛЬ|PASSWORD|Password|access_key|secret_key</match>
+    <match>api_key|access_token|password|docs.google.com|drive.google.com|PASSWORD|Password|access_key|secret_key</match>
     <options>no_full_log</options>
     <description>Potential publication of information with limited access in Jira.</description>
     <group>gdpr_IV_32.2,nist_800_53_SC.4,nist_800_53_AC.6,nist_800_53_SA.8,pci_dss_3,</group>
@@ -193,7 +193,7 @@
   <!-- Get Confluence tasks with potential sensitive data publication -->
   <rule id="100021" level="10">
     <if_sid>100020</if_sid>
-    <match>api_key|access_token|password|docs.google.com|drive.google.com|пароль|Пароль|ПАРОЛЬ|PASSWORD|Password|access_key|secret_key</match>
+    <match>api_key|access_token|password|docs.google.com|drive.google.com|PASSWORD|Password|access_key|secret_key</match>
     <options>no_full_log</options>
     <description>Potential publication of information with limited access in Confluence.</description>
     <group>gdpr_IV_32.2,nist_800_53_SC.4,nist_800_53_AC.6,nist_800_53_SA.8,pci_dss_3,</group>
@@ -226,5 +226,45 @@
     <decoded_as>json</decoded_as>
     <field name="process_found">\.+</field>
     <description>Suspicious process $(process_found) found in agent with id=$(agent_id).</description>
+  </rule>
+</group>
+
+  <!-- Blocked Active Directory accounts successful logons -->
+<group name="blocked_accounts,">
+  <!-- Windows domain -->
+  <rule id="100124" level="12">
+    <if_group>authentication_success</if_group>
+    <list field="win.eventdata.targetUserName" lookup="address_match_key">etc/lists/ad_disabled_accounts</list>
+    <hostname negate="yes">059-1-CP-001</hostname>
+    <description>Blocked user $(win.eventdata.targetUserName) domain connection detected.</description>
+    <group>pci_dss_8.1.6,pci_dss_10.2.2,gdpr_IV_32.1.c,gdpr_IV_35.7.d,hipaa_164.308.a.3,hipaa_164.308.a.5,hipaa_164.312.a.1,nist_800_53_AC.2,nist_800_53_AC.6,nist_800_53_AC.7,nist_800_53_IA.2,nist_800_53_IA.4,nist_800_53_IA.5,nist_800_53_CA.7,nist_800_53_CA.2,nist_800_53_AU.2,nist_800_53_AU.6,nist_800_53_RA.3,nist_800_53_SC.7,nist_800_53_SC.23,</group>
+    <mitre>
+      <id>T0006</id>
+      <id>T0007</id>
+    </mitre>
+  </rule>
+
+  <!-- Windows Cisco connections -->
+  <rule id="100125" level="12">
+    <if_sid>100111</if_sid>
+    <list field="win.eventdata.targetUserName" lookup="address_match_key">etc/lists/ad_disabled_accounts</list>
+    <description>Blocked user $(src_user) Cisco connection detected.</description>
+    <group>pci_dss_8.1.6,pci_dss_10.2.2,gdpr_IV_32.1.c,gdpr_IV_35.7.d,hipaa_164.308.a.3,hipaa_164.308.a.5,hipaa_164.312.a.1,nist_800_53_AC.2,nist_800_53_AC.6,nist_800_53_AC.7,nist_800_53_IA.2,nist_800_53_IA.4,nist_800_53_IA.5,nist_800_53_CA.7,nist_800_53_CA.2,nist_800_53_AU.2,nist_800_53_AU.6,nist_800_53_RA.3,nist_800_53_SC.7,nist_800_53_SC.23,</group>
+    <mitre>
+      <id>T0006</id>
+      <id>T0007</id>
+    </mitre>
+  </rule>
+    
+    <!-- OpenVPN connections -->
+  <rule id="100126" level="12">
+    <if_group>openvpn_status</if_group>
+    <list field="src_user" lookup="address_match_key">etc/lists/ad_disabled_accounts</list>
+    <description>Blocked user $(src_user) OpenVPN connection detected.</description>
+    <group>pci_dss_8.1.6,pci_dss_10.2.2,gdpr_IV_32.1.c,gdpr_IV_35.7.d,hipaa_164.308.a.3,hipaa_164.308.a.5,hipaa_164.312.a.1,nist_800_53_AC.2,nist_800_53_AC.6,nist_800_53_AC.7,nist_800_53_IA.2,nist_800_53_IA.4,nist_800_53_IA.5,nist_800_53_CA.7,nist_800_53_CA.2,nist_800_53_AU.2,nist_800_53_AU.6,nist_800_53_RA.3,nist_800_53_SC.7,nist_800_53_SC.23,</group>
+    <mitre>
+      <id>T0006</id>
+      <id>T0007</id>
+    </mitre>
   </rule>
 </group>
