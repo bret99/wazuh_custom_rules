@@ -228,8 +228,9 @@ On server:
 9. chown root:root get_lolbas.sh
 8. chmod +x get_lolbas.sh
 10. mv secret_tokens.py /usr/local/bin
-11. cronatb -e
-12. add:
+11. mv gtfobins.txt /usr/local/bin
+12. cronatb -e
+13. add:
 
 0 0 * * * sudo bash -c "/usr/local/bin/get_lolbas.sh"
 */5 * * * * sudo bash -c "/usr/local/bin/get_wazuh_agents_processes.sh"
