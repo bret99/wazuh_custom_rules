@@ -219,7 +219,6 @@
   </rule>
 </group>
 
-
   <!-- Wazuh suspicious processes -->
 <group name="agents_processes,">
   <rule id="100123" level="10">
@@ -235,7 +234,7 @@
   <rule id="100124" level="12">
     <if_group>authentication_success</if_group>
     <list field="win.eventdata.targetUserName" lookup="address_match_key">etc/lists/ad_disabled_accounts</list>
-    <hostname negate="yes">059-1-CP-001</hostname>
+    <hostname negate="yes">TEST-HOST</hostname>
     <description>Blocked user $(win.eventdata.targetUserName) domain connection detected.</description>
     <group>pci_dss_8.1.6,pci_dss_10.2.2,gdpr_IV_32.1.c,gdpr_IV_35.7.d,hipaa_164.308.a.3,hipaa_164.308.a.5,hipaa_164.312.a.1,nist_800_53_AC.2,nist_800_53_AC.6,nist_800_53_AC.7,nist_800_53_IA.2,nist_800_53_IA.4,nist_800_53_IA.5,nist_800_53_CA.7,nist_800_53_CA.2,nist_800_53_AU.2,nist_800_53_AU.6,nist_800_53_RA.3,nist_800_53_SC.7,nist_800_53_SC.23,</group>
     <mitre>
