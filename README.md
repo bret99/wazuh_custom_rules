@@ -13,10 +13,6 @@ On Wazuh-manager:
 	<!-- Shared agent configuration here -->
 	<localfile>
 		<log_format>json</log_format>
-		<location>/var/log/suricata/eve.json</location>
-	</localfile>
-	<localfile>
-		<log_format>json</log_format>
 		<location>/var/log/jira/tasks.json</location>
 	</localfile>
 	<localfile>
@@ -51,10 +47,6 @@ On Wazuh-manager:
 
 <agent_config>
 	<!-- Shared agent configuration here -->
-	<localfile>
-		<log_format>json</log_format>
-		<location>/var/log/suricata/eve.json</location>
-	</localfile>
 	<localfile>
 		<log_format>json</log_format>
 		<location>/var/log/jira/tasks.json</location>
