@@ -1,12 +1,13 @@
 import os
 import json
 import requests
+from secret_tokens import abuseipdb_token, ip2location_token
 
 # Existing script code
 os.system("cat /var/log/openvpn/status.log | awk '{print $1}' | head -n -3 | tail -n +4 | sed 's/ROUTING//;s/Virtual//' | sed '/^$/d' > /root/input.txt")
 
 def get_abuse_info(ip_address):
-    api_key = "605c2000dc50a4ae020caa8c93214ac85ea1efb8f681f99bcfe9a73fbe295970a06d6408a5381e54"
+    api_key = abuseipdb_token
     url = f"https://api.abuseipdb.com/api/v2/check?ipAddress={ip_address}&maxAgeInDays=90&verbose"
     headers = {
         "Key": api_key,
@@ -38,7 +39,7 @@ def get_abuse_info(ip_address):
         }
     try:
         # Fetch IP2Location data only if the first request was successful
-        ip2location_url = f"https://api.ip2location.io/?key=887CF5FEBE881E2C2B95E811545EB106&ip={ip_address}&format=json"
+        ip2location_url = f"https://api.ip2location.io/?key={ip2location_token}&ip={ip_address}&format=json"
         ip2location_response = requests.get(ip2location_url)
         ip2location_response.raise_for_status()
         ip2location_data = ip2location_response.json()
