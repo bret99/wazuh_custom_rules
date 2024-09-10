@@ -212,3 +212,24 @@ On Wazuh-manager:
 
 0 11 * * * sudo bash -c "/usr/local/bin/get_confluence_secrets_mail_alert.sh"
 
+# Suspiciuos processes
+This option means a presence of a server (with Wazuh agent preinstalled) which should get Wazuh agents processes using Wazuh API every 5 minutes.
+
+On server:
+
+1. mv get_wazuh_agents_processes.py /usr/local/bin
+2. mv get_lolbas.py /usr/local/bin
+3. mv get_wazuh_agents_processes.sh /usr/local/bin
+4. mv get_lolbas.py /usr/local/bin
+5. mv get_lolbas.sh /usr/local/bin
+6. mv processes.txt /usr/local/bin
+7. chown root:root get_wazuh_agents_processes.sh
+8. chmod +x get_wazuh_agents_processes.sh
+9. chown root:root get_lolbas.sh
+8. chmod +x get_lolbas.sh
+10. mv secret_tokens.py /usr/local/bin
+11. cronatb -e
+12. add:
+
+0 0 * * * sudo bash -c "/usr/local/bin/get_lolbas.sh"
+*/5 * * * * sudo bash -c "/usr/local/bin/get_wazuh_agents_processes.sh"
