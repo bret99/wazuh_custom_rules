@@ -235,7 +235,7 @@ On server:
 0 0 * * * sudo bash -c "/usr/local/bin/get_lolbas.sh"
 */5 * * * * sudo bash -c "/usr/local/bin/get_wazuh_agents_processes.sh"
 
-# Domain connections from NOT corporate equipment
+# Domain connections from not corporate equipment
 This option means getting Active Directory valid accounts every 6 hours.
 
 On Wazuh-manager:
