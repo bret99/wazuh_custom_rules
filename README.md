@@ -233,6 +233,7 @@ On server:
 13. add:
 
 0 0 * * * sudo bash -c "/usr/local/bin/get_lolbas.sh"
+
 */5 * * * * sudo bash -c "/usr/local/bin/get_agents_processes.sh"
 
 # Domain connections from not corporate equipment
@@ -249,8 +250,11 @@ On Wazuh-manager:
 7. add:
 
 0 0 * * * sudo bash -c "/usr/local/bin/get_ad_hosts.sh"
+
 0 6 * * * sudo bash -c "/usr/local/bin/get_ad_hosts.sh"
+
 0 12 * * * sudo bash -c "/usr/local/bin/get_ad_hosts.sh"
+
 0 18 * * * sudo bash -c "/usr/local/bin/get_ad_hosts.sh"
 
 
@@ -268,4 +272,5 @@ On Wazuh-manager:
 7. add:
 
 0 0 * * * sudo bash -c "/usr/local/bin/get_ad_blocked_accounts.sh"
+
 0 12 * * * sudo bash -c "/usr/local/bin/get_ad_blocked_accounts.sh"
