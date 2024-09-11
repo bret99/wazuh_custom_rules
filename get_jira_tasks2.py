@@ -1,9 +1,9 @@
 import json
 import os
 import requests
-from secret_tokens import access_token_login, access_token_pass, secret_tokens
+from secret_tokens import access_token_login, access_token_pass, secret_tokens, jira_address
 
-jira_url = 'https://jira.is-mis.ru/rest/api/2/search'
+jira_url = '{}/rest/api/2/search'.format(jira_address)
 auth = (access_token_login, access_token_pass)
 
 headers = {'Content-Type': 'application/json'}
@@ -20,7 +20,7 @@ jira_data = response.json()
 processed_data = []
 
 for issue in jira_data["issues"]:
-    jira_task = "https://jira.is-mis.ru/browse/" + issue.get("key", "")
+    jira_task = "{}/browse/".format(jira_address) + issue.get("key", "")
     jira_creator = issue["fields"].get("creator", {}).get("name", "")
     jira_creation = issue["fields"].get("created", "")
     jira_project = issue["fields"].get("project", {}).get("key", "")
