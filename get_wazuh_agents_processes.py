@@ -2,13 +2,14 @@ import requests
 import json
 import warnings
 import os
+form secret_tokens import wazuh_manager
 
 # URL for the Wazuh authentication endpoint
-url = "https://192.168.36.41:55000/security/user/authenticate"
+url = "{}/security/user/authenticate".format(wazuh_manager)
 
 # Wazuh credentials
 username = "wazuh-wui"
-password = ""
+password = "" # insert here password for wazuh-wiu 
 
 # Disable the InsecureRequestWarning
 warnings.filterwarnings("ignore", category=requests.packages.urllib3.exceptions.InsecureRequestWarning)
@@ -24,7 +25,7 @@ else:
 
 
 # 2. Get a list of active Wazuh agents
-agents_url = "https://192.168.36.241:55000/agents?status=active"
+agents_url = "{}/agents?status=active".format(wazuh_manager)
 agents_headers = {"Authorization": f"Bearer {wazuh_token}"}
 agents_response = requests.get(agents_url, headers=agents_headers, verify=False)
 agents_response.raise_for_status()
@@ -33,7 +34,7 @@ agent_info = {agent["id"]: {"ip": agent["ip"], "name": agent["name"], "os": agen
 # 3. Get a list of processes for every Wazuh agent
 agent_processes = {}
 for agent_id, agent_data in agent_info.items():
-    processes_url = f"https://192.168.36.41:55000/syscollector/{agent_id}/processes"
+    processes_url = f"{wazuh_manager}/syscollector/{agent_id}/processes"
     processes_headers = {"Authorization": f"Bearer {wazuh_token}"}
     processes_response = requests.get(processes_url, headers=processes_headers, verify=False)
     processes_response.raise_for_status()
