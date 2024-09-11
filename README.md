@@ -35,9 +35,9 @@ Scenario №2 [get Jira tasks generation alerts and full jira tasks content only
 
 On Wazuh-manager:
 
-1. mv get_jira_tasks2.py /usr/local/bin && chown root:root /usr/local/bin/get_jira_tasks2.py
+1. mv get_jira_tasks_2.py /usr/local/bin && chown root:root /usr/local/bin/get_jira_tasks_2.py
 2. mv secret_tokens.py /usr/local/bin
-3. mv get_jira_tasks2.sh /usr/local/bin && chown root:root /usr/local/bin/get_jira_tasks2.sh && chmod +x /usr/local/bin/get_jira_tasks2.sh
+3. mv get_jira_tasks_2.sh /usr/local/bin && chown root:root /usr/local/bin/get_jira_tasks_2.sh && chmod +x /usr/local/bin/get_jira_tasks_2.sh
 4. make Wazuh agents group called as one like and add the next lines to agent.conf:
 
 <agent_config>
@@ -52,13 +52,13 @@ On Wazuh-manager:
 5. crontab -e
 6. add:
 
-0 1 * * * sudo bash -c "/usr/local/bin/get_jira_tasks2.sh"
+0 1 * * * sudo bash -c "/usr/local/bin/get_jira_tasks_2.sh"
 
-0 7 * * * sudo bash -c "/usr/local/bin/get_jira_tasks2.sh"
+0 7 * * * sudo bash -c "/usr/local/bin/get_jira_tasks_2.sh"
 
-0 13 * * * sudo bash -c "/usr/local/bin/get_jira_tasks2.sh"
+0 13 * * * sudo bash -c "/usr/local/bin/get_jira_tasks_2.sh"
 
-0 19 * * * sudo bash -c "/usr/local/bin/get_jira_tasks2.sh"
+0 19 * * * sudo bash -c "/usr/local/bin/get_jira_tasks_2.sh"
 
 
 # Confluence tasks
@@ -98,9 +98,9 @@ Scenario №2 [get Confluence tasks generation alerts and full Confluence tasks 
 
 On Wazuh-manager:
 
-1. mv get_confluence_tasks2.py /usr/local/bin && chown root:root /usr/local/bin/get_confluence_tasks2.py
+1. mv get_confluence_tasks_2.py /usr/local/bin && chown root:root /usr/local/bin/get_confluence_tasks_2.py
 2. mv secret_tokens.py /usr/local/bin
-3. mv get_confluence_tasks2.sh /usr/local/bin && chown root:root /usr/local/bin/get_confluence_tasks2.sh && chmod +x /usr/local/bin/get_confluence_tasks2.sh
+3. mv get_confluence_tasks_2.sh /usr/local/bin && chown root:root /usr/local/bin/get_confluence_tasks_2.sh && chmod +x /usr/local/bin/get_confluence_tasks_2.sh
 4. make Wazuh agents group called as one like and add the next lines to agent.conf:
 
 <agent_config>
@@ -115,13 +115,13 @@ On Wazuh-manager:
 5. crontab -e
 6. add:
 
-0 1 * * * sudo bash -c "/usr/local/bin/get_confluence_tasks2.sh"
+0 1 * * * sudo bash -c "/usr/local/bin/get_confluence_tasks_2.sh"
 
-0 7 * * * sudo bash -c "/usr/local/bin/get_confluence_tasks2.sh"
+0 7 * * * sudo bash -c "/usr/local/bin/get_confluence_tasks_2.sh"
 
-0 13 * * * sudo bash -c "/usr/local/bin/get_confluence_tasks2.sh"
+0 13 * * * sudo bash -c "/usr/local/bin/get_confluence_tasks_2.sh"
 
-0 19 * * * sudo bash -c "/usr/local/bin/get_confluence_tasks2.sh"
+0 19 * * * sudo bash -c "/usr/local/bin/get_confluence_tasks_2.sh"
 
 # Malware IPs
 One should get malware IPs list from source one prefer and move this list to /var/ossec/etc/lists/malware_ips. Do not forget add ":" to the end of each line and restart wazuh-manager.
@@ -132,14 +132,14 @@ For groups "cisco" and "openvpn_corp" one should substitute values to actual in 
 # Connections from not corporate hosts
 On Wazuh-manager:
 
-1. mv get_ad_hostnames.py /usr/local/bin && chown root:root /usr/local/bin/get_ad_hostnames.py
-2. mv get_ad_hostnames.sh /usr/local/bin && chown root:root /usr/local/bin/get_ad_hostnames.sh && chmod +x /usr/local/bin/get_ad_hostnames.sh
+1. mv get_ad_hosts.py /usr/local/bin && chown root:root /usr/local/bin/get_ad_hosts.py
+2. mv get_ad_hosts.sh /usr/local/bin && chown root:root /usr/local/bin/get_ad_hosts.sh && chmod +x /usr/local/bin/get_ad_hosts.sh
 3. crontab -e
 4. add:
 
-0 0 * * * sudo bash -c "/usr/local/bin/get_ad_hostnames.sh"
+0 0 * * * sudo bash -c "/usr/local/bin/get_ad_hosts.sh"
 
-0 12 * * * sudo bash -c "/usr/local/bin/get_ad_hostnames.sh"
+0 12 * * * sudo bash -c "/usr/local/bin/get_ad_hosts.sh"
 
    
 # OpenVPN connections
@@ -171,8 +171,8 @@ Scenario №2 [with AbuseIPDB, IP2location API integration]
 
 For group "openvpn_status" one should make the next on Wazuh-manager:
 
-1. mv get_openvpn_users_connections2.py /usr/local/bin && chown root:root /usr/local/get_openvpn_users_connections2.py
-2. mv get_openvpn_users_connections2.sh /usr/local/bin && chown root:root /usr/local/bin/get_openvpn_users_connections2.sh && chmod +x /usr/local/bin/get_openvpn_users_connections2.sh
+1. mv get_openvpn_users_connections_2.py /usr/local/bin && chown root:root /usr/local/get_openvpn_users_connections_2.py
+2. mv get_openvpn_users_connections_2.sh /usr/local/bin && chown root:root /usr/local/bin/get_openvpn_users_connections_2.sh && chmod +x /usr/local/bin/get_openvpn_users_connections_2.sh
 3. substitute path to OpenVPN connections log (not syslog) to actual one
 
 4. make Wazuh agents group called as one like and add the next lines to agent.conf:
@@ -188,7 +188,7 @@ For group "openvpn_status" one should make the next on Wazuh-manager:
 6. crontab -e
 7. add:
 
-*/5 * * * * sudo bash -c "/usr/local/bin/get_openvpn_users_connections2.sh"
+*/5 * * * * sudo bash -c "/usr/local/bin/get_openvpn_users_connections_2.sh"
 
 # Mail alerts for found secrets in Jira and Confluence tasks
 This option will allow to get alerts if any of list "secret_tokens" in secret_tokens.py is in Jira/Confluence tasks for 24 hours.
@@ -217,14 +217,14 @@ This option means a presence of a server (with Wazuh agent preinstalled) which s
 
 On server:
 
-1. mv get_wazuh_agents_processes.py /usr/local/bin
+1. mv get_agents_processes.py /usr/local/bin
 2. mv get_lolbas.py /usr/local/bin
-3. mv get_wazuh_agents_processes.sh /usr/local/bin
+3. mv get_agents_processes.sh /usr/local/bin
 4. mv get_lolbas.py /usr/local/bin
 5. mv get_lolbas.sh /usr/local/bin
 6. mv processes.txt /usr/local/bin
-7. chown root:root get_wazuh_agents_processes.sh
-8. chmod +x get_wazuh_agents_processes.sh
+7. chown root:root get_agents_processes.sh
+8. chmod +x get_agents_processes.sh
 9. chown root:root get_lolbas.sh
 8. chmod +x get_lolbas.sh
 10. mv secret_tokens.py /usr/local/bin
@@ -233,25 +233,25 @@ On server:
 13. add:
 
 0 0 * * * sudo bash -c "/usr/local/bin/get_lolbas.sh"
-*/5 * * * * sudo bash -c "/usr/local/bin/get_wazuh_agents_processes.sh"
+*/5 * * * * sudo bash -c "/usr/local/bin/get_agents_processes.sh"
 
 # Domain connections from not corporate equipment
 This option means getting Active Directory valid accounts every 6 hours.
 
 On Wazuh-manager:
 
-1. mv get_ad_hostnames.py /usr/local/bin
-2. mv get_ad_hostnames.sh /usr/local/bin
-3. chown root:root /usr/local/bin/get_ad_hostnames.py
-4. chown root:root /usr/local/bin/get_ad_hostnames.sh
-5. chmod +x /usr/local/bin/get_ad_hostnames.sh
+1. mv get_ad_hosts.py /usr/local/bin
+2. mv get_ad_hosts.sh /usr/local/bin
+3. chown root:root /usr/local/bin/get_ad_hosts.py
+4. chown root:root /usr/local/bin/get_ad_hosts.sh
+5. chmod +x /usr/local/bin/get_ad_hosts.sh
 6. cronatb -e
 7. add:
 
-0 0 * * * sudo bash -c "/usr/local/bin/get_ad_hostnames.sh"
-0 6 * * * sudo bash -c "/usr/local/bin/get_ad_hostnames.sh"
-0 12 * * * sudo bash -c "/usr/local/bin/get_ad_hostnames.sh"
-0 18 * * * sudo bash -c "/usr/local/bin/get_ad_hostnames.sh"
+0 0 * * * sudo bash -c "/usr/local/bin/get_ad_hosts.sh"
+0 6 * * * sudo bash -c "/usr/local/bin/get_ad_hosts.sh"
+0 12 * * * sudo bash -c "/usr/local/bin/get_ad_hosts.sh"
+0 18 * * * sudo bash -c "/usr/local/bin/get_ad_hosts.sh"
 
 
 # Blocked Active Directory accounts connections detection
