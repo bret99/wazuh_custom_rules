@@ -1,12 +1,12 @@
 import json
 import os
 import requests
-from secret_tokens import access_token_login, access_token_pass, secret_tokens
+from secret_tokens import access_token_login, access_token_pass, secret_tokens, confluence_address
 from datetime import datetime, timedelta
 
 now = datetime.now()
 six_hours_ago = now - timedelta(hours=6)
-confluence_url = 'https://confluence.is-mis.ru/rest/api/content?limit=10000&start=0&postingDay={}&expand=space,body.storage,version'.format(six_hours_ago.strftime('%Y-%m-%d'))
+confluence_url = '{0}/rest/api/content?limit=10000&start=0&postingDay={1}&expand=space,body.storage,version'.format(confluence_address, six_hours_ago.strftime('%Y-%m-%d'))
 auth = (access_token_login, access_token_pass)
 
 headers = {'Content-Type': 'application/json'}
@@ -17,7 +17,7 @@ confluence_data = response.json()
 processed_data = []
 
 for issue in confluence_data["results"]:
-    confluence_task = "https://confluence.is-mis.ru/" + issue["_links"].get("webui", "")
+    confluence_task = "{}/".format(confluence_address) + issue["_links"].get("webui", "")
     confluence_creator = issue["version"].get("by", {}).get("username", "")
     confluence_creation = issue["version"].get("when", "")
     confluence_space = issue["space"].get("name", "")
