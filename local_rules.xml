@@ -151,7 +151,7 @@
   </rule>
 </group>
 
-  <!-- Get Jira tasks -->
+  <!-- Get Jira tasks Scenario №1-->
 <group name="jira,">
   <rule id="100018" level="3">
     <decoded_as>json</decoded_as>
@@ -162,7 +162,6 @@
     <description>Jira task created by $(jira_creator).</description>
   </rule>
 
-  <!-- Get Jira tasks with potential sensitive data publication -->
   <rule id="100019" level="10">
     <if_sid>100018</if_sid>
     <match>api_key|access_token|password|docs.google.com|drive.google.com|PASSWORD|Password|access_key|secret_key</match>
@@ -177,11 +176,44 @@
       <id>T1078</id>
     </mitre>
   </rule>
+
+  <!-- Get Jira tasks Scenario №2-->
+  <rule id="100020" level="0">
+    <decoded_as>json</decoded_as>
+    <field name="jira_secret">\.+</field>
+    <field name="jira_secret_site">\.+</field>
+    <options>no_full_log</options>
+    <description>Secret $(jira_secret) found in $(jira_secret_site) in Jira.</description>
+  </rule>
+
+  <rule id="100021" level="3">
+    <if_sid>100112</if_sid>
+    <field name="jira_secret">null</field>
+    <field name="jira_secret_site">null</field>
+    <options>no_full_log</options>
+    <description>Jira task created by $(jira_creator).</description>
+  </rule>
+
+ <rule id="100022" level="10">
+    <if_sid>100112</if_sid>
+    <field name="jira_secret" negate="yes">null</field>
+    <field name="jira_secret_site" negate="yes">null</field>
+    <options>no_full_log</options>
+    <description>Secret $(jira_secret) found in $(jira_secret_site) in Jira.</description>
+    <group>gdpr_IV_32.2,nist_800_53_SC.4,nist_800_53_AC.6,nist_800_53_SA.8,pci_dss_3,</group>
+    <mitre>
+      <id>T1189</id>
+      <id>T1110</id>
+      <id>T1212</id>
+      <id>T1590</id>
+      <id>T1078</id>
+    </mitre>
+  </rule>
 </group>
 
-  <!-- Get Confluence tasks -->
+  <!-- Get Confluence tasks Scenario №1-->
 <group name="confluence,">
-  <rule id="100020" level="3">
+  <rule id="100023" level="3">
     <decoded_as>json</decoded_as>
     <field name="confluence_task">\.+</field>
     <field name="confluence_creator">\.+</field>
@@ -191,7 +223,7 @@
   </rule>
   
   <!-- Get Confluence tasks with potential sensitive data publication -->
-  <rule id="100021" level="10">
+  <rule id="100024" level="10">
     <if_sid>100020</if_sid>
     <match>api_key|access_token|password|docs.google.com|drive.google.com|PASSWORD|Password|access_key|secret_key</match>
     <options>no_full_log</options>
@@ -205,11 +237,44 @@
       <id>T1078</id>
     </mitre>
   </rule>
+
+  <!-- Get Confluence tasks Scenario №2-->
+  <rule id="100025" level="0">
+    <decoded_as>json</decoded_as>
+    <field name="confluence_secret">\.+</field>
+    <field name="confluence_secret_site">\.+</field>
+    <options>no_full_log</options>
+    <description>Secret $(confluence_secret) found in $(confluence_secret_site) in Confluence.</description>
+  </rule>
+
+  <rule id="100026" level="3">
+    <if_sid>100115</if_sid>
+    <field name="confluence_secret">null</field>
+    <field name="confluence_secret_site">null</field>
+    <options>no_full_log</options>
+    <description>Confluence task created by $(confluence_creator).</description>
+  </rule>
+
+   <rule id="100027" level="10">
+    <if_sid>100115</if_sid>
+    <field name="confluence_secret" negate="yes">null</field>
+    <field name="confluence_secret_site" negate="yes">null</field>
+    <options>no_full_log</options>
+    <description>Secret $(confluence_secret) found in $(confluence_secret_site) in Confluence.</description>
+    <group>gdpr_IV_32.2,nist_800_53_SC.4,nist_800_53_AC.6,nist_800_53_SA.8,pci_dss_3,</group>
+    <mitre>
+      <id>T1189</id>
+      <id>T1110</id>
+      <id>T1212</id>
+      <id>T1590</id>
+      <id>T1078</id>
+    </mitre>
+  </rule>
 </group>
 
   <!-- OpenVPN connections status --> 
 <group name="openvpn_status,">
-  <rule id="100022" level="3">
+  <rule id="100028" level="3">
     <decoded_as>json</decoded_as>
     <field name="dst_ip">\.+</field>
     <field name="src_user">\.+</field>
@@ -221,7 +286,7 @@
 
   <!-- Wazuh suspicious processes -->
 <group name="agents_processes,">
-  <rule id="100123" level="10">
+  <rule id="100029" level="10">
     <decoded_as>json</decoded_as>
     <field name="process_found">\.+</field>
     <description>Suspicious process $(process_found) found in agent with id=$(agent_id).</description>
@@ -231,7 +296,7 @@
   <!-- Blocked Active Directory accounts successful logons -->
 <group name="blocked_accounts,">
   <!-- Windows domain -->
-  <rule id="100124" level="12">
+  <rule id="100030" level="12">
     <if_group>authentication_success</if_group>
     <list field="win.eventdata.targetUserName" lookup="address_match_key">etc/lists/ad_disabled_accounts</list>
     <hostname negate="yes">TEST-HOST</hostname>
@@ -244,8 +309,8 @@
   </rule>
 
   <!-- Windows Cisco connections -->
-  <rule id="100125" level="12">
-    <if_sid>100111</if_sid>
+  <rule id="100031" level="12">
+    <if_sid>100011</if_sid>
     <list field="win.eventdata.targetUserName" lookup="address_match_key">etc/lists/ad_disabled_accounts</list>
     <description>Blocked user $(src_user) Cisco connection detected.</description>
     <group>pci_dss_8.1.6,pci_dss_10.2.2,gdpr_IV_32.1.c,gdpr_IV_35.7.d,hipaa_164.308.a.3,hipaa_164.308.a.5,hipaa_164.312.a.1,nist_800_53_AC.2,nist_800_53_AC.6,nist_800_53_AC.7,nist_800_53_IA.2,nist_800_53_IA.4,nist_800_53_IA.5,nist_800_53_CA.7,nist_800_53_CA.2,nist_800_53_AU.2,nist_800_53_AU.6,nist_800_53_RA.3,nist_800_53_SC.7,nist_800_53_SC.23,</group>
@@ -256,7 +321,7 @@
   </rule>
     
     <!-- OpenVPN connections -->
-  <rule id="100126" level="12">
+  <rule id="100032" level="12">
     <if_group>openvpn_status</if_group>
     <list field="src_user" lookup="address_match_key">etc/lists/ad_disabled_accounts</list>
     <description>Blocked user $(src_user) OpenVPN connection detected.</description>
