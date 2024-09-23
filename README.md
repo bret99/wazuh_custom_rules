@@ -294,6 +294,7 @@ On the server which will get VMs statuses
 		<location>/var/log/vdc/previous_vms.json</location>
 	</localfile>
 </agent_config>
+
 7. cronatb -e
 8. add:
 
