@@ -278,7 +278,7 @@ On Wazuh-manager:
 # VMWare VMs
 This option means getting VMWare VMs statuses every hour.
 
-On the server which will get VMs statuses
+On the server which will get VMs statuses:
 
 1. mv get_vmware_vms.py /usr/local/bin
 2. mv get_vmware_vms.py.sh /usr/local/bin
