@@ -356,3 +356,23 @@
     <description>VDC: $(vmName) with IP $(ipAddress) is $(powerState).</description>
   </rule>
 </group>
+
+  <!-- Gitlab events -->
+<group name="gitlab,">
+  <!-- Gitlab runners -->
+  <rule id="100036" level="3">
+    <decoded_as>json</decoded_as>
+    <field name="runner_type">\w+</field>
+    <options>no_full_log</options>
+    <description>Gitlab: runner $(id) has $(status) status.</description>
+  </rule>
+
+  <!-- Gitlab admins changings -->
+  <rule id="100037" level="12">
+    <decoded_as>json</decoded_as>
+    <field name="gitlab_username">\w+</field>
+    <field name="gitlab_admin_status">\w+</field>
+    <options>no_full_log</options>
+    <description>Gitlab: admin $(gitlab_username) status has been changed: $(gitlab_admin_change).</description>
+  </rule>
+</group>
