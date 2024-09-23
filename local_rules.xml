@@ -332,3 +332,27 @@
     </mitre>
   </rule>
 </group>
+
+  <!-- VMWare VMs -->
+<group name="vdc_vms,">
+  <rule id="100033" level="0">
+    <decoded_as>json</decoded_as>
+    <field name="vmName">\.+</field>
+    <options>no_full_log</options>
+    <description>VDC: $(vmName) with IP $(ipAddress) is $(powerState).</description>
+  </rule>
+
+  <rule id="100034" level="3">
+    <if_sid>100136</if_sid>
+    <field name="powerState">POWERED_ON</field>
+    <options>no_full_log</options>
+    <description>VDC: $(vmName) with IP $(ipAddress) is $(powerState).</description>
+  </rule>
+
+  <rule id="100035" level="3">
+    <if_sid>100136</if_sid>
+    <field name="powerState">POWERED_OFF</field>
+    <options>no_full_log</options>
+    <description>VDC: $(vmName) with IP $(ipAddress) is $(powerState).</description>
+  </rule>
+</group>
