@@ -11,3 +11,5 @@ vmware_password = "" # vmware_user password
 vmware_server = "" # example: example.com
 vmware_tenant = "" # example: tenant
 vmware_vdc_names = ["", "", ""] # VMWare vdc names; example: ["test", "prodlike", "prod"]
+gitlab_private_token = "" # Gitlab token with read permissions
+gitlab_base_url = "" # example: https:example.com
