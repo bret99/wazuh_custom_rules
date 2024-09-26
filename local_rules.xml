@@ -355,12 +355,19 @@
     <options>no_full_log</options>
     <description>VDC: $(vmName) with IP $(ipAddress) is $(powerState).</description>
   </rule>
+
+   <rule id="100036" level="11">
+    <if_sid>100033</if_sid>
+    <field name="currentPowerState">\.+</field>
+    <options>no_full_log</options>
+    <description>VDC: $(vmName) change powerstate from $(previousPowerState) to $(currentPowerState).</description>
+  </rule>
 </group>
 
   <!-- Gitlab events -->
 <group name="gitlab,">
   <!-- Gitlab runners -->
-  <rule id="100036" level="3">
+  <rule id="100037" level="3">
     <decoded_as>json</decoded_as>
     <field name="runner_type">\w+</field>
     <options>no_full_log</options>
@@ -368,7 +375,7 @@
   </rule>
 
   <!-- Gitlab admins changings -->
-  <rule id="100037" level="12">
+  <rule id="100038" level="12">
     <decoded_as>json</decoded_as>
     <field name="gitlab_username">\w+</field>
     <field name="gitlab_admin_status">\w+</field>
