@@ -13,7 +13,7 @@ tenant = vmware_tenant
 vdc_names = vmware_vdc_names
 current_file = "current_vms.json"
 previous_file = "previous_vms.json"
-differences_file = "differences.json"
+differences_file = "differences_vms.json"
 auth_string = f"{user}@{tenant}:{passw}"
 
 # Disable the InsecureRequestWarning
