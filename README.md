@@ -293,6 +293,10 @@ On the server which will get VMs statuses:
 		<log_format>json</log_format>
 		<location>/var/log/vdc/previous_vms.json</location>
 	</localfile>
+	<localfile>
+        	<log_format>json</log_format>
+        	<location>/var/log/vdc/differences_vms.json</location>
+    </localfile>
 </agent_config>
 
 7. cronatb -e
