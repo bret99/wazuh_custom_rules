@@ -383,3 +383,79 @@
     <description>Gitlab: admin $(gitlab_username) status has been changed: $(gitlab_admin_change).</description>
   </rule>
 </group>
+
+  <!-- Proxmox VMs -->
+<group name="proxmox_vms,">
+  <rule id="100039" level="3">
+    <decoded_as>json</decoded_as>
+    <field name="vm_name">\.+</field>
+    <field name="vm_status">\.+</field>
+    <options>no_full_log</options>
+    <description>Proxmox: $(vm_name) of type $(vm_type) is $(vm_status).</description>
+  </rule>
+
+  <rule id="100040" level="11">
+    <if_sid>100039</if_sid>
+    <field name="current">\.+</field>
+    <options>no_full_log</options>
+    <description>Proxmox: $(vm_name) change powerstate from $(previous) to $(current).</description>
+  </rule>
+</group>
+
+<!-- Nuclei scan -->
+<group name="nuclei,">
+  <rule id="100041" level="0">
+    <decoded_as>json</decoded_as>
+    <field name="target">\w+</field>
+    <field name="detect_engine">\w+</field>
+    <field name="severity">\w+</field>
+    <options>no_full_log</options>
+    <description>Nuclei: $(target) scanned and has detections.</description>
+  </rule>
+
+  <!-- INFO severity detection -->
+  <rule id="100042" level="7">
+    <if_sid>100041</if_sid>
+    <field name="severity">info</field>
+    <options>no_full_log</options>
+    <description>Nuclei: $(target) has $(severity) severity detections.</description>
+  </rule>
+
+  <!-- UNKNOWN severity detection -->
+  <rule id="100043" level="7">
+    <if_sid>100041</if_sid>
+    <field name="severity">unknown</field>
+    <options>no_full_log</options>
+    <description>Nuclei: $(target) has $(severity) severity detections.</description>
+  </rule>
+ <!-- LOW severity detection -->
+  <rule id="100044" level="10">
+    <if_sid>100041</if_sid>
+    <field name="severity">low</field>
+    <options>no_full_log</options>
+    <description>Nuclei: $(target) has $(severity) severity detections.</description>
+  </rule>
+
+  <!-- MEDIUM severity detection -->
+  <rule id="100045" level="11">
+    <if_sid>100041</if_sid>
+    <field name="severity">medium</field>
+    <options>no_full_log</options>
+    <description>Nuclei: $(target) has $(severity) severity detections.</description>
+  </rule>
+
+  <!-- HIGH severity detection -->
+  <rule id="100046" level="13">
+    <if_sid>100041</if_sid>
+    <field name="severity">high</field>
+    <options>no_full_log</options>
+    <description>Nuclei: $(target) has $(severity) severity detections.</description>
+  </rule>
+ <!-- CRITICAL severity detection -->
+  <rule id="100047" level="13">
+    <if_sid>100041</if_sid>
+    <field name="severity">critical</field>
+    <options>no_full_log</options>
+    <description>Nuclei: $(target) has $(severity) severity detections.</description>
+  </rule>
+</group>
