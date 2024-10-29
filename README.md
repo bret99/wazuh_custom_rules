@@ -330,12 +330,12 @@ On the server which will get Gtilab admins statuses:
 */30 * * * * sudo bash -c "/usr/local/bin/get_gitlab_admins.sh"
 
 # Gitlab runners
-This option means getting Gtilab runners statuses statuses every 30 min.
+This option means getting Gtilab runners statuses every 30 min.
 
 On the server which will get Gtilab admins statuses:
 
 1. mv get_gitlab_runners.py /usr/local/bin
-2. mv gget_gitlab_runners.sh /usr/local/bin
+2. mv get_gitlab_runners.sh /usr/local/bin
 3. chown root:root /usr/local/bin/get_gitlab_runners.py
 4. chown root:root /usr/local/bin/get_gitlab_runners.sh
 5. chmod +x /usr/local/bin/get_gitlab_runners.sh
@@ -353,3 +353,62 @@ On the server which will get Gtilab admins statuses:
 8. add:
 
 */30 * * * * sudo bash -c "/usr/local/bin/get_gitlab_runners.sh"
+
+# Proxmox VMs
+
+This option means getting Proxmox VMs statuses every 30 min.
+
+On the server which will get Proxmox VMs statuses:
+
+1. mv get_proxmox_vms.py /usr/local/bin
+2. mv get_proxmox_vms.sh /usr/local/bin
+3. chown root:root /usr/local/bin/get_proxmox_vms.py
+4. chown root:root /usr/local/bin/get_proxmox_vms.sh
+5. chmod +x /usr/local/bin/get_proxmox_vms.sh
+6. mkdir /var/log/proxmox
+7. make Wazuh agents group called as one like and add the next lines to agent.conf:
+
+<agent_config>
+	<localfile>
+		<log_format>json</log_format>
+		<location>/var/log/proxmox/vm_info.json</location>
+	</localfile>
+	<localfile>
+		<log_format>json</log_format>
+		<location>/var/log/proxmox/vm_differences.json</location>
+	</localfile>
+</agent_config>
+
+7. cronatb -e
+8. add:
+
+*/30 * * * * sudo bash -c "/usr/local/bin/get_proxmox_vms.sh"
+
+# Nuclei scan
+
+This option means getting Nuclei scan every 24 hours.
+
+On the server which will get web sites statuses:
+
+1. install nuclei
+2. mv nuclei-templates /usr/local/bin
+3. mv get_nuclei_scan.py /usr/local/bin
+4. mv get_nuclei_scan.sh /usr/local/bin
+5. chown root:root /usr/local/bin/get_nuclei_scan.py
+6. chown root:root /usr/local/bin/get_nuclei_scan.sh
+7. chmod +x /usr/local/bin/get_nuclei_scan.sh
+8. mkdir /var/log/nuclei
+9. make Wazuh agents group called as one like and add the next lines to agent.conf:
+
+<agent_config>
+	<localfile>
+		<log_format>json</log_format>
+		<location>/var/log/nuclei/report.json</location>
+	</localfile>
+</agent_config>
+
+7. cronatb -e
+8. add:
+
+0 21 * * * sudo bash -c "/root/go/bin/nuclei -ut;/root/go/bin/nuclei -up"
+0 22 * * * sudo bash -c "/root/get_nuclei_scan.sh"
