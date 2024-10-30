@@ -127,8 +127,7 @@ with open(args.differences_file, "w") as f:
 
 
 # Delete previous report
-os.system("rm -f {0}/{1}".format(report_dir, args.output_file))
-os.system("rm -f {0}/{1}".format(report_dir, args.differences_file))
+os.system("rm -f {}/*.json".format(report_dir))
 
 # Write current report
 os.system("cat {0} > {1}/{2}".format(args.differences_file, report_dir, args.differences_file))
