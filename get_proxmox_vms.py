@@ -3,14 +3,16 @@ import json
 import argparse
 from datetime import datetime
 import os
+import shutil
 from secret_tokens import PM_node, PM_cluster, PM_username, PM_password
 
 # Parse command-line arguments
 parser = argparse.ArgumentParser(description="Proxmox VM Information Retriever")
 parser.add_argument("--node", default=PM_node, help="Proxmox node name (default: {})".format(PM_node))
 parser.add_argument("--cluster", default=PM_cluster, help="Proxmox cluster name (default: {})".format(PM_cluster))
-parser.add_argument("--output-file", default="vm_info.json", help="Output file name (default: vm_info.json)")
-parser.add_argument("--differences-file", default="vm_differences.json", help="Differences file name (default: vm_differences.json)")
+parser.add_argument("--current-file", default="current.json", help="Current status file name (default: current.json)")
+parser.add_argument("--previous-file", default="previous.json", help="Previous status file name (default: previous.json)")
+parser.add_argument("--differences-file", default="differences.json", help="Differences file name (default: differences.json)")
 parser.add_argument("--status", help="Filter VMs by status (e.g., 'running', 'stopped')")
 args = parser.parse_args()
 report_dir = "/var/log/proxmox"
@@ -29,7 +31,6 @@ auth_data = {
     "username": proxmox_username,
     "password": proxmox_password
 }
-
 auth_response = requests.post(f"{proxmox_host}/api2/json/access/ticket", data=auth_data)
 if auth_response.status_code == 200:
     csrf_token = auth_response.json()["data"]["CSRFPreventionToken"]
@@ -43,7 +44,6 @@ headers = {
     "CSRFPreventionToken": csrf_token,
     "Cookie": f"PVEAuthCookie={session_ticket}"
 }
-
 # Get the list of QEMU VMs
 qemu_response = requests.get(qemu_api_url, headers=headers)
 if qemu_response.status_code == 200:
@@ -83,20 +83,22 @@ for vm in lxc_vm_data:
         "vm_type": "lxc"
     }
     all_vm_data.append(vm_info)
+# Move current VM data to previous VM data
+if os.path.exists(args.current_file):
+    shutil.move(args.current_file, args.previous_file)
 
-# Write the VM information to a JSON file
-with open(args.output_file, "w") as f:
+# Write the current VM information to a JSON file
+with open(args.current_file, "w") as f:
     for vm in all_vm_data:
         json.dump(vm, f)
         f.write("\n")
 
-# Load the previous VM information from the output file
+# Load the previous VM information from the previous file
 try:
-    with open(args.output_file, "r") as f:
+    with open(args.previous_file, "r") as f:
         previous_vm_data = [json.loads(line) for line in f]
 except FileNotFoundError:
     previous_vm_data = []
-
 
 # Find the differences between the current and previous VM data
 differences = []
@@ -125,10 +127,9 @@ with open(args.differences_file, "w") as f:
         json.dump(diff, f)
         f.write("\n")
 
-
 # Delete previous report
 os.system("rm -f {}/*.json".format(report_dir))
 
 # Write current report
 os.system("cat {0} > {1}/{2}".format(args.differences_file, report_dir, args.differences_file))
-os.system("cat {0} > {1}/{2}".format(args.output_file, report_dir, args.output_file))
+os.system("cat {0} > {1}/{2}".format(args.current_file, report_dir, args.current_file))
