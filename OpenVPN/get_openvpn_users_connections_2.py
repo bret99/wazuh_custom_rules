@@ -3,7 +3,7 @@ import json
 import requests
 from secret_tokens import abuseipdb_token, ip2location_token
 
-# Existing script code
+# Substitute log file to actual one
 os.system("cat /var/log/openvpn/status.log | awk '{print $1}' | head -n -3 | tail -n +4 | sed 's/ROUTING//;s/Virtual//' | sed '/^$/d' > /root/input.txt")
 
 def get_abuse_info(ip_address):
