@@ -31,7 +31,7 @@
     <if_sid>100101</if_sid>
     <field name="abuesIPDB.usage_type">Data Center/Web Hosting/Transit|Commercial|Content Delivery Network</field>
     <field name="abuesIPDB.countryName">United States</field>
-    <list field="abuesIPDB.domain" lookup="match_key">etc/lists/dch_us_providers</list>
+    <list field="abuesIPDB.domain" lookup="match_key">etc/lists/dch_providers</list>
     <options>no_full_log</options>
     <group>pci_dss_3,pci_dss_8.1.6,pci_dss_10.2.2,gdpr_IV_32.2,gdpr_IV_32.1.c,gdpr_IV_35.7.d,hipaa_164.308.a.3,hipaa_164.308.a.5,hipaa_164.312.a.1,nist_800_53_AC.2,nist_80>    <mitre>
       <id>T1189</id>
