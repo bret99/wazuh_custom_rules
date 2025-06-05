@@ -20,9 +20,9 @@ For group "openvpn_status" one should make the next on Wazuh-manager:
 5. add host with preinstalled wazuh agent to the group from 3rd point
 6. crontab -e
 7. add:
-
+```
 */5 * * * * sudo bash -c "/usr/local/bin/get_openvpn_users_connections.sh"
-
+```
 Scenario №2 [with AbuseIPDB, IP2location API integration]
 
 For group "openvpn_status" one should make the next on Wazuh-manager:
@@ -43,9 +43,9 @@ For group "openvpn_status" one should make the next on Wazuh-manager:
 5. add host with preinstalled wazuh agent to the group from 3rd point
 6. crontab -e
 7. add:
-
+```
 */5 * * * * sudo bash -c "/usr/local/bin/get_openvpn_users_connections_2.sh"
-
+```
 # Raw OpenVPN connections
 
 One should add to agent.conf at OpenVPN server with Wazuh agent the next strings:
