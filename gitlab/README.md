@@ -1,5 +1,5 @@
 # Gitlab admins changings
-This option means getting Gtilab admins statuses statuses every 30 min.
+This option means getting Gtilab admins statuses every 30 min.
 
 On the server which will get Gtilab admins statuses:
 
