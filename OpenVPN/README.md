@@ -47,4 +47,4 @@ For group "openvpn_status" one should make the next on Wazuh-manager:
 */5 * * * * sudo bash -c "/usr/local/bin/get_openvpn_users_connections_2.sh"
 
 # Important
-One should make CDB lists cities.cdb (to detect foreign connections) and dch_providers.cdb (to detect hosting connections). Those ones should be got from ip2location DBs.
+One should make CDB lists cities.cdb (to detect foreign connections) and dch_providers.cdb (to detect hosting connections). Those ones should be got from ip2location DBs. Also one should substitute country code to actual one in group "openvpn_foreign" at local_rules.xml
