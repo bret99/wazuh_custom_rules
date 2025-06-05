@@ -1,4 +1,4 @@
-Jira tasks
+# Jira tasks
 
 Prerequisite: Jira user account should be synchronized to Active Directory and have Jira admin rights.
 
@@ -47,3 +47,21 @@ On Wazuh-manager:
 0 13 * * * sudo bash -c "/usr/local/bin/get_jira_tasks_2.sh"
 
 0 19 * * * sudo bash -c "/usr/local/bin/get_jira_tasks_2.sh"
+
+# Mail alerts for found secrets in Jira tasks
+
+This option will allow to get alerts if any of list "secret_tokens" in secret_tokens.py is in Jira tasks for 24 hours.
+
+On Wazuh-manager:
+
+    preconfigure postfix
+    mv secret_tokens.py /usr/local/bin
+    mv get_jira_secrets_mail_alert.py /usr/local/bin
+    mv get_jira_secrets_mail_alert.sh /usr/local/bin
+    chown root:root /usr/local/bin/get_jira_secrets_mail_alert.sh
+    mv secret_tokens.py /usr/local/bin
+    substitute mails in get_jira_secrets_mail_alert.sh to actual ones
+    cronatb -e
+    add:
+
+0 12 * * * sudo bash -c "/usr/local/bin/get_jira_secrets_mail_alert.sh"
