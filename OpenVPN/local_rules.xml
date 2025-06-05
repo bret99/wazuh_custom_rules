@@ -42,3 +42,11 @@
     <description>OpenVPN: possible hosting connection of $(src_user) from $(srcip):$(src_port) from $(abuesIPDB.isp) [$(abuesIPDB.domain)] detected.</description>
   </rule>
 </group>
+
+<!-- OpenVPN raw connections -->
+<group name="openvpn_raw,">
+  <rule id="100104" level="3">
+    <decoded_as>openvpn_connections</decoded_as>
+    <description>OpenVPN: user $(dstuser) connected from $(srcip):$(srcport) with intrenal IP $(dstip).</description>
+  </rule>
+</group>
