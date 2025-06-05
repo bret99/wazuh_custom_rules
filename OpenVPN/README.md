@@ -11,10 +11,10 @@ For group "openvpn_status" one should make the next on Wazuh-manager:
 4. make Wazuh agents group called as one like and add the next lines to agent.conf:
 ```xml
 <agent_config>
-	<localfile>
-		<log_format>json</log_format>
-		<location>/var/log/openvpn/users_connections.json</location>
-	</localfile>
+  <localfile>
+    <log_format>json</log_format>
+    <location>/var/log/openvpn/users_connections.json</location>
+  </localfile>
 </agent_config>
 ```
 5. add host with preinstalled wazuh agent to the group from 3rd point
@@ -34,10 +34,10 @@ For group "openvpn_status" one should make the next on Wazuh-manager:
 4. make Wazuh agents group called as one like and add the next lines to agent.conf:
 ```xml
 <agent_config>
-	<localfile>
-		<log_format>json</log_format>
-		<location>/var/log/openvpn/users_connections.json</location>
-	</localfile>
+  <localfile>
+    <log_format>json</log_format>
+    <location>/var/log/openvpn/users_connections.json</location>
+  </localfile>
 </agent_config>
 ```
 5. add host with preinstalled wazuh agent to the group from 3rd point
