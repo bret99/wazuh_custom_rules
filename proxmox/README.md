@@ -13,10 +13,11 @@ On the server which will get Proxmox VMs statuses:
 7. make Wazuh agents group called as one like and add the next lines to agent.conf:
 ```xml
 <agent_config>
-	<localfile>
-		<log_format>json</log_format>
-		<location>/var/log/proxmox/vm_info.json</location>
-	</localfile>
+  <localfile>
+    <log_format>json</log_format>
+    <location>/var/log/proxmox/vm_info.json</location>
+  </localfile>
+</agent_config>
 ```
 7. cronatb -e
 8. add lines:
