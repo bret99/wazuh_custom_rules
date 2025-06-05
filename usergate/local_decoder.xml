@@ -1,0 +1,12 @@
+<!-- UserGate decoders -->
+<decoder name="usergate_1">
+  <parent>cef_universal</parent>
+  <regex type="pcre2">^\S+ \S+ ugutm utm-loganalyzer traffic - - \S+CEF:0\|Usergate\|UTM\|(\d)\|traffic\|(\w+)\|(\d)\|</regex>
+  <order>usergate.version,usergate.traffic,usergate.severity</order>
+</decoder>
+
+<decoder name="usergate_2">
+  <parent>cef_universal</parent>
+  <regex type="pcre2">^\S+ \S+ ugutm utm-loganalyzer events - - \S+CEF:0\|Usergate\|UTM\|(\d)\|events\|(\S+)\|(\d)\|</regex>
+  <order>usergate.version,events_type,usergate.severity</order>
+</decoder>
