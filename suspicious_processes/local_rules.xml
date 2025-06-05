@@ -1,0 +1,8 @@
+<!-- Wazuh suspicious processes -->
+<group name="agents_processes,">
+  <rule id="100101" level="10">
+    <decoded_as>json</decoded_as>
+    <field name="process_found">\.+</field>
+    <description>Suspicious process $(process_found) found in agent with id=$(agent_id).</description>
+  </rule>
+</group>
