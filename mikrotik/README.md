@@ -1,2 +1,2 @@
 # Mikrotik
-Just copy rules and decoders to your ones.
+Configure your Mikrotik to send ipsec errors and log in events to Wazuh server and copy custom Mikrotik rules and decoders to your ones.
