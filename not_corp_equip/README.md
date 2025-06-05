@@ -9,12 +9,10 @@ On Wazuh-manager:
 4. chown root:root /usr/local/bin/get_ad_hosts.sh
 5. chmod +x /usr/local/bin/get_ad_hosts.sh
 6. cronatb -e
-7. add:
-
+7. add lines:
+```
 0 0 * * * sudo bash -c "/usr/local/bin/get_ad_hosts.sh"
-
 0 6 * * * sudo bash -c "/usr/local/bin/get_ad_hosts.sh"
-
 0 12 * * * sudo bash -c "/usr/local/bin/get_ad_hosts.sh"
-
 0 18 * * * sudo bash -c "/usr/local/bin/get_ad_hosts.sh"
+```
