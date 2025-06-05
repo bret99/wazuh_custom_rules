@@ -45,6 +45,7 @@ On the server which will get Gtilab admins statuses:
 </agent_config>
 ```
 7. cronatb -e
-8. add:
-
+8. add lines:
+```
 */30 * * * * sudo bash -c "/usr/local/bin/get_gitlab_runners.sh"
+```
