@@ -2,7 +2,7 @@ import json
 import os
 
 # Substitute connections log file to actual
-os.system("cat /var/log/openvpn/status4101.log | awk '{print $1}' | head -n -3 | tail -n +4 | sed 's/ROUTING//;s/Virtual//' | sed '/^$/d' > /root/input.txt")
+os.system("cat /var/log/openvpn/status.log | awk '{print $1}' | head -n -3 | tail -n +4 | sed 's/ROUTING//;s/Virtual//' | sed '/^$/d' > /root/input.txt")
 
 def parse_line(line):
     fields = line.strip().split(',')
