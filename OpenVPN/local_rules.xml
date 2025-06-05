@@ -1,0 +1,44 @@
+<!-- OpenVPN connections status -->
+<group name="openvpn_status,">
+  <rule id="100101" level="3">
+    <decoded_as>json</decoded_as>
+    <field name="dst_ip">\.+</field>
+    <field name="src_user">\.+</field>
+    <field name="src_port">\.+</field>
+    <options>no_full_log</options>
+    <description>OpenVPN: connection of $(src_user) from $(srcip):$(src_port) $(timestamp) established.</description>
+  </rule>
+</group>
+
+<!-- OpenVPN connections not from your country and hostings -->
+<group name="openvpn_foreign,">
+  <rule id="100102" level="12">
+    <if_sid>100101</if_sid>
+    <field name="abuesIPDB.usage_type" negate="yes">Reserved</field>
+    <field name="ip2location.countryCode" negate="yes">US</field> <!-- Substitute country code to actual one -->
+    <list field="ip2location.cityName" lookup="not_match_key">etc/lists/cities</list>
+    <options>no_full_log</options>
+    <group>pci_dss_3,pci_dss_8.1.6,pci_dss_10.2.2,gdpr_IV_32.2,gdpr_IV_32.1.c,gdpr_IV_35.7.d,hipaa_164.308.a.3,hipaa_164.308.a.5,hipaa_164.312.a.1,nist_800_53_AC.2,nist_80>    <mitre>
+      <id>T1189</id>
+      <id>T1212</id>
+      <id>T1590</id>
+      <id>T1078</id>
+    </mitre>
+    <description>OpenVPN: foreign connection of $(src_user) from $(srcip):$(src_port) from $(ip2location.countryName) detected.</description>
+  </rule>
+
+  <rule id="100103" level="11">
+    <if_sid>100101</if_sid>
+    <field name="abuesIPDB.usage_type">Data Center/Web Hosting/Transit|Commercial|Content Delivery Network</field>
+    <field name="abuesIPDB.countryName">United States</field>
+    <list field="abuesIPDB.domain" lookup="match_key">etc/lists/dch_us_providers</list>
+    <options>no_full_log</options>
+    <group>pci_dss_3,pci_dss_8.1.6,pci_dss_10.2.2,gdpr_IV_32.2,gdpr_IV_32.1.c,gdpr_IV_35.7.d,hipaa_164.308.a.3,hipaa_164.308.a.5,hipaa_164.312.a.1,nist_800_53_AC.2,nist_80>    <mitre>
+      <id>T1189</id>
+      <id>T1212</id>
+      <id>T1590</id>
+      <id>T1078</id>
+    </mitre>
+    <description>OpenVPN: possible hosting connection of $(src_user) from $(srcip):$(src_port) from $(abuesIPDB.isp) [$(abuesIPDB.domain)] detected.</description>
+  </rule>
+</group>
