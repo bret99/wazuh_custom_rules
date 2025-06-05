@@ -1,0 +1,59 @@
+<!-- Confluence tasks -->
+<group name="confluence,">
+  <!--
+  <rule id="100101" level="3">
+    <decoded_as>json</decoded_as>
+    <field name="confluence_task">\.+</field>
+    <field name="confluence_creator">\.+</field>
+    <field name="confluence_creation">\.+</field>
+    <options>no_full_log</options>
+    <description>Confluence task created by $(confluence_creator).</description>
+  </rule>
+  -->
+  <!-- Potentially sensitive information publication -->
+  <!--
+  <rule id="100102" level="10">
+    <if_sid>100101</if_sid>
+    <match>api_key|access_token|password|docs.google.com|drive.google.com|пароль|Пароль|ПАРОЛЬ|PASSWORD|Password|access_key|secret_key</match>
+    <options>no_full_log</options>
+    <description>Potential publication of information with limited access in Confluence.</description>
+    <group>gdpr_IV_32.2,nist_800_53_SC.4,nist_800_53_AC.6,nist_800_53_SA.8,pci_dss_3,</group>
+    <mitre>
+      <id>T1189</id>
+      <id>T1212</id>
+      <id>T1590</id>
+      <id>T1078</id>
+    </mitre>
+  </rule>
+  -->
+  <rule id="100103" level="0">
+    <decoded_as>json</decoded_as>
+    <field name="confluence_secret">\.+</field>
+    <field name="confluence_secret_site">\.+</field>
+    <options>no_full_log</options>
+    <description>Confluence: secret $(confluence_secret) found in $(confluence_secret_site).</description>
+  </rule>
+ 
+  <rule id="100104" level="3">
+    <if_sid>100103</if_sid>
+    <field name="confluence_secret">null</field>
+    <field name="confluence_secret_site">null</field>
+    <options>no_full_log</options>
+    <description>Confluence: task created by $(confluence_creator).</description>
+  </rule>
+
+ <rule id="100105" level="10">
+    <if_sid>100103</if_sid>
+    <field name="confluence_secret" negate="yes">null</field>
+    <field name="confluence_secret_site" negate="yes">null</field>
+    <options>no_full_log</options>
+    <description>Confluence: secret $(confluence_secret) found in $(confluence_secret_site).</description>
+    <group>gdpr_IV_32.2,nist_800_53_SC.4,nist_800_53_AC.6,nist_800_53_SA.8,pci_dss_3,</group>
+    <mitre>
+      <id>T1189</id>
+      <id>T1212</id>
+      <id>T1590</id>
+      <id>T1078</id>
+    </mitre>
+  </rule>
+</group>
