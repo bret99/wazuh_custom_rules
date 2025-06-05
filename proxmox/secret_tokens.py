@@ -1,5 +1,4 @@
-vmware_user = "" # VMWare user with read permissions
-vmware_password = "" # vmware_user password
-vmware_server = "" # example: example.com
-vmware_tenant = "" # example: tenant
-vmware_vdc_names = ["", "", ""] # VMWare vdc names; example: ["test", "prodlike", "prod"]
+PM_node = "" # example pve-001
+PM_cluster = "" # example: pve-001.example.com
+PM_username = "" # example: john.doe@pve
+PM_password = ""
