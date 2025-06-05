@@ -1,0 +1,71 @@
+<!-- Vipnet rules [sshd, webguifcgi-server] -->
+<group name="vipnet,">
+  <rule id="100101" level="7">
+    <decoded_as>vipnet_sshd_1</decoded_as>
+    <description>Vipnet: [sshd] $(password_state) password for $(dstuser) from $(srcip) port $(dstport).</description>
+  </rule>
+
+  <rule id="100102" level="7">
+    <decoded_as>vipnet_sshd_2</decoded_as>
+    <description>Vipnet: [sshd] session $(vipnet.ssh_session) for user $(dstuser).</description>
+  </rule>
+
+  <rule id="100103" level="5">
+    <decoded_as>vipnet_sshd_3</decoded_as>
+    <description>Vipnet: [sshd] session $(vipnet.ssh_session) for user $(dstuser).</description>
+  </rule>
+
+  <rule id="100104" level="7">
+    <decoded_as>vipnet_webgui_1</decoded_as>
+    <description>Vipnet: [webgui-fcgi] user from $(srcip) is $(vipnet.webgui_session).</description>
+  </rule>
+
+  <rule id="100105" level="7">
+    <decoded_as>vipnet_webgui_2</decoded_as>
+    <description>Vipnet: [webgui-fcgi] user from $(srcip) is logged in as admin.</description>
+  </rule>
+
+  <rule id="100106" level="7">
+    <decoded_as>vipnet_iplirpasswd_1</decoded_as>
+    <description>Vipnet: [iplirpasswd] $(vipnet.iplir_passwd).</description>
+  </rule>
+
+  <rule id="100107" level="7">
+    <decoded_as>vipnet_sshd_4</decoded_as>
+    <description>Vipnet: [sshd] $(password_state) password for $(dstuser) from $(srcip) port $(dstport).</description>
+  </rule>
+
+  <rule id="100108" level="7">
+    <decoded_as>vipnet_sshd_5</decoded_as>
+    <description>Vipnet: [sshd] session $(vipnet.ssh_session) for user $(dstuser).</description>
+  </rule>
+
+  <rule id="100109" level="5">
+    <decoded_as>vipnet_sshd_6</decoded_as>
+    <description>Vipnet: [sshd] session $(vipnet.ssh_session) for user $(dstuser).</description>
+  </rule>
+
+  <rule id="100110" level="7">
+    <decoded_as>vipnet_webgui_3</decoded_as>
+    <description>Vipnet: [webgui-fcgi] user from $(srcip) is $(vipnet.webgui_session).</description>
+  </rule>
+
+  <rule id="100111" level="7">
+    <decoded_as>vipnet_webgui_4</decoded_as>
+    <description>Vipnet: [webgui-fcgi] user from $(srcip) is logged in as admin.</description>
+  </rule>
+
+  <rule id="100112" level="7">
+    <decoded_as>vipnet_iplirpasswd_2</decoded_as>
+    <description>Vipnet: [iplirpasswd] $(vipnet.iplir_passwd).</description>
+  </rule>
+
+  <rule id="100113" level="7">
+    <decoded_as>vipnet_rvpn_shell_1</decoded_as>
+    <description>Vipnet: [rvpnshell] $(vipnet.cmd_type) Command $(vipnet.cmd_command) run.</description>
+  </rule>
+
+  <rule id="100114" level="7">
+    <decoded_as>vipnet_rvpn_shell_2</decoded_as>
+    <description>Vipnet: [rvpnshell] $(vipnet.cmd_type) Command $(vipnet.cmd_command) run.</description>
+  </rule>
