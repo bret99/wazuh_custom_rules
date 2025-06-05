@@ -44,24 +44,19 @@ On Wazuh-manager:
 
 # Mail alerts for found secrets in Confluence tasks
 
-This option will allow to get alerts if any of list "secret_tokens" in secret_tokens.py is in Jira/Confluence tasks for 24 hours.
+This option will allow to get alerts if any of list "secret_tokens" in secret_tokens.py is in Confluence tasks for 24 hours.
 
 On Wazuh-manager:
 
     preconfigure postfix
     mv secret_tokens.py /usr/local/bin
-    mv get_jira_secrets_mail_alert.py /usr/local/bin
     mv get_confluence_secrets_mail_alert.py /usr/local/bin
-    mv get_jira_secrets_mail_alert.sh /usr/local/bin
     mv get_confluence_secrets_mail_alert.sh /usr/local/bin
-    chown root:root /usr/local/bin/get_jira_secrets_mail_alert.sh
     chown root:root /usr/local/bin/get_confluence_secrets_mail_alert.sh
     mv secret_tokens.py /usr/local/bin
-    substitute mails in get_jira_secrets_mail_alert.sh and get_confluence_secrets_mail_alert.sh to actual ones
+    substitute mails in get_confluence_secrets_mail_alert.sh to actual ones
     cronatb -e
     add:
-
-0 12 * * * sudo bash -c "/usr/local/bin/get_jira_secrets_mail_alert.sh"
 
 0 11 * * * sudo bash -c "/usr/local/bin/get_confluence_secrets_mail_alert.sh"
 
