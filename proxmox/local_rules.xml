@@ -1,0 +1,10 @@
+  <!-- Proxmox VMs -->
+<group name="proxmox_vms,">
+  <rule id="100101" level="3">
+    <decoded_as>json</decoded_as>
+    <field name="vm_name">\.+</field>
+    <field name="vm_status">\.+</field>
+    <options>no_full_log</options>
+    <description>Proxmox: $(vm_name) of type $(vm_type) is $(vm_status).</description>
+  </rule>
+</group>
