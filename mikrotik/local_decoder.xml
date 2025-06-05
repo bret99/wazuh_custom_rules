@@ -1,0 +1,39 @@
+<!-- Mikrotik decoders -->
+  <!-- IPSEC errors -->
+<decoder name="mikrotik_ipsec_error">
+  <prematch type="pcre2">^ipsec\Serror</prematch>
+</decoder>
+
+<decoder name="ipsec_error_child_1">
+  <parent>mikrotik_ipsec_error</parent>
+  <regex>ipsec\Serror (\d+.\d+.\d+.\d+) (\.+)</regex>
+  <order>srcip,ipsec_msg</order>
+</decoder>
+
+<decoder name="ipsec_error_child_2">
+  <parent>mikrotik_ipsec_error</parent>
+  <regex>ipsec\Serror (\S+ \S+ \S+ \S+)</regex>
+  <order>ipsec_msg</order>
+</decoder>
+
+  <!-- Login -->
+<decoder name="mikrotik_login">
+  <prematch type="pcre2">^system\Sinfo\Saccount user \S+ logged in from \d+.\d+.\d+.\d+</prematch>
+</decoder>
+
+<decoder name="mikrotik_login_child">
+  <parent>mikrotik_login</parent>
+  <regex>system\Sinfo\Saccount user (\S+) logged in from (\d+.\d+.\d+.\d+) (\.+)</regex>
+  <order>dstuser,dstip,login_type</order>
+</decoder>
+
+  <!-- Log out -->
+<decoder name="mikrotik_logout">
+  <prematch type="pcre2">^system\Sinfo\Saccount user \S+ logged out from \d+.\d+.\d+.\d+</prematch>
+</decoder>
+
+<decoder name="mikrotik_logout_child">
+  <parent>mikrotik_logout</parent>
+  <regex>system\Sinfo\Saccount user (\S+) logged out from (\d+.\d+.\d+.\d+) (\.+)</regex>
+  <order>dstuser,dstip,logout_type</order>
+</decoder>
