@@ -49,13 +49,12 @@ For group "openvpn_status" one should make the next on Wazuh-manager:
 # Raw OpenVPN connections
 
 One should add to agent.conf at OpenVPN server with Wazuh agent the next strings:
-<agent_config>
 
-    <localfile>
-      <log_format>syslog</log_format>
-      <location>/var/log/openvpn/status.log</location>
-    </localfile>
-    
+<agent_config>
+  <localfile>
+    <log_format>syslog</log_format>
+    <location>/var/log/openvpn/status.log</location>
+  </localfile>    
 </agent_config>
 
 # Important
