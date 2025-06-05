@@ -1,0 +1,17 @@
+<!-- CEF:0 decoders -->
+<decoder name="cef_universal">
+  <prematch type="pcre2">CEF:0|(.+?)|(.+?)|</prematch>
+</decoder>
+
+  <!-- Kaspersky decoders -->
+<decoder name="KES_1">
+  <parent>cef_universal</parent>
+  <regex type="pcre2">^CEF:0\|KasperskyLab\|SecurityCenter\|(.+?)\|(.+?)\|(.+?)\|(.+?)\|msg=(.+?) rt=\d+ .+? dhost=(.+?) dst=(\d+.\d+.\d+.\d+) .+?</regex>
+  <order>kaspersky.version,kaspersky.event_id,kaspersky.event_name,kaspersky.severity,msg,dhost,dst</order>
+</decoder>
+
+<decoder name="KES_2">
+  <parent>cef_universal</parent>
+  <regex type="pcre2">^CEF:0\|KasperskyLab\|SecurityCenter\|(.+?)\|(.+?)\|(.+?)\|(.+?)\|.+? dhost=(.+?) dst=(\d+.\d+.\d+.\d+) .+?</regex>
+  <order>kaspersky.version,kaspersky.event_id,kaspersky.event_name,kaspersky.severity,dhost,dst</order>
+</decoder>
