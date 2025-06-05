@@ -25,7 +25,8 @@ chown root:root get_secret_gitlab_repo_yesterday.py
 chown root:root get_secret_github_repo.py
 chmod +x /usr/local/bin/get_corp_code_leakage.sh
 mkdir /var/log/corp_code
-make Wazuh agents group called as one like and add the next lines to agent.conf:
+```
+Make Wazuh agents group called as one like and add the next lines to agent.conf:
 ```xml
 <agent_config>
   <localfile>
