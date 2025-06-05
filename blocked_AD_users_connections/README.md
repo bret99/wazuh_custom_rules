@@ -9,7 +9,7 @@ On Wazuh-manager:
 4. chown root:root /usr/local/bin/get_ad_blocked_accounts.sh
 5. chmod +x /usr/local/bin/get_ad_blocked_accounts.sh
 6. cronatb -e
-7. add:
+7. add lines:
 ```
 0 0 * * * sudo bash -c "/usr/local/bin/get_ad_blocked_accounts.sh"
 0 12 * * * sudo bash -c "/usr/local/bin/get_ad_blocked_accounts.sh"
