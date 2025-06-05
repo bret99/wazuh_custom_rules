@@ -9,14 +9,14 @@ For group "openvpn_status" one should make the next on Wazuh-manager:
 3. substitute path to OpenVPN connections log (not syslog) to actual one
 
 4. make Wazuh agents group called as one like and add the next lines to agent.conf:
-
+```xml
 <agent_config>
 	<localfile>
 		<log_format>json</log_format>
 		<location>/var/log/openvpn/users_connections.json</location>
 	</localfile>
 </agent_config>
-
+```
 5. add host with preinstalled wazuh agent to the group from 3rd point
 6. crontab -e
 7. add:
@@ -32,14 +32,14 @@ For group "openvpn_status" one should make the next on Wazuh-manager:
 3. substitute path to OpenVPN connections log (not syslog) to actual one
 
 4. make Wazuh agents group called as one like and add the next lines to agent.conf:
-
+```xml
 <agent_config>
 	<localfile>
 		<log_format>json</log_format>
 		<location>/var/log/openvpn/users_connections.json</location>
 	</localfile>
 </agent_config>
-
+```
 5. add host with preinstalled wazuh agent to the group from 3rd point
 6. crontab -e
 7. add:
@@ -49,13 +49,13 @@ For group "openvpn_status" one should make the next on Wazuh-manager:
 # Raw OpenVPN connections
 
 One should add to agent.conf at OpenVPN server with Wazuh agent the next strings:
-
+```xml
 <agent_config>
   <localfile>
     <log_format>syslog</log_format>
     <location>/var/log/openvpn/status.log</location>
   </localfile>    
 </agent_config>
-
+```
 # Important
 One should make CDB lists cities.cdb (to detect foreign connections) and dch_providers.cdb (to detect hosting connections). Those ones should be got from ip2location DBs. Also one should substitute country code to actual one in group "openvpn_foreign" at local_rules.xml
