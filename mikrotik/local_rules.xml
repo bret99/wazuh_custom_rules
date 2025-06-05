@@ -1,0 +1,28 @@
+<!-- Mikrotik rules -->
+<group name="mikrotik,">
+  <rule id="100101" level="7">
+    <decoded_as>mikrotik_ipsec_error</decoded_as>
+    <description>Mikrotik: ipsec,error $(srcip) $(ipsec_msg).</description>
+  </rule>
+
+  <rule id="100102" level="7">
+    <decoded_as>mikrotik_ipsec_error</decoded_as>
+    <description>Mikrotik: $(ipsec_msg).</description>
+  </rule>
+
+  <rule id="100103" level="10">
+    <if_sid>100101</if_sid>
+    <match>failed to get valid proposal</match>
+    <description>Mikrotik: $(srcip) failed to get valid proposal.</description>
+  </rule>
+
+  <rule id="100104" level="5">
+    <decoded_as>mikrotik_login</decoded_as>
+    <description>Mikrotik: user $(dstuser) logged in from $(dstip) $(login_type).</description>
+  </rule>
+
+  <rule id="100105" level="5">
+    <decoded_as>mikrotik_logout</decoded_as>
+    <description>Mikrotik: user $(dstuser) logged out from $(dstip) $(logout_type).</description>
+  </rule>
+</group>
