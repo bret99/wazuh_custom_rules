@@ -1,5 +1,5 @@
 # Wazuh custom rules and decoders
 
-Remember that at every local_rules.xml rule_id starts with 100101.
+Keep in mind that every rule at local_rules.xml starts with rule_id equal to 100101.
 
 
