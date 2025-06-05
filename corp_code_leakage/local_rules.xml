@@ -1,0 +1,36 @@
+<!-- Corporate code leakeage detection -->
+<group name="corp_code_leakage,">
+  <rule id="100101" level="3">
+    <decoded_as>json</decoded_as>
+    <field name="repo_name">\.+</field>
+    <field name="repo_url">\.+</field>
+    <description>Corporate code: possible leakage at $(repo_url).</description>
+  </rule>
+
+  <rule id="100102" level="11">
+    <if_sid>100101</if_sid>
+    <location>/var/log/corp_code/yesterday_updated_github_repositories.json</location>
+    <mitre>
+      <id>T1565.001</id>
+    </mitre>
+    <description>Corporate code: possible leakage at $(repo_url) yesterday.</description>
+  </rule>
+
+  <rule id="100103" level="11">
+    <if_sid>100101</if_sid>
+    <location>/var/log/corp_code/yesterday_updated_docker_repositories.json</location>
+    <mitre>
+      <id>T1565.001</id>
+    </mitre>
+    <description>Corporate code: possible leakage at $(repo_url) yesterday.</description>
+  </rule>
+
+  <rule id="100104" level="11">
+    <if_sid>100101</if_sid>
+    <location>/var/log/corp_code/yesterday_updated_gitlab_repositories.json</location>
+    <mitre>
+      <id>T1565.001</id>
+    </mitre>
+    <description>Corporate code: possible leakage at $(repo_url) yesterday.</description>
+  </rule>
+</group>
