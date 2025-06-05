@@ -1,7 +1,8 @@
 # Mikrotik
+
 1. Configure your Mikrotik to send ipsec errors and log in events to Wazuh server
 2. copy custom Mikrotik rules and decoders to your ones
-3. Add to Wazuh manager ossec.conf:
+3. add to Wazuh manager ossec.conf:
  <!-- Mikrotik events -->
 ```xml  
   <remote>
