@@ -5,7 +5,7 @@ Run commands on target Vipnet coordinator:
 2. machine set loghost 192.168.10.10 # Substitute Wazuh manager IP [192.168.10.10] to actual one
 
 Add to Wazuh manager ossec.conf:
- <!-- Vipnet coordinator Perm events -->
+ <!-- Vipnet coordinator events -->
 ```xml  
   <remote>
     <connection>syslog</connection>
