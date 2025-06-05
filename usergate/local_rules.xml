@@ -1,0 +1,26 @@
+<!-- UserGate rules -->
+<group name="usergate,">
+  <rule id="100101" level="3">
+    <decoded_as>cef_universal</decoded_as>
+    <match type="pcre2">^\S+ \S+ ugutm utm-loganalyzer traffic - - \S+CEF:0\|Usergate\|UTM\|(\d)\|traffic\|(\w+)\|(\d)\|</match>
+    <description>UserGate: traffic event.</description>
+  </rule>
+
+  <rule id="100102" level="3">
+    <decoded_as>cef_universal</decoded_as>
+    <match type="pcre2">^\S+ \S+ ugutm utm-loganalyzer events - - \S+CEF:0\|Usergate\|UTM\|(\d)\|events\|(\S+)\|(\d)\|</match>
+    <description>UserGate: event core happened.</description>
+  </rule>
+
+  <rule id="100103" level="10">
+    <if_sid>100102</if_sid>
+    <match>admin_console</match>
+    <description>UserGate: admin event happened.</description>
+  </rule>
+
+  <rule id="100104" level="10">
+    <if_sid>100101</if_sid>
+    <match>ddos</match>
+    <description>UserGate: DDoS event happened.</description>
+  </rule>
+</group>
