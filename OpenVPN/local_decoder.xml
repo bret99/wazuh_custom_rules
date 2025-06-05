@@ -1,0 +1,9 @@
+<decoder name="openvpn_connections">
+  <prematch>^10.10.\d+.\d+,\w+.\w+,\d+.\d+.\d+.\d+:\d+,\d+-\d+\d+-\d+ \d+:\d+:\d+</prematch> <!-- Substitute first two octets to corporate actual ones -->
+</decoder>
+
+<decoder name="openvpn_connections_child">
+  <parent>openvpn_connections_1</parent>
+  <regex>(10.10.\d+.\d+),(\w+.\w+),(\d+.\d+.\d+.\d+):(\d+),\S+ \S+ \S+ \S+ \S+</regex> <!-- Substitute first two octets to corporate actual ones -->
+  <order>dstip,dstuser,srcip,srcport</order>
+</decoder>
