@@ -1,0 +1,12 @@
+<!-- Blocked Active Directory accounts successful logons -->
+<group name="blocked_accounts,">
+  <!-- Windows domain -->
+  <rule id="100101" level="12">
+    <if_group>authentication_success</if_group>
+    <list field="win.eventdata.targetUserName" lookup="match_key">etc/lists/ad_disabled_accounts</list>
+    <description>Blocked domain user $(win.eventdata.targetUserName) connection detected.</description>
+    <group>pci_dss_8.1.6,pci_dss_10.2.2,gdpr_IV_32.1.c,gdpr_IV_35.7.d,hipaa_164.308.a.3,hipaa_164.308.a.5,hipaa_164.312.a.1,nist_800_53_AC.2,nist_800_53_AC.6,nist_800_53_A>    <mitre>
+      <id>T0006</id>
+      <id>T0007</id>
+    </mitre>
+  </rule>
