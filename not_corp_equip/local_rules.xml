@@ -1,0 +1,45 @@
+<!-- OpenVPN connections -->
+<group name="openvpn_corp,">
+<!-- For Linux -->
+  <rule id="100101" level="5">
+    <if_group>pam|syslog|sshd|authentication_failed|authentication_success</if_group>
+    <srcip>10.10.10.0/24</srcip> <!-- insert here actual corporate OpenVPN IP net-->
+    <description>Corporative OpenVPN connection detected from $(srcip) User:$(dstuser)</description>
+  </rule>
+
+<!--  For Windows -->
+  <rule id="100102" level="5">
+    <if_group>win_evt_channel|windows|authentication_success|authentication_failed|windows_security</if_group>
+    <field name="win.eventdata.workstationName">\w+</field>
+    <match>10.10.10.|10.10.11.</match> <!-- insert here actual corporate OpenVPN IP net-->
+    <description>Corporative OpenVPN connection detected from $(win.eventdata.sourceIp)$(win.eventdata.ipAddress) User:$(win.eventdata.targetUserName)$(win.eventdata.u     ser) Host:$(win.eventdata.workstationName)</description>
+  </rule>
+</group>
+
+<!-- Domain connections not from corporative equipment -->
+<group name="equip_vpn,">
+<!-- For Windows -->
+   <rule id="100103" level="7">
+    <if_sid>100102</if_sid>
+    <list field="win.eventdata.workstationName" lookup="not_match_key">etc/lists/ad_hostnames</list>
+    <mitre>
+      <id>T1133</id>
+    </mitre>
+    <group>gdpr_IV_32.2,gdpr_IV_32.1,pci_dss_1,pci_dss_8,pci_dss_4,nist_800_53_AC.17,nist_800_53_IA.2,nist_800_53_SC.8,nist_800_53_SC.13,nist_800_53_IR.4,</group>
+    <description>OpenVPN connection from not corporative equipment from $(win.eventdata.sourceIp)$(win.eventdata.ipAddress) User:$(win.eventdata.targetUserName)$(win.e     ventdata.user) Host:$(win.eventdata.workstationName) detected.</description>
+  </rule>
+</group>
+
+<!-- Domain connections not from corporative equipment -->
+<group name="equip_domain,">
+<!--  For Windows -->
+  <rule id="100104" level="7">
+    <if_group>authentication_success|authentication_failures|authentication_failed</if_group>
+    <list field="win.eventdata.workstationName" lookup="not_match_key">etc/lists/ad_hostnames</list>
+    <mitre>
+      <id>T1133</id>
+    </mitre>
+    <group>gdpr_IV_32.2,gdpr_IV_32.1,pci_dss_1,pci_dss_8,pci_dss_4,nist_800_53_AC.17,nist_800_53_IA.2,nist_800_53_SC.8,nist_800_53_SC.13,nist_800_53_IR.4,</group>
+    <description>Company IT resource connection from $(win.eventdata.sourceIp)$(win.eventdata.ipAddress) User:$(win.eventdata.targetUserName)$(win.eventdata.user) Host     :$(win.eventdata.workstationName) detected $(win.system.severityValue).</description>
+  </rule>
+</group>
