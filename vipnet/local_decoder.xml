@@ -1,0 +1,139 @@
+<decoder name="vipnet_sshd_1">
+  <prematch type="pcre2">^sshd\S\d+\S: \S+ password for \S+ from \d+.\d+.\d+.\d+ port \d+ \S+</prematch>
+</decoder>
+
+<decoder name="vipnet_sshd_2">
+  <prematch type="pcre2">^sshd\S\d+\S: pam_unix\Ssshd:session\S: session \S+ for user \S+ .+</prematch>
+</decoder>
+
+<decoder name="vipnet_sshd_3">
+  <prematch type="pcre2">^sshd\S\d+\S: pam_unix\Ssshd:session\S: session \S+ for user \S+</prematch>
+</decoder>
+
+<decoder name="vipnet_sshd_4">
+  <prematch type="pcre2">^sshd\S\d+\S: \S+ \S+ \S+ password for \S+ from \d+.\d+.\d+.\d+ port \d+ \S+</prematch>
+</decoder>
+
+<decoder name="vipnet_sshd_5">
+  <prematch type="pcre2">^sshd\S\d+\S: \S+ \S+ pam_unix\Ssshd:session\S: session \S+ for user \S+ .+</prematch>
+</decoder>
+
+<decoder name="vipnet_sshd_6">
+  <prematch type="pcre2">^sshd\S\d+\S: \S+ \S+ pam_unix\Ssshd:session\S: session \S+ for user \S+</prematch>
+</decoder>
+
+<decoder name="vipnet_webgui_1">
+  <prematch type="pcre2">^webgui-fcgi-server\S\d+\S: \S+ \Sip: \d+.\d+.\d+.\d+\S is \S+ \S+ .+</prematch>
+</decoder>
+
+<decoder name="vipnet_webgui_2">
+  <prematch type="pcre2">^webgui-fcgi-server\S\d+\S: \S+ \S\S+ \S+ ip: \d+.\d+.\d+.\d+\S is logged in as admin .+</prematch>
+</decoder>
+
+<decoder name="vipnet_webgui_3">
+  <prematch type="pcre2">^webgui-fcgi-server\S\d+\S: \S+ \S+ \S+ \Sip: \d+.\d+.\d+.\d+\S is \S+ \S+ .+</prematch>
+</decoder>
+
+<decoder name="vipnet_webgui_4">
+  <prematch type="pcre2">^webgui-fcgi-server\S\d+\S: \S+ \S+ \S+ \S\S+ \S+ ip: \d+.\d+.\d+.\d+\S is logged in as admin .+</prematch>
+</decoder>
+
+<decoder name="vipnet_iplirpasswd_1">
+  <prematch type="pcre2">^iplirpasswd\S\d+\S: \S+ login failed due to wrong password</prematch>
+</decoder>
+
+<decoder name="vipnet_iplirpasswd_2">
+  <prematch type="pcre2">^iplirpasswd\S\d+\S: \S+ \S+ \S+ login failed due to wrong password</prematch>
+</decoder>
+
+<decoder name="vipnet_rvpn_shell_1">
+  <prematch type="pcre2">^rvpn_shell\S\d+\S: \S+ \S+   \S+ syslog \| \S\S+\S Command: '.+' returns successfully</prematch>
+</decoder>
+
+<decoder name="vipnet_rvpn_shell_2">
+  <prematch type="pcre2">^rvpn_shell\S\d+\S: \S+ \S+   \S+ syslog \| \S\S+\S Command: .+</prematch>
+</decoder>
+
+<decoder name="vipnet_sshd_1_child">
+  <parent>vipnet_sshd_1</parent>
+  <regex type="pcre2">^sshd\S\d+\S: (\S+) password for (\S+) from (\d+.\d+.\d+.\d+) port (\d+) \S+</regex>
+  <order>password_state,dstuser,srcip,dstport</order>
+</decoder>
+
+<decoder name="vipnet_sshd_2_child">
+  <parent>vipnet_sshd_2</parent>
+  <regex type="pcre2">^sshd\S\d+\S: pam_unix\Ssshd:session\S: session (\S+) for user (\S+) .+</regex>
+  <order>vipnet.ssh_session,dstuser</order>
+</decoder>
+
+<decoder name="vipnet_sshd_3_child">
+  <parent>vipnet_sshd_3</parent>
+  <regex type="pcre2">^sshd\S\d+\S: pam_unix\Ssshd:session\S: session (\S+) for user (\S+)</regex>
+  <order>vipnet.ssh_session,dstuser</order>
+</decoder>
+
+<decoder name="vipnet_sshd_4_child">
+  <parent>vipnet_sshd_4</parent>
+  <regex type="pcre2">^sshd\S\d+\S: \S+ \S+ (\S+) password for (\S+) from (\d+.\d+.\d+.\d+) port (\d+) \S+</regex>
+  <order>password_state,dstuser,srcip,dstport</order>
+</decoder>
+
+<decoder name="vipnet_sshd_5_child">
+  <parent>vipnet_sshd_5</parent>
+  <regex type="pcre2">^sshd\S\d+\S: \S+ \S+ pam_unix\Ssshd:session\S: session (\S+) for user (\S+) .+</regex>
+  <order>vipnet.ssh_session,dstuser</order>
+</decoder>
+
+<decoder name="vipnet_sshd_6_child">
+  <parent>vipnet_sshd_6</parent>
+  <regex type="pcre2">^sshd\S\d+\S: \S+ \S+ pam_unix\Ssshd:session\S: session (\S+) for user (\S+)</regex>
+  <order>vipnet.ssh_session,dstuser</order>
+</decoder>
+
+<decoder name="vipnet_webgui_1_child">
+  <parent>vipnet_webgui_1</parent>
+  <regex type="pcre2">^webgui-fcgi-server\S\d+\S: \S+ \Sip: (\d+.\d+.\d+.\d+)\S is (\S+ \S+) .+</regex>
+  <order>srcip,vipnet.webgui_session</order>
+</decoder>
+
+<decoder name="vipnet_webgui_2_child">
+  <parent>vipnet_webgui_2</parent>
+  <regex type="pcre2">^webgui-fcgi-server\S\d+\S: \S+ \S\S+ \S+ ip: (\d+.\d+.\d+.\d+)\S is logged in as admin .+</regex>
+  <order>srcip</order>
+</decoder>
+
+<decoder name="vipnet_webgui_3_child">
+  <parent>vipnet_webgui_3</parent>
+  <regex type="pcre2">^webgui-fcgi-server\S\d+\S: \S+ \S+ \S+ \Sip: (\d+.\d+.\d+.\d+)\S is (\S+ \S+) .+</regex>
+  <order>srcip,vipnet.webgui_session</order>
+</decoder>
+
+<decoder name="vipnet_webgui_4_child">
+  <parent>vipnet_webgui_4</parent>
+  <regex type="pcre2">^webgui-fcgi-server\S\d+\S: \S+ \S+ \S+ \S\S+ \S+ ip: (\d+.\d+.\d+.\d+)\S is logged in as admin .+</regex>
+  <order>srcip</order>
+</decoder>
+
+<decoder name="vipnet_iplirpasswd_1_child">
+  <parent>vipnet_iplirpasswd_1</parent>
+  <regex type="pcre2">^iplirpasswd\S\d+\S: (\S+ login failed due to wrong password)</regex>
+  <order>vipnet.iplir_passwd</order>
+</decoder>
+
+<decoder name="vipnet_iplirpasswd_2_child">
+  <parent>vipnet_iplirpasswd_2</parent>
+  <regex type="pcre2">^iplirpasswd\S\d+\S: \S+ \S+ (\S+ login failed due to wrong password)</regex>
+  <order>vipnet.iplir_passwd</order>
+</decoder>
+
+<decoder name="vipnet_rvpnn_shell_1_child">
+  <parent>vipnet_rvpn_shell_1</parent>
+  <regex type="pcre2">^rvpn_shell\S\d+\S: \S+ \S+   \S+ syslog \| \S(\S+)\S Command: '(.+)' returns successfully</regex>
+  <order>vipnet.cmd_type,vipnet.cmd_command</order>
+</decoder>
+
+<decoder name="vipnet_rvpnn_shell_2_child">
+  <parent>vipnet_rvpn_shell_2</parent>
+  <regex type="pcre2">^rvpn_shell\S\d+\S: \S+ \S+   \S+ syslog \| \S(\S+)\S Command: (.+)</regex>
+  <order>vipnet.cmd_type,vipnet.cmd_command</order>
+</decoder>
