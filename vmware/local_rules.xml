@@ -1,0 +1,30 @@
+  <!-- VDC VM's -->
+<group name="vdc_vms,">
+  <rule id="100101" level="0">
+    <decoded_as>json</decoded_as>
+    <field name="vmName">\.+</field>
+    <options>no_full_log</options>
+    <description>VDC: $(vmName) with IP $(ipAddress) is $(powerState).</description>
+  </rule>
+
+  <rule id="100102" level="3">
+    <if_sid>100101</if_sid>
+    <field name="powerState">POWERED_ON</field>
+    <options>no_full_log</options>
+    <description>VDC: $(vmName) with IP $(ipAddress) is $(powerState).</description>
+  </rule>
+
+  <rule id="100103" level="3">
+    <if_sid>100101</if_sid>
+    <field name="powerState">POWERED_OFF</field>
+    <options>no_full_log</options>
+    <description>VDC: $(vmName) with IP $(ipAddress) is $(powerState).</description>
+  </rule>
+
+  <rule id="100104" level="11">
+    <if_sid>100101</if_sid>
+    <field name="currentPowerState">\.+</field>
+    <options>no_full_log</options>
+    <description>VDC: $(vmName) change powerstate from $(previousPowerState) to $(currentPowerState).</description>
+  </rule>
+</group>
