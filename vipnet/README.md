@@ -10,7 +10,7 @@ Run commands on target Vipnet coordinator:
     <connection>syslog</connection>
     <port>514</port>
     <protocol>udp</protocol>
-    <allowed-ips>10.10.10.10/32</allowed-ips> <!-- Substitute coordinator IP [10.10.10.10] to actual one -->
+    <allowed-ips>10.10.10.10/32</allowed-ips> <!-- Substitute Vipnet coordinator IP [10.10.10.10] to actual one -->
     <local_ip>192.168.10.10</local_ip> <!-- Substitute Wazuh manager IP [192.168.10.10] to actual one -->
   </remote>
 ```
