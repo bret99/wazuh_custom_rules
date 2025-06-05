@@ -1,7 +1,7 @@
 # Usergate
 
 1. Configure Usergate to send target logs to Wazuh manager in CEF
-2. Add to Wazuh manager ossec.conf:
+2. add to Wazuh manager ossec.conf:
  <!-- Usergate events -->
 ```xml  
   <remote>
