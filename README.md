@@ -1,4 +1,5 @@
-# Malware IPs
-One should get malware IPs list from source one prefer and move this list to /var/ossec/etc/lists/malware_ips. Do not forget add ":" to the end of each line and restart wazuh-manager.
+# Wazuh custom rules and decoders
+
+Remember that at every local_rules.xml rule_id starts with 100101.
 
 
