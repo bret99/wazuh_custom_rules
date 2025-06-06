@@ -22,7 +22,7 @@ make Wazuh agents group called as one like and add the next lines to agent.conf:
 ```
 cronatb -e
 ```
-add lines:
+add line:
 ```
 */30 * * * * sudo bash -c "/usr/local/bin/get_gitlab_admins.sh"
 ```
@@ -51,7 +51,7 @@ make Wazuh agents group called as one like and add the next lines to agent.conf:
 ```
 cronatb -e
 ```
-add lines:
+add line:
 ```
 */30 * * * * sudo bash -c "/usr/local/bin/get_gitlab_runners.sh"
 ```
