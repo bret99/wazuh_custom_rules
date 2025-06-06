@@ -1,10 +1,11 @@
 # Blocked Active Directory accounts connections detection
 This option means getting Active Directory blocked accounts every 12 hours.
-Add to section in /var/ossec/etc/ossec.conf line:
+
+On Wazuh-manager:
+add to section in /var/ossec/etc/ossec.conf line:
 ```xml
  <list>etc/lists/ad_disabled_accounts</list>
 ```
-On Wazuh-manager:
 ```
 mv get_ad_blocked_accounts.py /usr/local/bin
 mv get_ad_blocked_accounts.sh /usr/local/bin
