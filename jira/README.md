@@ -77,7 +77,7 @@ substitute mails in get_jira_secrets_mail_alert.sh to actual ones
 ```
 cronatb -e
 ```
-add lines:
+add line:
 ```
 0 12 * * * sudo bash -c "/usr/local/bin/get_jira_secrets_mail_alert.sh"
 ```
