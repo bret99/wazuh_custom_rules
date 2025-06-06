@@ -1,18 +1,27 @@
 # Domain connections from not corporate equipment
 This option means getting Active Directory valid accounts every 6 hours.
 
-On Wazuh-manager:
+Add to <ruleset> section in /var/ossec/etc/ossec.conf line:
+```xml
+<list>etc/lists/ad_hostnames</list>
+```
 
-1. mv get_ad_hosts.py /usr/local/bin
-2. mv get_ad_hosts.sh /usr/local/bin
-3. chown root:root /usr/local/bin/get_ad_hosts.py
-4. chown root:root /usr/local/bin/get_ad_hosts.sh
-5. chmod +x /usr/local/bin/get_ad_hosts.sh
-6. cronatb -e
-7. add lines:
+On Wazuh-manager:
+```
+mv get_ad_hosts.py /usr/local/bin
+mv get_ad_hosts.sh /usr/local/bin
+chown root:root /usr/local/bin/get_ad_hosts.py
+chown root:root /usr/local/bin/get_ad_hosts.sh
+chmod +x /usr/local/bin/get_ad_hosts.sh
+cronatb -e
+```
+add lines:
 ```
 0 0 * * * sudo bash -c "/usr/local/bin/get_ad_hosts.sh"
 0 6 * * * sudo bash -c "/usr/local/bin/get_ad_hosts.sh"
 0 12 * * * sudo bash -c "/usr/local/bin/get_ad_hosts.sh"
 0 18 * * * sudo bash -c "/usr/local/bin/get_ad_hosts.sh"
+```
+```
+sudo systemctl restart wazuh-manager
 ```
