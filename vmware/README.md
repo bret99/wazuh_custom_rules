@@ -17,11 +17,7 @@ make Wazuh agents group called as one like and add the next lines to agent.conf:
     <log_format>json</log_format>
     <location>/var/log/vdc/previous_vms.json</location>
   </localfile>
-  <localfile>
-    <log_format>json</log_format>
-    <location>/var/log/vdc/differences_vms.json</location>
-  </localfile>
-</agent_config>
+  </agent_config>
 ```
 ```
 cronatb -e
