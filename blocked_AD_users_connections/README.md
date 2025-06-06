@@ -2,14 +2,15 @@
 This option means getting Active Directory blocked accounts every 12 hours.
 
 On Wazuh-manager:
-
-1. mv get_ad_blocked_accounts.py /usr/local/bin
-2. mv get_ad_blocked_accounts.sh /usr/local/bin
-3. chown root:root /usr/local/bin/get_ad_blocked_accounts.py
-4. chown root:root /usr/local/bin/get_ad_blocked_accounts.sh
-5. chmod +x /usr/local/bin/get_ad_blocked_accounts.sh
-6. cronatb -e
-7. add lines:
+```
+mv get_ad_blocked_accounts.py /usr/local/bin
+mv get_ad_blocked_accounts.sh /usr/local/bin
+chown root:root /usr/local/bin/get_ad_blocked_accounts.py
+chown root:root /usr/local/bin/get_ad_blocked_accounts.sh
+chmod +x /usr/local/bin/get_ad_blocked_accounts.sh
+cronatb -e
+```
+add lines:
 ```
 0 0 * * * sudo bash -c "/usr/local/bin/get_ad_blocked_accounts.sh"
 0 12 * * * sudo bash -c "/usr/local/bin/get_ad_blocked_accounts.sh"
