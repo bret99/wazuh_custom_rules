@@ -2,14 +2,15 @@
 This option means getting VMWare VMs statuses every hour.
 
 On the server which will get VMs statuses:
-
-1. mv get_vmware_vms.py /usr/local/bin
-2. mv get_vmware_vms.py.sh /usr/local/bin
-3. chown root:root /usr/local/bin/get_vmware_vms.py
-4. chown root:root /usr/local/bin/get_vmware_vms.sh
-5. chmod +x /usr/local/bin/get_vmware_vms.sh
-6. mkdir /var/log/vdc
-7. make Wazuh agents group called as one like and add the next lines to agent.conf:
+```
+mv get_vmware_vms.py /usr/local/bin
+mv get_vmware_vms.py.sh /usr/local/bin
+chown root:root /usr/local/bin/get_vmware_vms.py
+chown root:root /usr/local/bin/get_vmware_vms.sh
+chmod +x /usr/local/bin/get_vmware_vms.sh
+mkdir /var/log/vdc
+```
+make Wazuh agents group called as one like and add the next lines to agent.conf:
 ```xml
 <agent_config>
   <localfile>
@@ -22,8 +23,10 @@ On the server which will get VMs statuses:
   </localfile>
 </agent_config>
 ```
-7. cronatb -e
-8. add lines:
+```
+cronatb -e
+```
+add line:
 ```
 0 * * * * sudo bash -c "/usr/local/bin/get_vmware_vms.py.sh"
 ```
