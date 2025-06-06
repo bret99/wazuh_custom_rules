@@ -4,6 +4,7 @@
 2. copy created bot token ```example: 001.0159988340.1712388373:1011569394```
 3. create new channel
 4. copy created channel ID ```example: tryhFDvAnQSWGZ12sjI. This is a subsequence of chars after "https://myteam.mail.ru/profile/" ```
+5. add bot to the channel with admin role
    
 On Wazuh manager:
 ```
@@ -21,6 +22,7 @@ add to /var/ossec/etc/ossec.conf:
   <alert_format>json</alert_format>
 </integration>
 ```
+insert actual bot token and channel ID to custom-vkteams.py
 ```
 sudo systemctl restart wazuh-manager
 ```
