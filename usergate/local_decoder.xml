@@ -1,4 +1,9 @@
 <!-- UserGate decoders -->
+<!-- CEF:0 universal decoder -->
+<decoder name="cef_universal">
+  <prematch type="pcre2">CEF:0|(.+?)|(.+?)|</prematch>
+</decoder>
+
 <decoder name="usergate_1">
   <parent>cef_universal</parent>
   <regex type="pcre2">^\S+ \S+ ugutm utm-loganalyzer traffic - - \S+CEF:0\|Usergate\|UTM\|(\d)\|traffic\|(\w+)\|(\d)\|</regex>
