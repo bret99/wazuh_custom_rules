@@ -16,11 +16,11 @@ alert_level = alert_json["rule"]["level"] if "level" in alert_json["rule"] else 
 # Function to map alert level to risk level and emoji
 def get_risk_level_and_emoji(level):
     if level == 11:
-        return "умеренный", "✅"
+        return "moderate", "✅"
     elif level == 12:
-        return "высокий", "🔥"
+        return "high", "🔥"
     elif level >= 13:
-        return "критический", "❌"
+        return "critical", "❌"
     
 # Map alert level to risk level and emoji
 risk_level_text, risk_level_emoji = get_risk_level_and_emoji(int(alert_level))
@@ -36,7 +36,7 @@ agent_hostname = alert_json["agent"]["name"] if "name" in alert_json["agent"] el
 #tactic = alert_json["rule"]["mitre"]["tactic"] if "mitre" in alert_json["rule"] else "N/A"
 
 hook_url = "https://myteam.mail.ru/bot/v1/messages/sendText"
-text = f"🔒Уровень риска: {risk_level_text} {risk_level_emoji} \n📌Описание: {description} \n👤Источник: {agent_hostname}"
+text = f"🔒Risk level: {risk_level_text} {risk_level_emoji} \n📌Description: {description} \n👤Source: {agent_hostname}"
 data = {
     "token": token,
     "chatId": chat_id,
