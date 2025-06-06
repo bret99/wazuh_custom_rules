@@ -1,0 +1,26 @@
+# VK Teams integration
+
+1. Create new bot using "metabot"
+2. copy created bot token ```example: 001.0159988340.1712388373:1011569394```
+3. create new channel
+4. copy created channel ID ```example: tryhFDvAnQSWGZ12sjI. This is a subsequence of chars after "https://myteam.mail.ru/profile/" ```
+   
+On Wazuh manager:
+```
+mv custom-vkteams /var/ossec/integrations
+mv custom-vkteams.py /var/ossec/integrations
+chown root:wazuh /var/ossec/integrations/vkteams*
+```
+add to /var/ossec/etc/ossec.conf:
+```xml
+<!-- VK Teams integration -->
+<integration>
+  <name>custom-vkteams</name>
+  <hook_url>https://api.internal.myteam.mail.ru/bot/v1/messages/sendText</hook_url>
+  <level>11</level>
+  <alert_format>json</alert_format>
+</integration>
+```
+```
+sudo systemctl restart wazuh-manager
+```
