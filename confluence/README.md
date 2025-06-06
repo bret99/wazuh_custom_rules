@@ -70,7 +70,7 @@ mv get_confluence_secrets_mail_alert.sh /usr/local/bin
 chown root:root /usr/local/bin/get_confluence_secrets_mail_alert.sh
 mv secret_tokens.py /usr/local/bin
 ```
-substitute mails in get_confluence_secrets_mail_alert.sh to actual ones
+substitute mails in get_confluence_secrets_mail_alert.sh for actual ones
 ```
 cronatb -e
 ```
