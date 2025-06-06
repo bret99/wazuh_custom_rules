@@ -1,7 +1,7 @@
 # Kaspersky Security Center events
 
 1. Configure Kaspersky Security Center to send CEF logs to SIEM (Wazuh manager IP)
-2. configure target Kaspersky Security Center policy to send events tto SIEM
+2. configure target Kaspersky Security Center policy to send events to SIEM
 3. Add to Wazuh manager ossec.conf:
  <!-- KSC events -->
 ```xml  
