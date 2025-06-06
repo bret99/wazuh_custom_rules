@@ -1,6 +1,6 @@
 # VK Teams integration
 
-1. Create new bot using "metabot"
+1. Create new bot using VK Teams "metabot"
 2. copy created bot token ```example: 001.0159988340.1712388373:1011569394```
 3. create new channel
 4. copy created channel ID ```example: tryhFDvAnQSWGZ12sjI. This is a subsequence of chars after "https://myteam.mail.ru/profile/" ```
