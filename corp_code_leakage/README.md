@@ -63,8 +63,10 @@ Make Wazuh agents group called as one like and add the next lines to agent.conf:
     </localfile>
 </agent_config>
 ```
-7. cronatb -e
-8. add lines:
+```
+cronatb -e
+```
+add lines:
 ```
 0 5 * * * sudo bash -c "/usr/local/bin/get_corp_code_leakage.sh"
 ```
