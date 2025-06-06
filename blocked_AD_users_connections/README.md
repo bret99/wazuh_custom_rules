@@ -2,6 +2,7 @@
 This option means getting Active Directory blocked accounts every 12 hours.
 
 On Wazuh-manager:
+
 add to section in /var/ossec/etc/ossec.conf line:
 ```xml
  <list>etc/lists/ad_disabled_accounts</list>
