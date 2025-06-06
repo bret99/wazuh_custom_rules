@@ -3,11 +3,12 @@
 Scenario №1 [without AbuseIPDB, IP2location API integration]
 
 For group "openvpn_status" one should make the next on Wazuh-manager:
-
-1. mv get_openvpn_users_connections.py /usr/local/bin && chown root:root /usr/local/get_openvpn_users_connections.py
-2. mv get_openvpn_users_connections.sh /usr/local/bin && chown root:root /usr/local/bin/get_openvpn_users_connections.sh && chmod +x /usr/local/bin/get_openvpn_users_connections.sh
-3. substitute path to OpenVPN connections log (not syslog) to actual one
-4. make Wazuh agents group called as one like and add the next lines to agent.conf:
+```
+mv get_openvpn_users_connections.py /usr/local/bin && chown root:root /usr/local/get_openvpn_users_connections.py
+mv get_openvpn_users_connections.sh /usr/local/bin && chown root:root /usr/local/bin/get_openvpn_users_connections.sh && chmod +x /usr/local/bin/get_openvpn_users_connections.sh
+```
+substitute path to OpenVPN connections log (not syslog) to actual one
+make Wazuh agents group called as one like and add the next lines to agent.conf:
 ```xml
 <agent_config>
   <localfile>
@@ -16,20 +17,23 @@ For group "openvpn_status" one should make the next on Wazuh-manager:
   </localfile>
 </agent_config>
 ```
-5. add host with preinstalled wazuh agent to the group from 3rd point
-6. crontab -e
-7. add lines:
+add host with preinstalled wazuh agent to the group from 3rd point
+```
+crontab -e
+```
+add lines:
 ```
 */5 * * * * sudo bash -c "/usr/local/bin/get_openvpn_users_connections.sh"
 ```
 Scenario №2 [with AbuseIPDB, IP2location API integration]
 
 For group "openvpn_status" one should make the next on Wazuh-manager:
-
-1. mv get_openvpn_users_connections_2.py /usr/local/bin && chown root:root /usr/local/get_openvpn_users_connections_2.py
-2. mv get_openvpn_users_connections_2.sh /usr/local/bin && chown root:root /usr/local/bin/get_openvpn_users_connections_2.sh && chmod +x /usr/local/bin/get_openvpn_users_connections_2.sh
-3. substitute path to OpenVPN connections log (not syslog) to actual one
-4. make Wazuh agents group called as one like and add the next lines to agent.conf:
+```
+mv get_openvpn_users_connections_2.py /usr/local/bin && chown root:root /usr/local/get_openvpn_users_connections_2.py
+mv get_openvpn_users_connections_2.sh /usr/local/bin && chown root:root /usr/local/bin/get_openvpn_users_connections_2.sh && chmod +x /usr/local/bin/get_openvpn_users_connections_2.sh
+```
+substitute path to OpenVPN connections log (not syslog) to actual one
+make Wazuh agents group called as one like and add the next lines to agent.conf:
 ```xml
 <agent_config>
   <localfile>
@@ -38,9 +42,11 @@ For group "openvpn_status" one should make the next on Wazuh-manager:
   </localfile>
 </agent_config>
 ```
-5. add host with preinstalled wazuh agent to the group from 3rd point
-6. crontab -e
-7. add lines:
+add host with preinstalled wazuh agent to the group from 3rd point
+```
+crontab -e
+```
+add lines:
 ```
 */5 * * * * sudo bash -c "/usr/local/bin/get_openvpn_users_connections_2.sh"
 ```
