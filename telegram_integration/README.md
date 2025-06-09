@@ -10,6 +10,7 @@ On Wazuh manager:
 ```
 mv custom-telegram /var/ossec/integrations
 mv custom-telegram.py /var/ossec/integrations
+chmod +x /var/ossec/integrations/custom-telegram*
 chown root:wazuh /var/ossec/integrations/custom-telegram*
 ```
 add to /var/ossec/etc/ossec.conf:
