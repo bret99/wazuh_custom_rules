@@ -1,6 +1,6 @@
 # Directum files downloadings
 
-Add to agent.conf to Wazuh agent at Bitrix server the next:
+Add to agent.conf to Wazuh agent at Directum server the next:
 ```xml
 <agent_config>
   <localfile>
