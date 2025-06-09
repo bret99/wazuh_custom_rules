@@ -1,0 +1,65 @@
+<!-- Directum export files detecting -->
+<group name="directum,">
+  <rule id="100101" level="0">
+    <decoded_as>json</decoded_as>
+    <field name="span.name">\.+</field>
+    <description>Directum: user $(un) got method $(span.name).</description>
+  </rule>
+
+  <!-- Export detection -->
+  <rule id="100102" level="7">
+    <if_sid>100101</if_sid>
+    <field name="span.name">Storage/Internal/IsTransient</field>
+    <field name="span.status">Ok</field>
+    <description>Directum: user $(un) exported file.</description>
+    <group>gdpr_IV_32.2,nist_800_53_SC.4,nist_800_53_AC.6,nist_800_53_SA.8,pci_dss_3,</group>
+    <mitre>
+      <id>T1189</id>
+      <id>T1212</id>
+      <id>T1590</id>
+      <id>T1078</id>
+    </mitre>
+  </rule>
+
+  <rule id="100103" level="11">
+    <if_sid>100101</if_sid>
+    <field name="span.action">Action_ExportZipArchive</field>
+    <field name="span.status">Ok</field>
+    <field name="span.entities">\.+</field>
+    <description>Directum: user $(un) exported files collection ZIP archive ($(span.entities)).</description>
+    <group>gdpr_IV_32.2,nist_800_53_SC.4,nist_800_53_AC.6,nist_800_53_SA.8,pci_dss_3,</group>
+    <mitre>
+      <id>T1189</id>
+      <id>T1212</id>
+      <id>T1590</id>
+      <id>T1078</id>
+    </mitre>
+  </rule>
+
+  <!-- Export CSV/Excel detection -->
+  <rule id="100104" level="11">
+    <if_sid>100101</if_sid>
+    <field name="span.name">ExportToFile</field>
+    <field name="span.status">Ok</field>
+    <field name="span.entitiesCount">\.+</field>
+    <description>Directum: user $(un) exported $(span.format) file ($(span.entitiesCount) documents).</description>
+    <group>gdpr_IV_32.2,nist_800_53_SC.4,nist_800_53_AC.6,nist_800_53_SA.8,pci_dss_3,</group>
+    <mitre>
+      <id>T1189</id>
+      <id>T1212</id>
+      <id>T1590</id>
+      <id>T1078</id>
+    </mitre>
+  </rule>
+</group>
+
+<!-- Directum tasks detecting -->
+<group name="directum_docs,">
+  <rule id="100105" level="3">
+    <decoded_as>json</decoded_as>
+    <field name="cust.lockKey.EntityType">\.+</field>
+    <field name="cust.lockKey.EntityId">\.+</field>
+    <field name="cust.hostName">\.+</field>
+    <description>Directum: user $(un) dealt with $(cust.lockKey.EntityType) from $(cust.hostName).</description>
+  </rule>
+</group>
