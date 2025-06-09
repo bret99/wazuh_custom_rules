@@ -10,8 +10,8 @@ On Wazuh manager:
 ```
 mv custom-vkteams /var/ossec/integrations
 mv custom-vkteams.py /var/ossec/integrations
-chmod +x /var/ossec/integrations/vkteams*
-chown root:wazuh /var/ossec/integrations/vkteams*
+chmod +x /var/ossec/integrations/custom-vkteams*
+chown root:wazuh /var/ossec/integrations/custom-vkteams*
 ```
 add to /var/ossec/etc/ossec.conf:
 ```xml
