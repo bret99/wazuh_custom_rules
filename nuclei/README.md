@@ -6,7 +6,6 @@ On the server which will get web sites statuses:
 
 install nuclei
 ```
-mv nuclei-templates /usr/local/bin
 mv get_nuclei_scan.py /usr/local/bin
 mv get_nuclei_scan.sh /usr/local/bin
 chown root:root /usr/local/bin/get_nuclei_scan.py
