@@ -1,72 +1,72 @@
-<!-- Bitrix portal downloadings -->
+<!-- Bitrix downloadings -->
 <!-- DOCX downloaded -->
-<decoder name="portal_download_docx">
-  <prematch>^\d+.\d+.\d+.\d+ - - \S+ \S+ - \S+ 2\d+ "GET \Sdisk\SdownloadFile\S\d+\S\S+.docx\.+</prematch>
+<decoder name="bitrix_download_docx">
+  <prematch>^\d+.\d+.\d+.\d+ - - \S+ \S+ - \S+ 2\d+ "GET \Sdisk\SdownloadFile\S\d+\S\S\Sncc=\d+\Sfilename=\.+.docx\.+</prematch>
 </decoder>
 
 <!-- PDF downloaded -->
-<decoder name="portal_download_pdf">
-  <prematch>^\d+.\d+.\d+.\d+ - - \S+ \S+ - \S+ 2\d+ "GET \Sdisk\SdownloadFile\S\d+\S\S+.pdf\.+</prematch>
+<decoder name="bitrix_download_pdf">
+  <prematch>^\d+.\d+.\d+.\d+ - - \S+ \S+ - \S+ 2\d+ "GET \Sdisk\SdownloadFile\S\d+\S\S\Sncc=\d+\Sfilename=\.+.pdf\.+</prematch>
 </decoder>
 
 <!-- XLSX downloaded -->
-<decoder name="portal_download_xlsx">
-  <prematch>^\d+.\d+.\d+.\d+ - - \S+ \S+ - \S+ 2\d+ "GET \Sdisk\SdownloadFile\S\d+\S\S+.xlsx\.+</prematch>
+<decoder name="bitrix_download_xlsx">
+  <prematch>^\d+.\d+.\d+.\d+ - - \S+ \S+ - \S+ 2\d+ "GET \Sdisk\SdownloadFile\S\d+\S\S\Sncc=\d+\Sfilename=\.+.xlsx\.+</prematch>
 </decoder>
 
 <!-- PPTX downloaded -->
-<decoder name="portal_download_pptx">
-  <prematch>^\d+.\d+.\d+.\d+ - - \S+ \S+ - \S+ 2\d+ "GET \Sdisk\SdownloadFile\S\d+\S\S+.pptx\.+</prematch>
+<decoder name="bitrix_download_pptx">
+  <prematch>^\d+.\d+.\d+.\d+ - - \S+ \S+ - \S+ 2\d+ "GET \Sdisk\SdownloadFile\S\d+\S\S\Sncc=\d+\Sfilename=\.+.pptx\.+</prematch>
 </decoder>
 
 <!-- MP4 downloaded -->
-<decoder name="portal_download_mp4">
-  <prematch>^\d+.\d+.\d+.\d+ - - \S+ \S+ - \S+ 2\d+ "GET \Sdisk\SdownloadFile\S\d+\S\S+.mp\S+ \.+</prematch>
+<decoder name="bitrix_download_mp4">
+  <prematch>^\d+.\d+.\d+.\d+ - - \S+ \S+ - \S+ 2\d+ "GET \Sdisk\SdownloadFile\S\d+\S\S\Sncc=\d+\Sfilename=\S+.mp\d\.+</prematch>
 </decoder>
 
 <!-- Archive downloaded -->
-<decoder name="portal_download_archive">
-  <prematch>^\d+.\d+.\d+.\d+ - - \S+ \S+ - \S+ 2\d+ "GET \Sbitrix\Sservices\Smain\Sajax.php\Saction=disk.api.folder.downloadArchive\S+ \.+</prematch>
+<decoder name="bitrix_download_archive">
+  <prematch>^\d+.\d+.\d+.\d+ - - \S+ \S+ - \S+ 2\d+ "GET \Sbitrix\Sservices\Smain\Sajax.php\Saction=disk.api.folder.downloadArchive\S+folderId=\d+ \.+\S "https:\S></decoder>
 </decoder>
 
-<!-- Bitrix portal downloadings childs -->
+<!-- Bitrix downloadings childs -->
   <!-- Archives -->
-<decoder name="portal_download_archive_child">
-  <parent>portal_rtmis_download_archive</parent>
-  <regex>(\d+.\d+.\d+.\d+) - - \S+ \S+ - \S+ 2\d+ "GET (\Sbitrix\Sservices\Smain\Sajax.php\Saction=disk.api.folder.downloadArchive\S+) \.+</regex>
-  <order>srcip,url</order>
+<decoder name="bitrix_download_archive_child">
+  <parent>bitrix_download_archive</parent>
+  <regex>(\d+.\d+.\d+.\d+) - - \S+ \S+ - \S+ 2\d+ "GET \Sbitrix\Sservices\Smain\Sajax.php\Saction=disk.api.folder.downloadArchive\S+folderId=(\d+) \.+\S "(https:\>  <order>dstip,file_id,url</order>
 </decoder>
 
   <!-- PPTX -->
-<decoder name="portal_download_pptx_child">
-  <parent>portal_rtmis_download_pptx</parent>
-  <regex>(\d+.\d+.\d+.\d+) - - \S+ \S+ - \S+ 2\d+ "GET (\Sdisk\SdownloadFile\S\d+\S\S+.pptx)\.+</regex>
-  <order>srcip,url</order>
+<decoder name="bitrix_download_pptx_child">
+  <parent>bitrix_download_pptx</parent>
+  <regex>(\d+.\d+.\d+.\d+) - - \S+ \S+ - \S+ 2\d+ "GET \Sdisk\SdownloadFile\S(\d+)\S\S\Sncc=\d+\Sfilename=(\.+.pptx)\.+</regex>
+  <order>dstip,file_id,url</order>
 </decoder>
 
   <!-- DOCX -->
-<decoder name="portal_download_docx_child">
-  <parent>portal_rtmis_download_docx</parent>
-  <regex>(\d+.\d+.\d+.\d+) - - \S+ \S+ - \S+ 2\d+ "GET (\Sdisk\SdownloadFile\S\d+\S\S+.docx)\.+</regex>
-  <order>srcip,url</order>
+<decoder name="bitrix_download_docx_child">
+  <parent>bitrix_download_docx</parent>
+  <regex>(\d+.\d+.\d+.\d+) - - \S+ \S+ - \S+ 2\d+ "GET \Sdisk\SdownloadFile\S(\d+)\S\S\Sncc=\d+\Sfilename=(\.+.docx)\.+</regex>
+  <order>dstip,file_id,url</order>
 </decoder>
 
   <!-- XLSX -->
-<decoder name="portal_download_xlsx_child">
-  <parent>portal_rtmis_download_xlsx</parent>
-  <regex>(\d+.\d+.\d+.\d+) - - \S+ \S+ - \S+ 2\d+ "GET (\Sdisk\SdownloadFile\S\d+\S\S+.xlsx)\.+</regex>
-  <order>srcip,url</order>
+<decoder name="bitrix_download_xlsx_child">
+  <parent>bitrix_download_xlsx</parent>
+  <regex>(\d+.\d+.\d+.\d+) - - \S+ \S+ - \S+ 2\d+ "GET \Sdisk\SdownloadFile\S(\d+)\S\S\Sncc=\d+\Sfilename=(\.+.xlsx)\.+</regex>
+  <order>dstip,file_id,url</order>
 </decoder>
 
   <!-- PDF -->
-<decoder name="portal_download_pdf_child">
-  <parent>portal_rtmis_download_pdf</parent>
-  <regex>(\d+.\d+.\d+.\d+) - - \S+ \S+ - \S+ 2\d+ "GET (\Sdisk\SdownloadFile\S\d+\S\S+.pdf)\.+</regex>
-  <order>srcip,url</order>
+<decoder name="bitrix_download_pdf_child">
+  <parent>bitrix_download_pdf</parent>
+  <regex>(\d+.\d+.\d+.\d+) - - \S+ \S+ - \S+ 2\d+ "GET \Sdisk\SdownloadFile\S(\d+)\S\S\Sncc=\d+\Sfilename=(\.+.pdf)\.+</regex>
+  <order>dstip,file_id,url</order>
 </decoder>
+
   <!-- MP4 -->
-<decoder name="portal_download_mp4_child">
-  <parent>portal_rtmis_download_mp4</parent>
-  <regex>(\d+.\d+.\d+.\d+) - - \S+ \S+ - \S+ 2\d+ "GET (\Sdisk\SdownloadFile\S\d+\S\S+.mp\S+) \.+</regex>
-  <order>srcip,url</order>
+<decoder name="bitrix_download_mp4_child">
+  <parent>bitrix_download_mp4</parent>
+  <regex>(\d+.\d+.\d+.\d+) - - \S+ \S+ - \S+ 2\d+ "GET \Sdisk\SdownloadFile\S(\d+)\S\S\Sncc=\d+\Sfilename=(\S+.mp\d)\.+</regex>
+  <order>dstip,file_id,url</order>
 </decoder>
