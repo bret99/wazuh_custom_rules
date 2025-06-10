@@ -18,7 +18,11 @@ make Wazuh agents group called as one like and add the next lines to agent.conf:
 <agent_config>
   <localfile>
     <log_format>json</log_format>
-    <location>/var/log/nuclei/report.json</location>
+    <location>/var/log/nuclei/example.com.json</location> <!-- Substitute for actual one from urls.txt (without "https://") -->
+  </localfile>
+  <localfile>
+    <log_format>json</log_format>
+    <location>/var/log/nuclei/microsoft.com.json</location> <!-- Substitute for actual another one from urls.txt (without "https://") -->
   </localfile>
 </agent_config>
 ```
