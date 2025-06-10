@@ -1,39 +1,38 @@
-<!-- Bitrix portal actions detecting -->
-<group name="bitrix_portal,">
-  <!-- Downloaded files -->
+<!-- Bitrix downloadingss detecting -->
+<group name="bitrix_downloadings,">
   <!-- XLSX -->
   <rule id="100101" level="7">
-    <decoded_as>portal_download_xlsx</decoded_as>
-    <description>Bitrix portal: XLSX file downloaded from $(srcip).</description>
+    <decoded_as>bitrix_download_xlsx</decoded_as>
+    <description>Bitrix: XLSX file downloaded to $(dstip).</description>
   </rule>
 
   <!-- PPTX -->
   <rule id="100102" level="7">
-    <decoded_as>portal_download_pptx</decoded_as>
-    <description>Bitrix portal: PPTX file downloaded from $(srcip).</description>
+    <decoded_as>bitrix_download_pptx</decoded_as>
+    <description>Bitrix: PPTX file downloaded to $(dstip).</description>
   </rule>
 
   <!-- DOCX -->
   <rule id="100103" level="7">
-    <decoded_as>portal_download_docx</decoded_as>
-    <description>Bitrix portal: DOCX file downloaded from $(srcip).</description>
+    <decoded_as>bitrix_download_docx</decoded_as>
+    <description>Bitrix: DOCX file downloaded to $(dstip).</description>
   </rule>
 
   <!-- PDF -->
   <rule id="100104" level="7">
-    <decoded_as>portal_download_pdf</decoded_as>
-    <description>Bitrix portal: PDF file downloaded from $(srcip).</description>
+    <decoded_as>bitrix_download_pdf</decoded_as>
+    <description>Bitrix: PDF file downloaded to $(dstip).</description>
   </rule>
 
   <!-- MP* -->
   <rule id="100105" level="7">
-    <decoded_as>portal_download_mp4</decoded_as>
-    <description>Bitrix portal: MP* file downloaded from $(srcip).</description>
+    <decoded_as>bitrix_download_mp4</decoded_as>
+    <description>Bitrix: MP* file downloaded to $(dstip).</description>
   </rule>
 
   <!-- Downloaded archives -->
   <rule id="100106" level="7">
-    <decoded_as>portal_download_archive</decoded_as>
-    <description>Bitrix portal: archive downloaded from $(srcip).</description>
+    <decoded_as>bitrix_download_archive</decoded_as>
+    <description>Bitrix: archive downloaded to $(dstip).</description>
   </rule>
 </group>
