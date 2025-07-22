@@ -25,7 +25,8 @@
   </rule>
 
   <!-- Rules without cef_universal decoder -->
-   <rule id="100105" level="3">
+  <!-- 
+  <rule id="100105" level="3">
      <decoded_as>usergate_3</decoded_as>
      <options>no_full_log</options>
      <description>UserGate: $(traffic_type) -> connection from $(srcip):$(srcport) to $(dstip):$(dstport) detected.</description>
@@ -50,4 +51,5 @@
      <options>no_full_log</options>
      <description>UserGate: admin $(srcuser) from $(srcip) dealt with $(event_action).</description>
    </rule>
+-->
 </group>
