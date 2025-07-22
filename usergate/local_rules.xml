@@ -23,4 +23,31 @@
     <match>ddos</match>
     <description>UserGate: DDoS event happened.</description>
   </rule>
+
+  <!-- Rules without cef_universal decoder -->
+   <rule id="100105" level="3">
+     <decoded_as>usergate_3</decoded_as>
+     <options>no_full_log</options>
+     <description>UserGate: $(traffic_type) -> connection from $(srcip):$(srcport) to $(dstip):$(dstport) detected.</description>
+   </rule>
+
+   <rule id="100106" level="10">
+     <if_sid>100105</if_sid>
+     <field name="traffic_type">ddos_protection</field>
+     <options>no_full_log</options>
+     <description>UserGate: $(traffic_type) from $(srcip):$(srcport) to $(dstip):$(dstport) detected.</description>
+   </rule>
+
+   <rule id="100107" level="3">
+     <decoded_as>usergate_4</decoded_as>
+     <options>no_full_log</options>
+     <description>UserGate: $(event_type) -> connection from $(srcip) user $(srcuser) $(event_event) $(event_action) detected.</description>
+   </rule>
+
+   <rule id="100108" level="10">
+     <if_sid>100107</if_sid>
+     <field name="event_type">admin_console</field>
+     <options>no_full_log</options>
+     <description>UserGate: admin $(srcuser) from $(srcip) dealt with $(event_action).</description>
+   </rule>
 </group>
