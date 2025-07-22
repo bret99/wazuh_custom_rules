@@ -15,3 +15,26 @@
   <regex type="pcre2">^\S+ \S+ ugutm utm-loganalyzer events - - \S+CEF:0\|Usergate\|UTM\|(\d)\|events\|(\S+)\|(\d)\|</regex>
   <order>usergate.version,events_type,usergate.severity</order>
 </decoder>
+
+<!-- Decoders if cef_universal is absent -->
+<!--
+<decoder name="usergate_3">
+  <prematch type="pcre2">\S+ ugutm utm-loganalyzer traffic - - \S+CEF:0\|Usergate\|UTM\|\d\|traffic\|\S+\|\d\|.+ src=\d+.\d+.\d+.\d+ spt=\d+ .+ proto=\S+ dst=\d+.\d+.\d    +.\d+ dpt=\d+ .+</prematch>
+</decoder>
+
+<decoder name="usergate_3_child">
+  <parent>usergate_3</parent>
+  <regex type="pcre2">\S+ ugutm utm-loganalyzer traffic - - \S+CEF:0\|Usergate\|UTM\|(\d)\|traffic\|(\S+)\|(\d)\|.+ src=(\d+.\d+.\d+.\d+) spt=(\d+) .+ proto=(\S+) dst=(    \d+.\d+.\d+.\d+) dpt=(\d+) (.+)</regex>
+  <order>usergate.version,traffic_type,usergate.severity,srcip,srcport,src_proto,dstip,dstport,traffic_msg</order>
+</decoder>
+
+<decoder name="usergate_4">
+  <prematch type="pcre2">\S+ ugutm utm-loganalyzer events - - \S+CEF:0\|Usergate\|UTM\|\d\|events\|\S+\|\d\|.+ suser=\S+ cat=\S+ act=\S+ src=\d+.\d+.\d+.\d+ .+</prematc    h>
+</decoder>
+
+<decoder name="usergate_4_child">
+  <parent>usergate_4</parent>
+  <regex type="pcre2">\S+ ugutm utm-loganalyzer events - - \S+CEF:0\|Usergate\|UTM\|(\d)\|events\|(\S+)\|(\d)\|.+ suser=(\S+) cat=(\S+) act=(\S+) src=(\d+.\d+.\d+.\d+)     (.+)</regex>
+  <order>usergate.version,event_type,usergate.severity,srcuser,event_event,event_action,srcip,event_msg</order>
+-->
+</decoder>
