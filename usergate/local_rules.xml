@@ -24,7 +24,7 @@
     <description>UserGate: DDoS event happened.</description>
   </rule>
 
-  <!-- Rules without cef_universal decoder -->
+  <!-- Rules if decoder cef_universal is absent -->
   <!-- 
   <rule id="100105" level="3">
      <decoded_as>usergate_3</decoded_as>
