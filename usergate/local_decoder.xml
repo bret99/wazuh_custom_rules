@@ -6,33 +6,33 @@
 
 <decoder name="usergate_1">
   <parent>cef_universal</parent>
-  <regex type="pcre2">^\S+ \S+ ugutm utm-loganalyzer traffic - - \S+CEF:0\|Usergate\|UTM\|(\d)\|traffic\|(\w+)\|(\d)\|</regex> <!-- Substitute "ugutm utm-loganalyzer" for actual one -->
+  <regex type="pcre2">^\S+ \S+ ugutm utm-loganalyzer traffic - - \S+CEF:0\|\S+\|\S+\|(\d)\|traffic\|(\w+)\|(\d)\|</regex> <!-- Substitute "ugutm utm-loganalyzer" for actual one -->
   <order>usergate.version,usergate.traffic,usergate.severity</order>
 </decoder>
 
 <decoder name="usergate_2">
   <parent>cef_universal</parent>
-  <regex type="pcre2">^\S+ \S+ ugutm utm-loganalyzer events - - \S+CEF:0\|Usergate\|UTM\|(\d)\|events\|(\S+)\|(\d)\|</regex> <!-- Substitute "ugutm utm-loganalyzer" for actual one -->
+  <regex type="pcre2">^\S+ \S+ ugutm utm-loganalyzer events - - \S+CEF:0\|\S+\|\S+\|(\d)\|events\|(\S+)\|(\d)\|</regex> <!-- Substitute "ugutm utm-loganalyzer" for actual one -->
   <order>usergate.version,events_type,usergate.severity</order>
 </decoder>
 
 <!-- Decoders if cef_universal is absent -->
 <decoder name="usergate_3">
-  <prematch type="pcre2">\S+ ugutm utm-loganalyzer traffic - - \S+CEF:0\|Usergate\|UTM\|\d\|traffic\|\S+\|\d\|.+ src=\d+.\d+.\d+.\d+ spt=\d+ .+ proto=\S+ dst=\d+.\d+.\d+.\d+ dpt=\d+ .+</prematch> <!-- Substitute "ugutm utm-loganalyzer" for actual one -->
+  <prematch type="pcre2">\S+ ugutm utm-loganalyzer traffic - - \S+CEF:0\|\S+\|\S+\|\d\|traffic\|\S+\|\d\|.+ src=\d+.\d+.\d+.\d+ spt=\d+ .+ proto=\S+ dst=\d+.\d+.\d+.\d+ dpt=\d+ .+</prematch> <!-- Substitute "ugutm utm-loganalyzer" for actual one -->
 </decoder>
 
 <decoder name="usergate_3_child">
   <parent>usergate_3</parent>
-  <regex type="pcre2">\S+ ugutm utm-loganalyzer traffic - - \S+CEF:0\|Usergate\|UTM\|(\d)\|traffic\|(\S+)\|(\d)\|.+ src=(\d+.\d+.\d+.\d+) spt=(\d+) .+ proto=(\S+) dst=(\d+.\d+.\d+.\d+) dpt=(\d+) (.+)</regex> <!-- Substitute "ugutm utm-loganalyzer" for actual one -->
+  <regex type="pcre2">\S+ ugutm utm-loganalyzer traffic - - \S+CEF:0\|\S+\|\S+\|(\d)\|traffic\|(\S+)\|(\d)\|.+ src=(\d+.\d+.\d+.\d+) spt=(\d+) .+ proto=(\S+) dst=(\d+.\d+.\d+.\d+) dpt=(\d+) (.+)</regex> <!-- Substitute "ugutm utm-loganalyzer" for actual one -->
   <order>usergate.version,traffic_type,usergate.severity,srcip,srcport,src_proto,dstip,dstport,traffic_msg</order>
 </decoder>
 
 <decoder name="usergate_4">
-  <prematch type="pcre2">\S+ ugutm utm-loganalyzer events - - \S+CEF:0\|Usergate\|UTM\|\d\|events\|\S+\|\d\|.+ suser=\S+ cat=\S+ act=\S+ src=\d+.\d+.\d+.\d+ .+</prematch> <!-- Substitute "ugutm utm-loganalyzer" for actual one -->
+  <prematch type="pcre2">\S+ ugutm utm-loganalyzer events - - \S+CEF:0\|\S+\|\S+\|\d\|events\|\S+\|\d\|.+ suser=\S+ cat=\S+ act=\S+ src=\d+.\d+.\d+.\d+ .+</prematch> <!-- Substitute "ugutm utm-loganalyzer" for actual one -->
 </decoder>
 
 <decoder name="usergate_4_child">
   <parent>usergate_4</parent>
-  <regex type="pcre2">\S+ ugutm utm-loganalyzer events - - \S+CEF:0\|Usergate\|UTM\|(\d)\|events\|(\S+)\|(\d)\|.+ suser=(\S+) cat=(\S+) act=(\S+) src=(\d+.\d+.\d+.\d+) (.+)</regex> <!-- Substitute "ugutm utm-loganalyzer" for actual one -->
+  <regex type="pcre2">\S+ ugutm utm-loganalyzer events - - \S+CEF:0\|\S+\|\S+\|(\d)\|events\|(\S+)\|(\d)\|.+ suser=(\S+) cat=(\S+) act=(\S+) src=(\d+.\d+.\d+.\d+) (.+)</regex> <!-- Substitute "ugutm utm-loganalyzer" for actual one -->
   <order>usergate.version,event_type,usergate.severity,srcuser,event_event,event_action,srcip,event_msg</order>
 </decoder>
