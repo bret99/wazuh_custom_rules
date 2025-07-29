@@ -22,7 +22,7 @@ def parse_arguments():
     args = parser.parse_args()
     
     if args.output_file is None:
-        prefix = "yesterday_updated_" if args.yesterday else ""
+        prefix = "yesterday_updated" if args.yesterday else ""
         args.output_file = f"{prefix}_docker_repositories.json"
     
     return args
