@@ -1,7 +1,7 @@
 <!-- Kaspersky rules -->
 <group name="kes,">
   <rule id="100101" level="3">
-    <decoded_as>cef_universal</decoded_as>
+    <decoded_as>cef_kaspersky</decoded_as>
     <match type="pcre2">^CEF:0\|KasperskyLab\|SecurityCenter\|(.+?)\|(.+?)\|(.+?)\|(.+?)\|</match>
     <field name="kaspersky.event_id">\.+</field>
     <description>Kaspersky: $(kaspersky.event_id): $(kaspersky.event_name) Message: $(msg)</description>
