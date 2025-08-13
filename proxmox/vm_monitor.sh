@@ -84,4 +84,6 @@ if [[ -f "$previous_file" ]]; then
 fi
 
 # 3. Updating previous_vms.json
-mv "$current_file" "$previous_file"
+rm -f "$previous_file"
+cat "$current_file" > "$previous_file"
+rm -f "$current_file"
