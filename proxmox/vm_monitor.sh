@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # Reports files
-current_file="current_vms.json"
-previous_file="previous_vms.json"
-diff_file="differences_vms.json"
+current_file="/var/log/current_vms.json"
+previous_file="/var/log/previous_vms.json"
+diff_file="/var/log/differences_vms.json"
 rm -f "$diff_file"
 
 # Getting VMs IP
