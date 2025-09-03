@@ -5,6 +5,10 @@ from datetime import datetime
 import os
 import shutil
 from secret_tokens import PM_node, PM_cluster, PM_username, PM_password
+import urllib3
+
+# Disable alerts about SSL
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # Parse command-line arguments
 parser = argparse.ArgumentParser(description="Proxmox VM Information Retriever")
@@ -21,6 +25,10 @@ report_dir = "/var/log/proxmox"
 proxmox_host = f"https://{args.cluster}:8006"
 proxmox_username = PM_username
 proxmox_password = PM_password
+
+# session creation with disabled SSL checking
+session = requests.Session()
+session.verify = False
 
 # URL for the Proxmox API endpoint to get the list of VMs
 qemu_api_url = f"{proxmox_host}/api2/json/nodes/{args.node}/qemu"
