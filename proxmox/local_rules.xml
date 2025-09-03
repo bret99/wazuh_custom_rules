@@ -1,10 +1,32 @@
   <!-- Proxmox VMs -->
 <group name="proxmox_vms,">
+  <!-- Scenario №1 -->
   <rule id="100101" level="3">
     <decoded_as>json</decoded_as>
     <field name="vm_name">\.+</field>
     <field name="vm_status">\.+</field>
     <options>no_full_log</options>
     <description>Proxmox: $(vm_name) of type $(vm_type) is $(vm_status).</description>
+  </rule>
+
+  <rule id="100102" level="11">
+    <field name="current.vm_name">\.+</field>
+    <options>no_full_log</options>
+    <description>Proxmox: $(current.vm_name) changed status from $(previous.vm_status) to $(current.vm_status).</description>
+  </rule>
+
+  <!-- Scenario №2 -->
+  <rule id="100103" level="3">
+    <decoded_as>json</decoded_as>
+    <field name="proxmox.vm_name">\.+</field>
+    <options>no_full_log</options>
+    <description>Proxmox: $(proxmox.vm_name) is $(proxmox.vm_status).</description>
+  </rule>
+
+  <rule id="100104" level="11">
+    <if_sid>100103</if_sid>
+    <field name="proxmox.vm_status_prev">\.+</field>
+    <options>no_full_log</options>
+    <description>Proxmox: $(proxmox.vm_name) changed status from $(proxmox.vm_status_prev) to $(proxmox.vm_status_curr).</description>
   </rule>
 </group>
