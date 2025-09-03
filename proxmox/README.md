@@ -18,7 +18,11 @@ make Wazuh agents group called as one like and add the next lines to agent.conf:
 <agent_config>
   <localfile>
     <log_format>json</log_format>
-    <location>/var/log/proxmox/vm_info.json</location>
+    <location>/var/log/proxmox/current.json</location>
+  </localfile>
+  <localfile>
+    <log_format>json</log_format>
+    <location>/var/log/proxmox/differences.json</location>
   </localfile>
 </agent_config>
 ```
