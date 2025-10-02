@@ -26,7 +26,11 @@ add lines:
 sudo systemctl restart wazuh-manager
 ```
 # Send email to user that shared confidential information
+On Wazuh manager:
 ```
+mv send_email_equip.py /usr/local/bin
+chmod +x /usr/local/bin/send_email_equip.py
+chown /usr/local/bin/send_email_equip.py
 crontab -e
 ```
 add lines:
