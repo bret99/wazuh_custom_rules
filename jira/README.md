@@ -82,8 +82,11 @@ add line:
 0 12 * * * sudo bash -c "/usr/local/bin/get_jira_secrets_mail_alert.sh"
 ```
 # Send email to user that shared confidential information
-
+On Wazuh manager:
 ```
+mv send_email_jira.py /usr/local/bin
+chmod +x /usr/local/bin/send_email_jira.py
+chown /usr/local/bin/send_email_jira.py
 crontab -e
 ```
 add lines:
