@@ -30,10 +30,6 @@ from secret_tokens import (
         TOP_CRITICAL_EVENTS
     )
 
-# Import external functions (commented for user choice)
-# from send_vk_teams import send_to_vk_teams
-# from send_telegram import send_to_telegram
-
 # Load SYSTEM_PROMPT from external file
 try:
     with open('soc_prompt.txt', 'r', encoding='utf-8') as f:
