@@ -62,8 +62,11 @@ One should add to agent.conf at OpenVPN server with Wazuh agent the next strings
 </agent_config>
 ```
 # Send email to user with foreign connection
-
+On Wazuh manager:
 ```
+mv send_email_openvpn.py /usr/local/bin
+chmod +x /usr/local/bin/send_email_openvpn.py
+chown /usr/local/bin/send_email_openvpn.py
 crontab -e
 ```
 add lines:
