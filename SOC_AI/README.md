@@ -11,7 +11,7 @@ One should keep in mind the next:
 1. uncomment lines in soc_ai.py to send short report to VK Teams and/or Telegram;
 2. prepare ssh connection from Wazuh-manager to AI server via ansible;
 3. one may exclude events with rule.id, rule.groups from reports using exclusions secret_tokens.py;
-4. one may substitute 'Russia' for actual one in line 72 at soc_ai.py.
+4. one may substitute 'Russia' for actual one in line 72 at soc_ai.py and in line 33 at soc_prompt.txt.
 
 On Wazuh-manager:
 ```
