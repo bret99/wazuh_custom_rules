@@ -4,10 +4,12 @@ Getting every hour SOC report to email, VK Teams, Telegram.
 
 Architecture:
 1. getting alerts with rule.level between 3 and 10 on Wazuh manager;
-2. send json report file to AI server (see "hosts");
+2. send json report file to AI server (see "hosts"; substitute value '192.168.10.11' for actual one);
 3. run remotely script with AI that generates final reports (email, VK Teams, Telegram).
    
-One should keep in mind to uncomment lines in soc_ai_py to send short report to VK Teams and/or Telegram.
+One should keep in mind the next:
+1. uncomment lines in soc_ai.py to send short report to VK Teams and/or Telegram;
+2. prepare ssh connection from Wazuh-manager to AI server via ansible.
 
 On Wazuh-manager:
 ```
