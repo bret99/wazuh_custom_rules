@@ -29,8 +29,7 @@ sudo systemctl restart wazuh-manager
 On Wazuh manager:
 ```
 mv send_email_equip.py /usr/local/bin
-chmod +x /usr/local/bin/send_email_equip.py
-chown /usr/local/bin/send_email_equip.py
+mv secret_tokens.py /usr/local/bin
 crontab -e
 ```
 add lines:
