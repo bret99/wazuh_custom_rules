@@ -10,7 +10,7 @@ from secret_tokens import HOST, INDEX, OS_USERNAME, OS_PASSWORD, SMTP_HOST, SMTP
 EMAIL_SUBJECT = 'Publication of restricted access information'
 BASE_EMAIL_BODY = (
     'Hello!\n\n'
-    'We draw your attention to the established fact of violation of the company\'s Information Security Policy: in {jira_task} placement of restricted access information on a non-corporate resource {jira_secret} in open access was detected, which poses a threat to the confidentiality and integrity of information assets of RT MIS LLC.\n\n'
+    'We draw your attention to the established fact of violation of the company\'s Information Security Policy: in {jira_task} placement of restricted access information on a non-corporate resource {jira_secret} in open access was detected, which poses a threat to the confidentiality and integrity of information assets of company.\n\n'
     'This is a direct violation of our information protection standards and entails serious consequences, including the possibility of information falling into the hands of third parties, damage to the Company\'s reputation, financial losses, and even legal liability.\n\n'
     'Risks associated with such action:\n\n'
     '1. **Possibility of illegal use of trade secrets by competitors**\n'
