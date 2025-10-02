@@ -29,7 +29,7 @@ insert actual bot token and channel ID to custom-vkteams.py
 sudo systemctl restart wazuh-manager
 ```
 Scenario №2
-# Send alerts to VK Teams with rule.level between 11 and higher
+
 On Wazuh manager:
 ```
 mv send_vkteams_opensearch_events.py /usr/local/bin
