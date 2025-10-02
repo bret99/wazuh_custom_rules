@@ -81,3 +81,12 @@ add lines:
 0 13 * * * sudo bash -c "/usr/local/bin/get_confluence_tasks_2.sh"
 0 19 * * * sudo bash -c "/usr/local/bin/get_confluence_tasks_2.sh"
 ```
+# Send email to user that shared confidential information
+
+```
+crontab -e
+```
+add lines:
+```
+*/30 * * * * sudo bash -c "python3 /usr/local/bin/send_email_confluence.py"
+```
