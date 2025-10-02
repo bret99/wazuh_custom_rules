@@ -25,3 +25,11 @@ add lines:
 ```
 sudo systemctl restart wazuh-manager
 ```
+# Send email to user that shared confidential information
+```
+crontab -e
+```
+add lines:
+```
+*/5 * * * * sudo bash -c "python3 /usr/local/bin/send_email_equip.py"
+```
