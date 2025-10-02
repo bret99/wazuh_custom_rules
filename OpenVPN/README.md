@@ -57,7 +57,7 @@ One should add to agent.conf at OpenVPN server with Wazuh agent the next strings
 <agent_config>
   <localfile>
     <log_format>syslog</log_format>
-    <location>/var/log/openvpn/status.log</location>
+    <location>/var/log/openvpn/status*.log</location> # Change if necessary
   </localfile>    
 </agent_config>
 ```
