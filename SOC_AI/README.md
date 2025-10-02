@@ -9,7 +9,8 @@ Architecture:
    
 One should keep in mind the next:
 1. uncomment lines in soc_ai.py to send short report to VK Teams and/or Telegram;
-2. prepare ssh connection from Wazuh-manager to AI server via ansible.
+2. prepare ssh connection from Wazuh-manager to AI server via ansible;
+3. one may exclude events with rule.id, rule.groups from reports using exclusions secret_tokens.py.
 
 On Wazuh-manager:
 ```
