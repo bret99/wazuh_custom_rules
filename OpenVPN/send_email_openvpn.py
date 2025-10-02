@@ -10,7 +10,7 @@ from secret_tokens import HOST, INDEX, OS_USERNAME, OS_PASSWORD, SMTP_HOST, SMTP
 EMAIL_SUBJECT = 'Connection from abroad or hosting'
 BASE_EMAIL_BODY = (
     'Hello!\n\n'
-    'We hereby notify you that the monitoring systems of RT MIS LLC have recorded access with your account to corporate resources from foreign IP addresses. This violates the internal policy, which allows access only from the territory of the Russian Federation and using corporate computing means.\n\n'
+    'We hereby notify you that the monitoring systems of company have recorded access with your account to corporate resources from foreign IP addresses. This violates the internal policy, which allows access only from the territory of the Russian Federation and using corporate computing means.\n\n'
     'Security incident:\n\n'
     'OpenVPN: foreign or hosting connection of user {src_user} from address {srcip} from {country_name}.\n\n'
     'We remind you of the importance of complying with the following:\n\n'
