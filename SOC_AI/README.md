@@ -1,6 +1,13 @@
 # Make SOC report
 
-Getting every hour SOC report to email, VK Teams, Telegram. One should keep in mind that one should uncomment respective lines in soc_ai_py.
+Getting every hour SOC report to email, VK Teams, Telegram.
+
+Architecture:
+1. getting alerts with rule.level between 3 and 10 on Wazuh manager;
+2. send json report file to AI server (see "hosts");
+3. run remotely script with AI that generates final reports (email, VK Teams, Telegram).
+   
+One should keep in mind to uncomment lines in soc_ai_py to send short report to VK Teams and/or Telegram.
 
 On Wazuh-manager:
 ```
