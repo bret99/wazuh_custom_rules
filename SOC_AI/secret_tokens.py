@@ -6,7 +6,7 @@ OS_PASSWORD = '' # insert actual volume here
 SCROLL_TIMEOUT = '10m'  # Scroll timeout
 BATCH_SIZE = 2000 # Pagination batch size
 # ====== Events filtration ======
-IGNORE_RULE_IDS = [] # insert actual volumes here
+IGNORE_RULE_IDS = [""] # insert actual volumes here
 IGNORE_RULE_GROUPS = [""] # insert actual volumes here
 LOG_FILE = "/tmp/wazuh_events_level3_10.json" # change if necessary
 # ====== VK TEAMS SETTINGS ======
