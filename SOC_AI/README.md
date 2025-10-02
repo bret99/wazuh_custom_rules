@@ -22,3 +22,8 @@ add lines:
 ```
 sudo systemctl restart wazuh-manager
 ```
+On SOC AI server:
+```
+mv soc_ai.py /usr/local/bin
+chown root:root /usr/local/bin/soc_ai.py
+```
