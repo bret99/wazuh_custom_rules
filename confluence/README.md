@@ -82,8 +82,11 @@ add lines:
 0 19 * * * sudo bash -c "/usr/local/bin/get_confluence_tasks_2.sh"
 ```
 # Send email to user that shared confidential information
-
+On Wazuh manager:
 ```
+mv send_email_confluence.py /usr/local/bin
+chmod +x /usr/local/bin/send_email_confluence.py
+chown /usr/local/bin/send_email_confluence.py
 crontab -e
 ```
 add lines:
