@@ -49,7 +49,7 @@ def fetch_user_info(client):
                     {
                         "bool": {
                             "should": [
-                                {"match_phrase": {"rule.groups": "openvpn_not_ru"}} # Change time period if necessary 
+                                {"match_phrase": {"rule.groups": "openvpn_foreign"}} # Change time period if necessary 
                             ],
                             "minimum_should_match": 1
                         }
