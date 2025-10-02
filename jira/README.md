@@ -81,3 +81,12 @@ add line:
 ```
 0 12 * * * sudo bash -c "/usr/local/bin/get_jira_secrets_mail_alert.sh"
 ```
+# Send email to user that shared confidential information
+
+```
+crontab -e
+```
+add lines:
+```
+*/30 * * * * sudo bash -c "python3 /usr/local/bin/send_email_jira.py"
+```
