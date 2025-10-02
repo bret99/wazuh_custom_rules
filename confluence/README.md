@@ -85,8 +85,7 @@ add lines:
 On Wazuh manager:
 ```
 mv send_email_confluence.py /usr/local/bin
-chmod +x /usr/local/bin/send_email_confluence.py
-chown /usr/local/bin/send_email_confluence.py
+mv secret_tokens.py /usr/local/bin
 crontab -e
 ```
 add lines:
