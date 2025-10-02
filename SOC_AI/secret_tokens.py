@@ -25,5 +25,5 @@ MODEL_NAME = "jackaduma/SecRoBERTa" # change if necessary
 FALLBACK_MODEL = "distilroberta-base" # change if necessary
 TOP_CRITICAL_EVENTS = 50
 # Telegram Settings (add these if you want to use Telegram)
-TELEGRAM_BOT_TOKEN = "your_telegram_bot_token_here"
-TELEGRAM_CHAT_ID = "your_telegram_chat_id_here"
+TELEGRAM_BOT_TOKEN = '' # insert actual volume here
+TELEGRAM_CHAT_ID = '' # insert actual volume here
