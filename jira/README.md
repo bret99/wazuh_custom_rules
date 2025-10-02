@@ -85,8 +85,7 @@ add line:
 On Wazuh manager:
 ```
 mv send_email_jira.py /usr/local/bin
-chmod +x /usr/local/bin/send_email_jira.py
-chown /usr/local/bin/send_email_jira.py
+mv secret_tokens.py /usr/local/bin
 crontab -e
 ```
 add lines:
