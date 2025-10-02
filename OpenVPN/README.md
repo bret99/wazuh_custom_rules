@@ -61,6 +61,16 @@ One should add to agent.conf at OpenVPN server with Wazuh agent the next strings
   </localfile>    
 </agent_config>
 ```
+# Send email to user with foreign connection
+
+```
+crontab -e
+```
+add lines:
+```
+*/10 * * * * sudo bash -c "python3 /usr/local/bin/send_email_openvpn.py"
+```
+
 # Important
 
 One should make CDB lists cities.cdb (to detect foreign connections) and dch_providers.cdb (to detect hosting connections). Those ones should be got from ip2location DBs. Also one should substitute country code to actual one in group "openvpn_foreign" at local_rules.xml
