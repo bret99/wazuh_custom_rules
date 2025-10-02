@@ -1,4 +1,5 @@
 # VK Teams integration
+Scenario №1
 
 1. Create new bot using VK Teams "metabot"
 2. copy created bot token ```example: 001.0159988340.1712388373:1011569394```
@@ -26,4 +27,19 @@ add to /var/ossec/etc/ossec.conf:
 insert actual bot token and channel ID to custom-vkteams.py
 ```
 sudo systemctl restart wazuh-manager
+```
+Scenario №2
+# Send alerts to VK Teams with rule.level between 11 and higher
+On Wazuh manager:
+```
+mv send_vkteams_opensearch_events.py /usr/local/bin
+chmod +x /usr/local/bin/send_vkteams_opensearch_events.py
+chown /usr/local/bin/send_vkteams_opensearch_events.py
+```
+```
+crontab -e
+```
+add lines:
+```
+*/3 * * * * sudo bash -c "python3 /usr/local/bin/send_vkteams_opensearch_events.py"
 ```
