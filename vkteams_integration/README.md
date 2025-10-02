@@ -35,8 +35,6 @@ On Wazuh manager:
 mv send_vkteams_opensearch_events.py /usr/local/bin
 chmod +x /usr/local/bin/send_vkteams_opensearch_events.py
 chown /usr/local/bin/send_vkteams_opensearch_events.py
-```
-```
 crontab -e
 ```
 add lines:
