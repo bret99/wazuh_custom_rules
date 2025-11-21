@@ -5,8 +5,10 @@ import json
 import os
 import sys
 import time
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from opensearchpy import OpenSearch, OpenSearchException
+import warnings
+from urllib3.exceptions import InsecureRequestWarning
 
 # Import configuration from access_tokens.py
 try:
@@ -15,27 +17,21 @@ except ImportError:
     print("Error: secret_tokens.py file not found or configuration missing")
     sys.exit(1)
 
-
 def get_opensearch_client():
     return OpenSearch(
         hosts=[HOST],
         http_auth=(OS_USERNAME, OS_PASSWORD),
         use_ssl=True,
         verify_certs=False,
-        timeout=300  # Timeout increasing for big requests
+        timeout=300
     )
 
 def should_ignore_event(event):
-    """
-    Check if event should be ignored
-    """
     try:
-        # Check rule id
         rule_id = event.get('rule', {}).get('id')
         if rule_id in IGNORE_RULE_IDS:
             return True
         
-        # Check rule groups
         rule_groups = event.get('rule', {}).get('groups', [])
         if any(group in rule_groups for group in IGNORE_RULE_GROUPS):
             return True
@@ -46,9 +42,6 @@ def should_ignore_event(event):
         return False
 
 def filter_events(events):
-    """
-    Filter events according to settings
-    """
     if not events:
         return []
     
@@ -57,53 +50,44 @@ def filter_events(events):
     filtered_count = original_count - len(filtered_events)
     
     if filtered_count > 0:
-        print(f"Filtered {filtered_count} events by exclusion rules")
+        print(f"Filtered {filtered_count} events with exception rules")
     
     return filtered_events
 
 def fetch_all_alerts_with_scroll(client):
-    """
-    Get ALL events using scroll API
-    """
     all_events = []
     scroll_id = None
     
     try:
-        # Calculate time range
-        end_time = datetime.utcnow()
+        # Using timezone-aware datetime
+        end_time = datetime.now(timezone.utc)
         start_time = end_time - timedelta(hours=1)
 
-        # Base query with filtering
         query = {
             "size": BATCH_SIZE,
-            "sort": ["_doc"],  # Using _doc for efficiency
+            "sort": ["_doc"],
             "query": {
                 "bool": {
                     "must": [
-                        {"range": {"rule.level": {"gt": 2, "lt": 11}}}, # Change rule levels if necessary
+                        {"range": {"rule.level": {"gt": 2, "lt": 11}}},
                         {"range": {
                             "@timestamp": {
-                                "gte": start_time.strftime("%Y-%m-%dT%H:%M:%S"),
-                                "lte": end_time.strftime("%Y-%m-%dT%H:%M:%S"),
-                                "format": "strict_date_optional_time"
+                                "gte": start_time.strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
+                                "lte": end_time.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
                             }
                         }}
                     ],
                     "must_not": [
-                        # Exclude rule ids
                         {"terms": {"rule.id": IGNORE_RULE_IDS}},
-                        # Exclude rule groups
                         {"terms": {"rule.groups": IGNORE_RULE_GROUPS}}
                     ]
                 }
             }
         }
 
-        print(f"Starting collection of all events via Scroll API...")
-        print(f"Ignoring rule ids: {IGNORE_RULE_IDS}")
-        print(f"Ignoring rule groups: {IGNORE_RULE_GROUPS}")
+        print(f"Starting events collecting using Scroll API...")
+        print(f"Time range: {start_time.strftime('%Y-%m-%d %H:%M:%S')} - {end_time.strftime('%Y-%m-%d %H:%M:%S')}")
         
-        # First request
         response = client.search(
             index=INDEX, 
             body=query, 
@@ -115,14 +99,13 @@ def fetch_all_alerts_with_scroll(client):
         hits = response['hits']['hits']
         total_hits = response['hits']['total']['value']
         
-        print(f"Total events found (after filtering): {total_hits}")
+        print(f"Events found: {total_hits}")
         
-        # Process first batch
         batch_events = [hit["_source"] for hit in hits]
         all_events.extend(batch_events)
-        print(f"Received: {len(batch_events)} events (total: {len(all_events)})")
+        print(f"First part: {len(batch_events)} events (all: {len(all_events)})")
         
-        # Get remaining results
+        # Getting other results
         while len(hits) > 0:
             try:
                 response = client.scroll(
@@ -136,38 +119,35 @@ def fetch_all_alerts_with_scroll(client):
                 if hits:
                     batch_events = [hit["_source"] for hit in hits]
                     all_events.extend(batch_events)
-                    print(f"Received more: {len(batch_events)} events (total: {len(all_events)})")
+                    print(f"Got: {len(batch_events)} events (all: {len(all_events)})")
                 
-                # Pause to avoid overloading the server
                 time.sleep(0.1)
                 
             except Exception as e:
-                print(f"Error during scroll: {e}")
+                print(f"Error with scroll: {e}")
                 break
         
+        print(f"Scroll API collected {len(all_events)} events")
         return all_events
         
     except Exception as e:
-        print(f"Error executing scroll request: {e}")
+        print(f"Error with scroll request: {e}")
         return all_events
     finally:
-        # Always clear scroll
         if scroll_id:
             try:
                 client.clear_scroll(scroll_id=scroll_id)
-                print("Scroll context cleared")
+                print("Scroll context cleaned")
             except:
                 pass
 
 def fetch_alerts_with_search_after(client):
-    """
-    Alternative method with search_after for very large volumes
-    """
     all_events = []
     last_sort = None
     
     try:
-        end_time = datetime.utcnow()
+        # Using timezone-aware datetime
+        end_time = datetime.now(timezone.utc)
         start_time = end_time - timedelta(hours=1)
 
         query = {
@@ -182,8 +162,8 @@ def fetch_alerts_with_search_after(client):
                         {"range": {"rule.level": {"gt": 2, "lt": 11}}},
                         {"range": {
                             "@timestamp": {
-                                "gte": start_time.strftime("%Y-%m-%dT%H:%M:%S"),
-                                "lte": end_time.strftime("%Y-%m-%dT%H:%M:%S")
+                                "gte": start_time.strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
+                                "lte": end_time.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
                             }
                         }}
                     ],
@@ -195,45 +175,57 @@ def fetch_alerts_with_search_after(client):
             }
         }
 
-        print("Using search_after for event collection...")
-        print(f"Ignoring rule ids: {IGNORE_RULE_IDS}")
-        print(f"Ignoring rule groups: {IGNORE_RULE_GROUPS}")
+        print("Using search_after to collect events...")
+        print(f"Time range: {start_time.strftime('%Y-%m-%d %H:%M:%S')} - {end_time.strftime('%Y-%m-%d %H:%M:%S')}")
         
         has_more = True
         page = 1
+        max_pages = 1000  # Endless cycle protect
         
-        while has_more:
-            if last_sort:
-                query["search_after"] = last_sort
-            
-            response = client.search(
-                index=INDEX, 
-                body=query, 
-                request_timeout=120
-            )
-            
-            hits = response['hits']['hits']
-            
-            if not hits:
+        while has_more and page <= max_pages:
+            try:
+                if last_sort:
+                    query["search_after"] = last_sort
+                
+                response = client.search(
+                    index=INDEX, 
+                    body=query, 
+                    request_timeout=120
+                )
+                
+                hits = response['hits']['hits']
+                
+                if not hits:
+                    print(f"Search_after: no data anymore (page {page})")
+                    has_more = False
+                    break
+                
+                batch_events = [hit["_source"] for hit in hits]
+                all_events.extend(batch_events)
+                
+                # Getting value of sort for the next page
+                last_hit = hits[-1]
+                last_sort = last_hit['sort']
+                
+                print(f"Search_after page {page}: {len(batch_events)} events (all: {len(all_events)})")
+                page += 1
+                
+                # If got less than BATCH_SIZE than this is last page
+                if len(hits) < BATCH_SIZE:
+                    print(f"Search_after: last page got (less than {BATCH_SIZE} events)")
+                    has_more = False
+                
+                time.sleep(0.1)
+                
+            except Exception as e:
+                print(f"Error at page {page} search_after: {e}")
                 has_more = False
-                break
-            
-            batch_events = [hit["_source"] for hit in hits]
-            all_events.extend(batch_events)
-            
-            # Get sort value for next page
-            last_hit = hits[-1]
-            last_sort = last_hit['sort']
-            
-            print(f"Page {page}: received {len(batch_events)} events (total: {len(all_events)})")
-            page += 1
-            
-            time.sleep(0.1)
         
+        print(f"Search_after collected {len(all_events)} events")
         return all_events
         
     except Exception as e:
-        print(f"Error during search_after: {e}")
+        print(f"General error search_after: {e}")
         return all_events
 
 def save_events_log(events):
@@ -241,44 +233,61 @@ def save_events_log(events):
         with open(LOG_FILE, 'w', encoding='utf-8') as f:
             json.dump(events, f, ensure_ascii=False, indent=2)
         print(f"Events saved to file: {LOG_FILE}")
-        file_size = os.path.getsize(LOG_FILE) / (1024 * 1024)  # Size in MB
+        file_size = os.path.getsize(LOG_FILE) / (1024 * 1024)
         print(f"File size: {file_size:.2f} MB")
         return True
     except Exception as e:
-        print(f"Error saving file: {e}")
+        print(f"Erro during file saving: {e}")
         return False
 
 def main():
-    print(f"Connecting to OpenSearch: {HOST}")
+    print(f"Plugin at OpenSearch: {HOST}")
 
     try:
         client = get_opensearch_client()
 
         if not client.ping():
-            print("Failed to connect to OpenSearch")
+            print("Failed plugin at OpenSearch")
             return None
 
-        print("Successfully connected to OpenSearch")
+        print("Successful plugin at OpenSearch")
 
-        # Get total event count BEFORE filtering
+        # Using timezone-aware datetime for requests
+        end_time = datetime.now(timezone.utc)
+        start_time = end_time - timedelta(hours=1)
+        
+        start_time_str = start_time.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+        end_time_str = end_time.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+
+        # Getting events UNTIL filtration
         count_query_before = {
             "query": {
                 "bool": {
                     "must": [
                         {"range": {"rule.level": {"gt": 2, "lt": 11}}},
-                        {"range": {"@timestamp": {"gte": "now-1h/h", "lte": "now"}}}
+                        {"range": {
+                            "@timestamp": {
+                                "gte": start_time_str,
+                                "lte": end_time_str
+                            }
+                        }}
                     ]
                 }
             }
         }
         
-        # Get total event count AFTER filtering
+        # Getting events AFTER filtration
         count_query_after = {
             "query": {
                 "bool": {
                     "must": [
                         {"range": {"rule.level": {"gt": 2, "lt": 11}}},
-                        {"range": {"@timestamp": {"gte": "now-1h/h", "lte": "now"}}}
+                        {"range": {
+                            "@timestamp": {
+                                "gte": start_time_str,
+                                "lte": end_time_str
+                            }
+                        }}
                     ],
                     "must_not": [
                         {"terms": {"rule.id": IGNORE_RULE_IDS}},
@@ -288,53 +297,54 @@ def main():
             }
         }
         
-        count_before = client.count(index=INDEX, body=count_query_before)['count']
-        count_after = client.count(index=INDEX, body=count_query_after)['count']
-        
-        print(f"Total events before filtering: {count_before}")
-        print(f"Expected count after filtering: {count_after}")
-        print(f"Will be filtered: {count_before - count_after} events")
+        try:
+            count_before = client.count(index=INDEX, body=count_query_before)['count']
+            count_after = client.count(index=INDEX, body=count_query_after)['count']
+            
+            print(f"Events amount until filtartion: {count_before}")
+            print(f"Expected events amount after filtration: {count_after}")
+            print(f"To be filtered: {count_before - count_after} events")
+        except Exception as e:
+            print(f"Events count error: {e}")
+            count_after = 0
 
         if count_after == 0:
-            print("No events remaining after filtering.")
-            return None
-
-        # Select method based on quantity
-        if count_after <= 10000:
-            print("Using regular search...")
-            query = {
-                "size": count_after,
-                "sort": [{"@timestamp": {"order": "desc"}}],
-                "query": count_query_after["query"]
-            }
-            response = client.search(index=INDEX, body=query, request_timeout=120)
-            events = [hit["_source"] for hit in response['hits']['hits']]
-        else:
-            print(f"More than 10,000 events, using Scroll API...")
+            print("No events after filtration done.")
+            # Trying anyway to collect events using scroll
+            print("Trying collecting data using Scroll API...")
             events = fetch_all_alerts_with_scroll(client)
-            
-            # If scroll didn't work, try search_after
-            if len(events) < count_after and count_after > 10000:
-                print("Scroll didn't return all events, trying search_after...")
-                events = fetch_alerts_with_search_after(client)
+        else:
+            # Chosing method respectevely to events amount
+            if count_after <= 10000:
+                print("Usual search...")
+                query = {
+                    "size": min(count_after, 10000),  # Limit at size
+                    "sort": [{"@timestamp": {"order": "desc"}}],
+                    "query": count_query_after["query"]
+                }
+                response = client.search(index=INDEX, body=query, request_timeout=120)
+                events = [hit["_source"] for hit in response['hits']['hits']]
+            else:
+                print(f"More than 10,000 events. Using Scroll API...")
+                events = fetch_all_alerts_with_scroll(client)
 
-        # Additional filtering in case OpenSearch missed something
+        # Additional filtration
         events = filter_events(events)
         
-        print(f"Final count of collected events: {len(events)}")
+        print(f"Events amount: {len(events)}")
 
         if not events:
-            print("Failed to collect events after filtering")
+            print("Events collection failed")
             return None
 
         if save_events_log(events):
-            print(f"Successfully saved {len(events)} events to {LOG_FILE}")
+            print(f"Successfully saved {len(events)} events at {LOG_FILE}")
             return LOG_FILE
         else:
             return None
 
     except Exception as e:
-        print(f"Error working with OpenSearch: {e}")
+        print(f"Error in job with OpenSearch: {e}")
         import traceback
         traceback.print_exc()
         return None
@@ -342,8 +352,8 @@ def main():
 if __name__ == "__main__":
     result = main()
     if result:
-        print(f"Event collection completed successfully. File: {result}")
+        print(f"Events collection ended successfully. File: {result}")
         sys.exit(0)
     else:
-        print("Event collection completed with error or no data")
+        print("Events collection ended with error or there is no data")
         sys.exit(1)
