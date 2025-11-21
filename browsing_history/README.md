@@ -7,7 +7,7 @@ Windows hosts
 3. enter the folder with files from point 1
 4. run .\create_scheduled_tasks.bat
 
-One may use centralized method to run toise ones (KSC for instatnce).
+One may use centralized method to run those ones (KSC for instatnce).
 
 On Wazuh manager:
 
@@ -38,7 +38,7 @@ chmod +x install_browser_history_service.sh
 ./install_browser_history_service.sh
 ```
 
-One may use centralized method to run toise ones (KSC for instatnce).
+One may use centralized method to run those ones (KSC for instatnce).
 
 On Wazuh manager:
 
