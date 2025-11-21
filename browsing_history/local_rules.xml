@@ -1,0 +1,39 @@
+<group name="browsing_history,">
+  <rule id="100101" level="0"> <!-- Be careful to change level because if one have a lot of hosts it can generate a huge of events amount -->
+    <decoded_as>json</decoded_as>
+    <field name="url_time">\.+</field>
+    <field name="url_address">\.+</field>
+    <options>no_full_log</options>
+    <description>Browsing history: user $(url_user) visited $(url_address) at browser $(url_browser).</description>
+  </rule>
+
+  <rule id="100102" level="5">
+    <if_sid>100101</if_sid>
+    <hostname>SOME_HOSTNAME</hostname>  <!-- Substitute to actual hostname to get FULL browsing history, not only rule 100103 based -->
+    <description>Browsing history: user $(url_user) visited $(url_address) at browser $(url_browser).</description>
+  </rule>
+
+  <rule id="100103" level="10">
+    <if_sid>100101</if_sid>
+    <match>docs.google.com|drive.google.com|memory.mts.ru|cloudbeeline.ru|disk.tele2.ru|sberdisk.ru|disk.yandex.ru</match>  <!-- Substitute to actual cloud values -->
+    <group>gdpr_IV_32.2,nist_800_53_SC.4,nist_800_53_AC.6,nist_800_53_SA.8,pci_dss_3,</group>
+    <mitre>
+      <id>T1189</id>
+      <id>T1212</id>
+      <id>T1590</id>
+      <id>T1078</id>
+    </mitre>
+    <description>Browsing history: potential leakage at $(url_address), user - $(url_user).</description>
+  </rule>
+
+  <rule id="100104" level="15">
+    <if_matched_sid>553</if_matched_sid>
+    <match>systeminfo.vbs|systeminfocollect.bat|_history.json|sqlite3.exe|systeminfocollect.json</match>
+    <description>Browsing history: user deleted browsing history functionality.</description>  <!-- Browsing history will go on to be collected untill service at Windows/Linux target host is deleted -->
+    <mitre>
+      <id>T1070.004</id>
+      <id>T1562.001</id>
+    </mitre>
+    <group>gdpr_IV_32.1,gdpr_IV_32.2,gdpr_IV_35.7.d,nist_800_53_SI-4,nist_800_53_AU-9,</group>
+  </rule>
+</group>
