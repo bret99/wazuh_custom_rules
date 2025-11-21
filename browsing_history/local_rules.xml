@@ -1,3 +1,4 @@
+  <!-- Collect browsing history -->
 <group name="browsing_history,">
   <rule id="100101" level="0"> <!-- Be careful to change level because if one have a lot of hosts it can generate a huge of events amount -->
     <decoded_as>json</decoded_as>
