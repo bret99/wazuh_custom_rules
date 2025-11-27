@@ -1,22 +1,19 @@
 #!/bin/bash
 
-# Скрипт установки зависимостей для System Information Collector
-# Поддерживает: Alt Linux, RedOS, Ubuntu, Debian, CentOS, AlmaLinux, Rocky Linux, etc.
+# Dependecies installing for System Information Collector
+# Support: Alt Linux, RedOS, Ubuntu, Debian, CentOS, AlmaLinux, Rocky Linux, etc.
 
 set -e
 
-# Цвета для вывода
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
-NC='\033[0m' # No Color
+NC='\033[0m'
 
-# Функции для вывода
 info() { echo -e "${GREEN}[INFO]${NC} $1"; }
 warn() { echo -e "${YELLOW}[WARN]${NC} $1"; }
 error() { echo -e "${RED}[ERROR]${NC} $1"; }
 
-# Определяем дистрибутив
 detect_distro() {
     if [ -f /etc/altlinux-release ]; then
         echo "alt"
@@ -43,21 +40,20 @@ detect_distro() {
     fi
 }
 
-# Проверка наличия команд
 check_command() {
     command -v $1 >/dev/null 2>&1
 }
 
-# Установка для Alt Linux, RedOS, CentOS, AlmaLinux, Rocky (yum-based)
+# Installing for Alt Linux, RedOS, CentOS, AlmaLinux, Rocky (yum-based)
 install_yum_deps() {
     info "Installing dependencies using yum..."
     
-    # Основной вариант
+    # Base way
     if check_command yum; then
         yum update -y
         yum install -y python3 python3-pip sqlite
         
-        # Альтернативный вариант с dnf если yum не работает
+        # Alternative way with dnf if yum does not work
         if [ $? -ne 0 ] && check_command dnf; then
             warn "yum failed, trying dnf..."
             dnf update -y
@@ -72,34 +68,30 @@ install_yum_deps() {
         return 1
     fi
     
-    # Проверяем установку Python3
     if ! check_command python3; then
         warn "python3 not found in PATH, trying alternative packages..."
         yum install -y python36 python36-pip || dnf install -y python36 python36-pip
     fi
 }
 
-# Установка для Debian, Ubuntu (apt-based)
+# Installing for Debian, Ubuntu (apt-based)
 install_apt_deps() {
     info "Installing dependencies using apt..."
     
-    # Обновляем индексы пакетов
     apt-get update
     
-    # Основной вариант
+    # Base way
     apt-get install -y python3 python3-pip sqlite3
     
-    # Альтернативный вариант если основной не сработал
+    # Alternative way
     if [ $? -ne 0 ]; then
         warn "Main apt repositories failed, trying alternatives..."
         
-        # Пробуем установить python3 отдельно
         apt-get install -y python3
         apt-get install -y python3-pip
         apt-get install -y sqlite3
     fi
     
-    # Проверяем установку pip
     if ! check_command pip3; then
         warn "pip3 not found, installing manually..."
         apt-get install -y python3-setuptools
@@ -107,7 +99,7 @@ install_apt_deps() {
     fi
 }
 
-# Установка для Arch Linux
+# Installing for Arch Linux
 install_arch_deps() {
     info "Installing dependencies using pacman..."
     
@@ -120,7 +112,7 @@ install_arch_deps() {
     fi
 }
 
-# Установка для openSUSE
+# Installing for openSUSE
 install_suse_deps() {
     info "Installing dependencies using zypper..."
     
@@ -133,34 +125,26 @@ install_suse_deps() {
     fi
 }
 
-# Установка Python зависимостей через pip
 install_pip_deps() {
     info "Installing Python dependencies..."
     
-    # Проверяем доступность pip
     if ! check_command pip3; then
         error "pip3 not found, cannot install Python dependencies"
         return 1
     fi
     
-    # Основные зависимости
     local pip_packages=""
     
-    # Пробуем установить все пакеты вместе
     pip3 install --upgrade pip
     
-    # Основной вариант - устанавливаем все сразу
     pip3 install sqlite3
     
-    # Проверяем наличие sqlite3 в Python
     python3 -c "import sqlite3" 2>/dev/null
     if [ $? -ne 0 ]; then
         warn "sqlite3 not available in Python, trying alternative packages..."
         
-        # Альтернативные названия пакетов
         pip3 install pysqlite3 || pip3 install sqlite3-python || pip3 install db-sqlite3
         
-        # Если всё ещё не работает, пробуем установить системные пакеты
         local distro=$(detect_distro)
         case $distro in
             debian|ubuntu)
@@ -178,13 +162,11 @@ install_pip_deps() {
     info "Python dependencies installed successfully"
 }
 
-# Проверка установленных зависимостей
 verify_installation() {
     info "Verifying installation..."
     
     local success=0
     
-    # Проверяем Python3
     if check_command python3; then
         info "Python3: OK"
         python3 --version
@@ -193,7 +175,6 @@ verify_installation() {
         success=1
     fi
     
-    # Проверяем pip3
     if check_command pip3; then
         info "pip3: OK"
         pip3 --version
@@ -201,7 +182,6 @@ verify_installation() {
         warn "pip3: NOT FOUND (some features may not work)"
     fi
     
-    # Проверяем SQLite
     if check_command sqlite3; then
         info "SQLite: OK"
         sqlite3 --version
@@ -209,7 +189,6 @@ verify_installation() {
         warn "SQLite: NOT FOUND (some features may not work)"
     fi
     
-    # Проверяем Python модули
     if python3 -c "import sqlite3; import json; import glob; import hashlib; import logging; from datetime import datetime; print('All Python modules: OK')" 2>/dev/null; then
         info "Python modules: OK"
     else
@@ -220,11 +199,9 @@ verify_installation() {
     return $success
 }
 
-# Ручная установка Python (крайний случай)
 install_python_manual() {
     warn "Attempting manual Python installation..."
-    
-    # Скачиваем и компилируем Python
+
     local python_version="3.9.18"
     local install_dir="/usr/local/python3"
     
@@ -241,8 +218,7 @@ install_python_manual() {
         ./configure --prefix=$install_dir --enable-optimizations
         make -j$(nproc)
         make altinstall
-        
-        # Создаем симлинки
+
         ln -sf $install_dir/bin/python3.9 /usr/local/bin/python3
         ln -sf $install_dir/bin/pip3.9 /usr/local/bin/pip3
         
@@ -253,11 +229,9 @@ install_python_manual() {
     fi
 }
 
-# Основная функция установки
 main() {
     info "Starting dependency installation for System Information Collector..."
     
-    # Проверяем права
     if [ "$EUID" -ne 0 ]; then
         error "Please run as root"
         exit 1
@@ -265,8 +239,7 @@ main() {
     
     local distro=$(detect_distro)
     info "Detected distribution: $distro"
-    
-    # Устанавливаем системные зависимости
+
     case $distro in
         alt|redos|centos|almalinux|rocky|fedora)
             install_yum_deps
@@ -282,7 +255,7 @@ main() {
             ;;
         *)
             warn "Unknown distribution, trying generic installation..."
-            # Пробуем все менеджеры пакетов
+            
             if check_command yum; then
                 install_yum_deps
             elif check_command apt-get; then
@@ -296,17 +269,14 @@ main() {
             fi
             ;;
     esac
-    
-    # Если системные пакеты не установились, пробуем ручную установку Python
+
     if ! check_command python3; then
         warn "Python3 not installed by package manager, attempting manual installation..."
         install_python_manual
     fi
     
-    # Устанавливаем Python зависимости
     install_pip_deps
-    
-    # Проверяем установку
+
     if verify_installation; then
         info "Dependency installation completed successfully!"
         info "System Information Collector is ready to use."
@@ -317,8 +287,6 @@ main() {
     fi
 }
 
-# Обработка сигналов
 trap 'error "Installation interrupted"; exit 1' INT TERM
 
-# Запуск
 main "$@"
