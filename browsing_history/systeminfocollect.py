@@ -9,7 +9,6 @@ import hashlib
 import logging
 from pathlib import Path
 
-# Настройка логирования
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
@@ -25,7 +24,6 @@ class BrowserHistoryCollector:
         self.existing_hashes = self.load_existing_hashes()
         
     def load_existing_hashes(self):
-        """Загружает хеши уже обработанных URL для избежания дублирования"""
         hashes = set()
         if os.path.exists(self.output_file):
             try:
@@ -45,11 +43,9 @@ class BrowserHistoryCollector:
         return hashes
     
     def get_hash(self, url_time, url_address, url_browser):
-        """Генерирует хеш для записи"""
         return hashlib.md5(f"{url_time}_{url_address}_{url_browser}".encode('utf-8')).hexdigest()
     
     def save_entry(self, url_time, url_address, url_browser, url_user):
-        """Сохраняет запись если она новая"""
         url_hash = self.get_hash(url_time, url_address, url_browser)
         
         if url_hash not in self.existing_hashes:
@@ -71,13 +67,11 @@ class BrowserHistoryCollector:
         return False
     
     def get_firefox_history(self, profile_path, profile_name, username):
-        """Сбор истории Firefox и производных"""
         try:
             db_path = os.path.join(profile_path, 'places.sqlite')
             if not os.path.exists(db_path):
                 return
             
-            # Создаем временную копию для избежания блокировки БД
             temp_db = f"/tmp/places_{int(time.time())}.sqlite"
             os.system(f"cp '{db_path}' '{temp_db}'")
             
@@ -103,12 +97,10 @@ class BrowserHistoryCollector:
             logging.error(f"Error processing Firefox history {profile_path}: {e}")
     
     def get_chromium_history(self, history_path, browser_name, username):
-        """Сбор истории Chromium-based браузеров"""
         try:
             if not os.path.exists(history_path):
                 return
             
-            # Создаем временную копию
             temp_db = f"/tmp/chromium_{int(time.time())}.sqlite"
             os.system(f"cp '{history_path}' '{temp_db}'")
             
@@ -132,7 +124,6 @@ class BrowserHistoryCollector:
             logging.error(f"Error processing Chromium history {history_path}: {e}")
     
     def get_webkit_history(self, history_path, browser_name, username):
-        """Сбор истории WebKit-based браузеров"""
         try:
             if not os.path.exists(history_path):
                 return
@@ -143,7 +134,7 @@ class BrowserHistoryCollector:
             conn = sqlite3.connect(temp_db)
             cursor = conn.cursor()
             
-            # Для Epiphany
+            # For Epiphany
             cursor.execute("""
                 SELECT datetime(last_visit_time, 'unixepoch') as visit_time, 
                        url, title
@@ -161,15 +152,12 @@ class BrowserHistoryCollector:
             logging.error(f"Error processing WebKit history {history_path}: {e}")
     
     def collect_all_history(self):
-        """Основной метод сбора истории"""
         logging.info("Starting browser history collection...")
         
-        # Поиск всех домашних директорий
         home_dirs = []
         if os.path.exists('/home'):
             home_dirs = [d for d in os.listdir('/home') if os.path.isdir(os.path.join('/home', d))]
         
-        # Добавляем текущего пользователя
         current_user = os.path.expanduser('~').split('/')[-1]
         if current_user not in home_dirs:
             home_dirs.append(current_user)
@@ -177,7 +165,6 @@ class BrowserHistoryCollector:
         for username in home_dirs:
             home_path = os.path.join('/home', username) if username != current_user else os.path.expanduser('~')
             
-            # Firefox-based браузеры
             firefox_like_browsers = [
                 ('~/.mozilla/firefox', 'firefox'),
                 ('~/.librewolf', 'librewolf'),
@@ -196,8 +183,6 @@ class BrowserHistoryCollector:
                         if os.path.isdir(profile):
                             profile_name = os.path.basename(profile)
                             self.get_firefox_history(profile, f"{browser_name}_{profile_name}", username)
-            
-            # Chromium-based браузеры
             chromium_browsers = [
                 ('~/.config/google-chrome/*/History', 'chrome'),
                 ('~/.config/chromium/*/History', 'chromium'),
@@ -217,7 +202,6 @@ class BrowserHistoryCollector:
                         profile_name = os.path.basename(os.path.dirname(history_file))
                         self.get_chromium_history(history_file, f"{browser_name}_{profile_name}", username)
             
-            # WebKit-based браузеры
             webkit_browsers = [
                 ('~/.local/share/epiphany/ephy-history.db', 'epiphany'),
                 ('~/.config/midori/history.db', 'midori')
@@ -228,7 +212,6 @@ class BrowserHistoryCollector:
                 if os.path.exists(full_path):
                     self.get_webkit_history(full_path, browser_name, username)
             
-            # Текстовые браузеры
             text_browsers = [
                 ('~/.lynx_history', 'lynx'),
                 ('~/.links/history', 'links'),
@@ -243,14 +226,13 @@ class BrowserHistoryCollector:
         logging.info("Browser history collection completed")
     
     def process_text_browser_history(self, history_path, browser_name, username):
-        """Обработка истории текстовых браузеров"""
         try:
             with open(history_path, 'r', encoding='utf-8', errors='ignore') as f:
                 lines = f.readlines()
             
             current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             
-            for line in lines[-100:]:  # Берем последние 100 записей
+            for line in lines[-100:]:  # Get last 100 records
                 url = line.strip()
                 if url and (url.startswith('http://') or url.startswith('https://')):
                     self.save_entry(current_time, url, browser_name, username)
