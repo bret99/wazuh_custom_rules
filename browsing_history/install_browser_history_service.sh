@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# Скрипт установки службы сбора истории браузеров
-# Поддерживает: Alt Linux, RedOS, Ubuntu, Debian, CentOS, etc.
+# Support: Alt Linux, RedOS, Ubuntu, Debian, CentOS, etc.
 
 set -e
 
@@ -12,7 +11,6 @@ LOG_DIR="/var/log"
 SERVICE_USER="root"
 DEPS_SCRIPT="install_dependencies.sh"
 
-# Цвета для вывода
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 RED='\033[0;31m'
@@ -22,23 +20,19 @@ info() { echo -e "${GREEN}[INFO]${NC} $1"; }
 warn() { echo -e "${YELLOW}[WARN]${NC} $1"; }
 error() { echo -e "${RED}[ERROR]${NC} $1"; }
 
-# Проверка зависимостей
 check_dependencies() {
     info "Checking dependencies..."
     
     local missing_deps=()
     
-    # Проверяем Python
     if ! command -v python3 >/dev/null 2>&1; then
         missing_deps+=("python3")
     fi
     
-    # Проверяем SQLite
     if ! python3 -c "import sqlite3" 2>/dev/null; then
         missing_deps+=("python3-sqlite3")
     fi
-    
-    # Проверяем остальные модули Python
+
     if ! python3 -c "import json; import glob; import hashlib; import logging; from datetime import datetime" 2>/dev/null; then
         missing_deps+=("python3-standard-library")
     fi
@@ -52,11 +46,9 @@ check_dependencies() {
     fi
 }
 
-# Установка зависимостей
 install_dependencies() {
     info "Installing dependencies..."
     
-    # Если есть скрипт установки зависимостей, используем его
     if [ -f "$DEPS_SCRIPT" ]; then
         info "Using dependency installation script..."
         chmod +x "$DEPS_SCRIPT"
@@ -70,7 +62,6 @@ install_dependencies() {
     else
         warn "Dependency script not found, trying system package manager..."
         
-        # Базовая установка через системный пакетный менеджер
         if command -v apt-get >/dev/null 2>&1; then
             apt-get update
             apt-get install -y python3 python3-pip sqlite3
@@ -87,7 +78,6 @@ install_dependencies() {
     fi
 }
 
-# Создаем директории
 create_directories() {
     info "Creating directories..."
     mkdir -p $INSTALL_DIR
@@ -95,13 +85,11 @@ create_directories() {
     chmod 755 $INSTALL_DIR
 }
 
-# Копируем файлы
 copy_files() {
     info "Copying files..."
     cp $SCRIPT_NAME $INSTALL_DIR/
     chmod +x $INSTALL_DIR/$SCRIPT_NAME
     
-    # Копируем скрипт зависимостей если есть
     if [ -f "$DEPS_SCRIPT" ]; then
         cp "$DEPS_SCRIPT" $INSTALL_DIR/
         chmod +x $INSTALL_DIR/$DEPS_SCRIPT
@@ -110,7 +98,6 @@ copy_files() {
     chown -R $SERVICE_USER:$SERVICE_USER $INSTALL_DIR
 }
 
-# Создаем службу для systemd
 create_systemd_service() {
     info "Creating systemd service..."
     
@@ -148,41 +135,34 @@ EOF
     systemctl start $SERVICE_NAME.timer
 }
 
-# Создаем службу для cron (универсальный способ)
 create_cron_job() {
     info "Creating cron job..."
     
-    # Добавляем задание в crontab
     (crontab -l 2>/dev/null | grep -v "$INSTALL_DIR/$SCRIPT_NAME"; \
      echo "0 * * * * /usr/bin/python3 $INSTALL_DIR/$SCRIPT_NAME") | crontab -
     
     info "Cron job installed to run hourly"
 }
 
-# Проверяем права
 check_permissions() {
     info "Setting permissions..."
     touch $LOG_DIR/systeminfocollect.json
     chmod 644 $LOG_DIR/systeminfocollect.json
     chown $SERVICE_USER:$SERVICE_USER $LOG_DIR/systeminfocollect.json
     
-    # Создаем лог файл
     touch $LOG_DIR/systeminfocollect.log
     chmod 644 $LOG_DIR/systeminfocollect.log
     chown $SERVICE_USER:$SERVICE_USER $LOG_DIR/systeminfocollect.log
 }
 
-# Основная установка
 main() {
     info "Starting System Information Collector installation..."
     
-    # Проверяем права
     if [ "$EUID" -ne 0 ]; then
         error "Please run as root"
         exit 1
     fi
     
-    # Проверяем и устанавливаем зависимости
     if ! check_dependencies; then
         warn "Some dependencies are missing, attempting to install..."
         if ! install_dependencies; then
@@ -191,13 +171,10 @@ main() {
         fi
     fi
     
-    # Создаем директории
     create_directories
     
-    # Копируем файлы
     copy_files
     
-    # Пробуем установить systemd службу
     if systemctl --version &>/dev/null; then
         info "Systemd detected, installing service..."
         create_systemd_service
@@ -206,7 +183,6 @@ main() {
         create_cron_job
     fi
     
-    # Настраиваем права
     check_permissions
     
     info "Installation completed successfully!"
