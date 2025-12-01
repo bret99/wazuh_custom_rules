@@ -57,7 +57,7 @@ make Wazuh agents group called as one like and add the next lines to agent.conf:
 </agent_config>
 ```
 
-One actually may get concrete user browsing history for concrete period of time using:
+One actually may get concrete user browsing history for concrete period of time using (from Wazuh Indexer node by default):
 ```
 python3 get_user_browser_history.py
 ```
