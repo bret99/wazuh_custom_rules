@@ -212,6 +212,7 @@ def fetch_browsing_history(client, username, start_date, end_date):
                     'timestamp': source_data.get('@timestamp', ''),
                     'url_user': data_field.get('url_user', ''),
                     'url_address': data_field.get('url_address', ''),
+                    'url_time': data_field.get('url_time', ''),
                     'url_browser': data_field.get('url_browser', 'Unknown'),
                     'rule_description': source_data.get('rule', {}).get('description', '')
                 }
@@ -308,6 +309,7 @@ def save_browsing_report(username, start_date, end_date, period_name, browsing_d
             'timestamp': event.get('timestamp', ''),
             'url_user': event.get('url_user', ''),
             'url_address': event.get('url_address', ''),
+            'url_time': data_field.get('url_time', ''),
             'url_browser': event.get('url_browser', 'Unknown'),
             'rule_description': event.get('rule_description', '')
         }
