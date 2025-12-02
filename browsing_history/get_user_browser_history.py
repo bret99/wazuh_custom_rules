@@ -11,7 +11,7 @@ warnings.filterwarnings("ignore", category=InsecureRequestWarning)
 warnings.filterwarnings("ignore", message="Connecting to.*using SSL with verify_certs=False is insecure")
 
 # ====== FILE SETTINGS ======
-REPORT_DIR = '/tmp'  # Директория для отчетов
+REPORT_DIR = '/tmp'
 
 def get_opensearch_client():
     """Create OpenSearch client with increased timeout"""
@@ -20,10 +20,10 @@ def get_opensearch_client():
         http_auth=(OS_USERNAME, OS_PASSWORD),
         use_ssl=True,
         verify_certs=False,
-        timeout=60,  # Увеличиваем таймаут до 60 секунд
+        timeout=60, 
         max_retries=3,
         retry_on_timeout=True,
-        ssl_show_warn=False  # Отключаем предупреждение о SSL
+        ssl_show_warn=False
     )
 
 def get_user_input():
@@ -208,12 +208,11 @@ def fetch_browsing_history(client, username, start_date, end_date):
                 source_data = hit["_source"]
                 data_field = source_data.get('data', {})
                 
-                # Извлекаем нужные поля в соответствии с требованиями
                 event_data = {
                     'timestamp': source_data.get('@timestamp', ''),
                     'url_user': data_field.get('url_user', ''),
-                    'url_address': data_field.get('url_address', ''),  # Используем data.url_address
-                    'url_browser': data_field.get('url_browser', 'Unknown'),  # Используем data.url_browser
+                    'url_address': data_field.get('url_address', ''),
+                    'url_browser': data_field.get('url_browser', 'Unknown'),
                     'rule_description': source_data.get('rule', {}).get('description', '')
                 }
                 browsing_data.append(event_data)
@@ -257,8 +256,7 @@ def fetch_browsing_history(client, username, start_date, end_date):
 def analyze_index_coverage(client, start_date, end_date):
     """Check if index has data for specified period with timeout handling"""
     print("\nChecking index data coverage...")
-    
-    # Упрощенная проверка с уменьшенным таймаутом для этой операции
+
     check_query = {
         "size": 0,
         "query": {
@@ -272,11 +270,10 @@ def analyze_index_coverage(client, start_date, end_date):
     }
     
     try:
-        # Используем сокращенный таймаут для быстрой проверки
         resp = client.search(
             index=INDEX,
             body=check_query,
-            request_timeout=30  # 30 секунд для проверки
+            request_timeout=30
         )
         
         total = resp.get('hits', {}).get('total', {}).get('value', 0)
@@ -303,10 +300,8 @@ def analyze_index_coverage(client, start_date, end_date):
 
 def save_browsing_report(username, start_date, end_date, period_name, browsing_data):
     """Save browsing history data to JSON file with required fields"""
-    # Generate report filename with username and date
     report_file = generate_report_filename(username)
-    
-    # Подготавливаем данные для отчета с нужными полями
+
     formatted_events = []
     for event in browsing_data:
         formatted_event = {
