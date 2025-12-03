@@ -4,7 +4,7 @@ import json
 import os
 import warnings
 from urllib3.exceptions import InsecureRequestWarning
-from access_tokens import OS_USERNAME, OS_PASSWORD, HOST, INDEX
+from access_tokens import HOST, INDEX, OS_USERNAME, OS_PASSWORD
 
 # Suppress SSL warnings
 warnings.filterwarnings("ignore", category=InsecureRequestWarning)
@@ -20,7 +20,7 @@ def get_opensearch_client():
         http_auth=(OS_USERNAME, OS_PASSWORD),
         use_ssl=True,
         verify_certs=False,
-        timeout=60, 
+        timeout=60,
         max_retries=3,
         retry_on_timeout=True,
         ssl_show_warn=False
@@ -31,13 +31,43 @@ def get_user_input():
     print("\n" + "="*50)
     print("BROWSING HISTORY SEARCH CONFIGURATION")
     print("="*50)
+
+    # User settings choose
+    print("\nChoose search type:")
+    print("1 - Search for specific user")
+    print("2 - Search for ALL users")
     
-    # Get username
     while True:
-        username = input("\nEnter username to search (url_user): ").strip()
-        if username:
-            break
-        print("Username cannot be empty. Please try again.")
+        try:
+            search_type = input("\nYour choice (1-2): ").strip()
+            if search_type in ['1', '2']:
+                break
+            print("Invalid choice. Please enter 1 or 2.")
+        except KeyboardInterrupt:
+            print("\nOperation cancelled by user.")
+            exit(0)
+    
+    username = None
+    search_all_users = False
+    
+    if search_type == '1':
+        # Get username for specific user search
+        while True:
+            username = input("\nEnter username to search (url_user): ").strip()
+            if username:
+                break
+            print("Username cannot be empty. Please try again.")
+    else:
+        # Search for all users
+        search_all_users = True
+        username = "ALL_USERS"
+        print("\n⚠️  WARNING: Searching browsing history for ALL users.")
+        print("This may return a large amount of data and take longer to process.")
+        
+        confirm = input("\nContinue with search for ALL users? (y/n): ").strip().lower()
+        if confirm != 'y':
+            print("Operation cancelled.")
+            exit(0)
     
     # Get search period
     print("\nChoose search period:")
@@ -101,7 +131,10 @@ def get_user_input():
     # Display search parameters
     print("\n" + "="*50)
     print("SEARCH PARAMETERS:")
-    print(f"  • Username: {username}")
+    if search_all_users:
+        print(f"  • Search type: ALL USERS")
+    else:
+        print(f"  • Username: {username}")
     print(f"  • Period: {period_name}")
     print(f"  • Start: {start_date_str[:10]}")
     print(f"  • End: {end_date_str[:10]}")
@@ -112,7 +145,7 @@ def get_user_input():
         print("Operation cancelled.")
         exit(0)
     
-    return username, start_date_str, end_date_str, days, period_name
+    return username, start_date_str, end_date_str, days, period_name, search_all_users
 
 def calculate_date_range(days):
     """Calculate date range based on number of days"""
@@ -125,56 +158,97 @@ def calculate_date_range(days):
     
     return start_date_str, end_date_str
 
-def generate_report_filename(username):
+def generate_report_filename(username, search_all_users):
     """Generate report filename with username and human-readable date"""
     # Format date in human-readable format
     readable_date = datetime.now().strftime("%d-%m-%Y_%H-%M")
     
-    # Sanitize username for filename
-    safe_username = "".join(c for c in username if c.isalnum() or c in ('-', '_')).rstrip()
-    if not safe_username:
-        safe_username = "unknown_user"
+    if search_all_users:
+        filename = f"browsing_history_ALL_USERS_{readable_date}.json"
+    else:
+        # Sanitize username for filename
+        safe_username = "".join(c for c in username if c.isalnum() or c in ('-', '_')).rstrip()
+        if not safe_username:
+            safe_username = "unknown_user"
+        
+        filename = f"browsing_history_{safe_username}_{readable_date}.json"
     
-    filename = f"browsing_history_{safe_username}_{readable_date}.json"
     return os.path.join(REPORT_DIR, filename)
 
-def fetch_browsing_history(client, username, start_date, end_date):
-    """Get browsing history for specified user and period"""
-    query = {
-        "size": 1000,  # Batch size for scroll
-        "query": {
-            "bool": {
-                "must": [
-                    {
-                        "bool": {
-                            "should": [
-                                {"match_phrase": {"rule.groups": "browsing_history"}}
-                            ],
-                            "minimum_should_match": 1
-                        }
-                    },
-                    {
-                        "term": {"data.url_user": username}
-                    },
-                    {
-                        "range": {
-                            "@timestamp": {
-                                "gte": start_date,
-                                "lte": end_date
+def fetch_browsing_history(client, username, start_date, end_date, search_all_users):
+    """Get browsing history for specified user(s) and period"""
+    # Build query based on search type
+    if search_all_users:
+        # Query for all users - remove username filter
+        query = {
+            "size": 1000,  # Batch size for scroll
+            "query": {
+                "bool": {
+                    "must": [
+                        {
+                            "bool": {
+                                "should": [
+                                    {"match_phrase": {"rule.groups": "browsing_history"}}
+                                ],
+                                "minimum_should_match": 1
+                            }
+                        },
+                        {
+                            "range": {
+                                "@timestamp": {
+                                    "gte": start_date,
+                                    "lte": end_date
+                                }
                             }
                         }
-                    }
-                ]
-            }
-        },
-        "sort": [
-            {
-                "@timestamp": {
-                    "order": "desc"
+                    ]
                 }
-            }
-        ]
-    }
+            },
+            "sort": [
+                {
+                    "@timestamp": {
+                        "order": "desc"
+                    }
+                }
+            ]
+        }
+    else:
+        # Query for specific user
+        query = {
+            "size": 1000,  # Batch size for scroll
+            "query": {
+                "bool": {
+                    "must": [
+                        {
+                            "bool": {
+                                "should": [
+                                    {"match_phrase": {"rule.groups": "browsing_history"}}
+                                ],
+                                "minimum_should_match": 1
+                            }
+                        },
+                        {
+                            "term": {"data.url_user": username}
+                        },
+                        {
+                            "range": {
+                                "@timestamp": {
+                                    "gte": start_date,
+                                    "lte": end_date
+                                }
+                            }
+                        }
+                    ]
+                }
+            },
+            "sort": [
+                {
+                    "@timestamp": {
+                        "order": "desc"
+                    }
+                }
+            ]
+        }
     
     try:
         print("Executing search query...")
@@ -188,7 +262,11 @@ def fetch_browsing_history(client, username, start_date, end_date):
         scroll_id = resp['_scroll_id']
         total = resp.get('hits', {}).get('total', {}).get('value', 0)
         
-        print(f"\nFound {total} browsing events for user '{username}'")
+        if search_all_users:
+            print(f"\nFound {total} browsing events for ALL users")
+        else:
+            print(f"\nFound {total} browsing events for user '{username}'")
+        
         print(f"from {start_date[:10]} to {end_date[:10]}")
         
         if total == 0:
@@ -237,7 +315,11 @@ def fetch_browsing_history(client, username, start_date, end_date):
         except:
             pass
         
-        print(f"\nTotal collected: {len(browsing_data)} browsing history records")
+        if search_all_users:
+            print(f"\nTotal collected: {len(browsing_data)} browsing history records for ALL users")
+        else:
+            print(f"\nTotal collected: {len(browsing_data)} browsing history records")
+        
         return browsing_data
 
     except Exception as e:
@@ -257,7 +339,7 @@ def fetch_browsing_history(client, username, start_date, end_date):
 def analyze_index_coverage(client, start_date, end_date):
     """Check if index has data for specified period with timeout handling"""
     print("\nChecking index data coverage...")
-
+    
     check_query = {
         "size": 0,
         "query": {
@@ -299,9 +381,10 @@ def analyze_index_coverage(client, start_date, end_date):
         print("Continuing search despite index check warning...")
         return True  # Continue despite check error
 
-def save_browsing_report(username, start_date, end_date, period_name, browsing_data):
+def save_browsing_report(username, start_date, end_date, period_name, browsing_data, search_all_users):
     """Save browsing history data to JSON file with required fields"""
-    report_file = generate_report_filename(username)
+    # Generate report filename with username and date
+    report_file = generate_report_filename(username, search_all_users)
 
     formatted_events = []
     for event in browsing_data:
@@ -309,7 +392,7 @@ def save_browsing_report(username, start_date, end_date, period_name, browsing_d
             'timestamp': event.get('timestamp', ''),
             'url_user': event.get('url_user', ''),
             'url_address': event.get('url_address', ''),
-            'url_time': data_field.get('url_time', ''),
+            'url_time': event.get('url_time', ''),
             'url_browser': event.get('url_browser', 'Unknown'),
             'rule_description': event.get('rule_description', '')
         }
@@ -318,7 +401,8 @@ def save_browsing_report(username, start_date, end_date, period_name, browsing_d
     report = {
         "report_generated_at": datetime.now().isoformat(),
         "search_parameters": {
-            "username": username,
+            "search_type": "ALL_USERS" if search_all_users else "SPECIFIC_USER",
+            "username": username if not search_all_users else "ALL_USERS",
             "start_date": start_date,
             "end_date": end_date,
             "period": period_name,
@@ -326,6 +410,7 @@ def save_browsing_report(username, start_date, end_date, period_name, browsing_d
         },
         "statistics": {
             "total_events": len(browsing_data),
+            "unique_users": len(set([event.get('url_user', '') for event in browsing_data if event.get('url_user')])),
             "period_days": (datetime.fromisoformat(end_date.replace('Z', '+00:00')) - 
                           datetime.fromisoformat(start_date.replace('Z', '+00:00'))).days
         },
@@ -341,12 +426,15 @@ def save_browsing_report(username, start_date, end_date, period_name, browsing_d
         print(f"\nError saving report: {e}")
         return None
 
-def display_summary(username, browsing_data, start_date, end_date, period_name, report_file=None):
+def display_summary(username, browsing_data, start_date, end_date, period_name, report_file=None, search_all_users=False):
     """Display search results summary"""
     print("\n" + "="*60)
     print("SEARCH RESULTS SUMMARY")
     print("="*60)
-    print(f"Username: {username}")
+    if search_all_users:
+        print(f"Search type: ALL USERS")
+    else:
+        print(f"Username: {username}")
     print(f"Period: {period_name}")
     print(f"Date range: {start_date[:10]} to {end_date[:10]}")
     print(f"Total events found: {len(browsing_data)}")
@@ -358,11 +446,18 @@ def display_summary(username, browsing_data, start_date, end_date, period_name, 
         # Group by browsers
         browsers = {}
         domains = {}
+        users = {}
         
         for event in browsing_data:
             # Collect browser info
             browser_name = event.get('url_browser', 'Unknown')
             browsers[browser_name] = browsers.get(browser_name, 0) + 1
+            
+            # Collect user info (only for ALL_USERS search)
+            if search_all_users:
+                user_name = event.get('url_user', 'Unknown')
+                if user_name:
+                    users[user_name] = users.get(user_name, 0) + 1
             
             # Collect domain info
             url = event.get('url_address', '')
@@ -379,8 +474,28 @@ def display_summary(username, browsing_data, start_date, end_date, period_name, 
         for browser, count in sorted(browsers.items(), key=lambda x: x[1], reverse=True):
             print(f"  {browser}: {count} events")
         
+        # User statistics for ALL_USERS search
+        if search_all_users and users:
+            unique_users = len(users)
+            print(f"\n👥 USER STATISTICS:")
+            print(f"  Unique users found: {unique_users}")
+            
+            if unique_users <= 20:  # Show all users if not too many
+                print("\n  User activity breakdown:")
+                for user, count in sorted(users.items(), key=lambda x: x[1], reverse=True):
+                    print(f"    {user}: {count} events")
+            else:
+                print("\n  Top-10 most active users:")
+                top_users = sorted(users.items(), key=lambda x: x[1], reverse=True)[:10]
+                for user, count in top_users:
+                    print(f"    {user}: {count} events")
+        
         if domains:
-            print("\n🌐 TOP-10 DOMAINS:")
+            if search_all_users:
+                print("\n🌐 TOP-10 DOMAINS (across all users):")
+            else:
+                print("\n🌐 TOP-10 DOMAINS:")
+            
             sorted_domains = sorted(domains.items(), key=lambda x: x[1], reverse=True)[:10]
             for domain, count in sorted_domains:
                 print(f"  {domain}: {count} visits")
@@ -400,6 +515,9 @@ def display_summary(username, browsing_data, start_date, end_date, period_name, 
                     pass
             
             print(f"\n  {i+1}. Time: {timestamp}")
+            if search_all_users:
+                user = event.get('url_user', 'Unknown')
+                print(f"     User: {user}")
             print(f"     URL: {url[:100]}{'...' if len(url) > 100 else ''}")
             print(f"     Browser: {browser}")
     
@@ -407,7 +525,7 @@ def display_summary(username, browsing_data, start_date, end_date, period_name, 
 
 def main():
     # Get user input
-    username, start_date, end_date, days, period_name = get_user_input()
+    username, start_date, end_date, days, period_name, search_all_users = get_user_input()
     
     print("\n" + "="*50)
     print("CONNECTING TO OPENSEARCH...")
@@ -436,16 +554,19 @@ def main():
     
     # Get browsing history data
     print("\n" + "="*50)
-    print("SEARCHING BROWSING HISTORY...")
+    if search_all_users:
+        print("SEARCHING BROWSING HISTORY FOR ALL USERS...")
+    else:
+        print("SEARCHING BROWSING HISTORY...")
     print("="*50)
     
-    browsing_data = fetch_browsing_history(client, username, start_date, end_date)
+    browsing_data = fetch_browsing_history(client, username, start_date, end_date, search_all_users)
     
     # Save report
     if browsing_data:
-        report_file = save_browsing_report(username, start_date, end_date, period_name, browsing_data)
+        report_file = save_browsing_report(username, start_date, end_date, period_name, browsing_data, search_all_users)
         # Display summary
-        display_summary(username, browsing_data, start_date, end_date, period_name, report_file)
+        display_summary(username, browsing_data, start_date, end_date, period_name, report_file, search_all_users)
             
     else:
         print("\n" + "="*50)
@@ -453,9 +574,12 @@ def main():
         print("="*50)
         print("No browsing history events found.")
         print("\nPossible reasons:")
-        print("1. User didn't browse websites in specified period")
-        print("2. No data in index for specified period")
-        print("3. Incorrect username")
+        if not search_all_users:
+            print("1. User didn't browse websites in specified period")
+            print("2. Incorrect username")
+        else:
+            print("1. No users browsed websites in specified period")
+        print("3. No data in index for specified period")
         print("4. Browsing history monitoring is not enabled")
         
         retry = input("\nPerform new search? (y/n): ").strip().lower()
