@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script to collect Wazuh user events and to analize using AI model
+# Script to collect Wazuh host (agent.name) events and to analize using AI model
 # Run: ./soc_ai_host.sh <host> <days> [--end-date YYYY-MM-DD] [--case-sensitive]
 
 # Minimal args checking
