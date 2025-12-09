@@ -7,7 +7,7 @@
 if [ $# -lt 2 ]; then
     echo "Run: $0 <username> <days> [--end-date ГГГГ-ММ-ДД] [--case-sensitive]"
     echo ""
-    echo "Примеры:"
+    echo "Examples:"
     echo "  $0 john.doe 7"
     echo "  $0 'DOMAIN\\john.doe' 30"
     echo "  $0 administrator 14 --end-date 2024-01-31"
@@ -32,11 +32,10 @@ echo "Wazuh events collecting"
 echo "=============================================="
 echo "User: $USERNAME"
 echo "Period: $DAYS days"
-echo "Дополнительные параметры: $PYTHON_ARGS"
-echo "Дата запуска: $(date)"
+echo "Additional params: $PYTHON_ARGS"
+echo "Run date: $(date)"
 echo "=============================================="
 
-# 1. Генерируем безопасное имя файла на основе параметров
 SAFE_USERNAME=$(echo "$USERNAME" | sed 's/[^a-zA-Z0-9._-]/_/g')
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
 REPORT_FILE="/tmp/wazuh_events_user_${SAFE_USERNAME}_${DAYS}days_${TIMESTAMP}.json"
