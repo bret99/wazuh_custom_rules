@@ -65,10 +65,10 @@ MODEL_NAME = "jackaduma/SecRoBERTa" # Substitute for actual one
 #MODEL_NAME = "cisco-ai/SecureBERT2.0-base"
 EMBEDDING_CACHE_MAX_SIZE = 10000
 
-# Настройки кластеризации (можно регулировать)
-CLUSTERING_EPS = 0.4  # Увеличил для более гибкой кластеризации
-MIN_CLUSTER_SIZE = 2  # Минимальный размер кластера
-MAX_CLUSTERS_TO_SHOW = 5  # Максимальное количество кластеров для отображения
+# Cluster params
+CLUSTERING_EPS = 0.4  # cluster flexibility
+MIN_CLUSTER_SIZE = 2  # cluster min size
+MAX_CLUSTERS_TO_SHOW = 5  # cluster max amount to show
 
 MODES = {
     "global": {
