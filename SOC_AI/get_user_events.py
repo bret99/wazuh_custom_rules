@@ -10,12 +10,10 @@ from datetime import datetime, timedelta, timezone
 from opensearchpy import OpenSearch, OpenSearchException
 import warnings
 from urllib3.exceptions import InsecureRequestWarning
+from secret_tokens import HOST, INDEX, OS_USERNAME, OS_PASSWORD, IGNORE_RULE_IDS, IGNORE_RULE_GROPS, SCROLL_TIMEOUT, BATCH_SIZE
 
 # SSL warnings supress
 warnings.filterwarnings("ignore", category=InsecureRequestWarning)
-
-SCROLL_TIMEOUT = '10m'
-BATCH_SIZE = 2000
 
 # Fields to search user
 USERNAME_FIELDS = [
