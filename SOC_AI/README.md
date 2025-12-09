@@ -53,6 +53,10 @@ chown root:root /usr/local/bin/soc_ai_v2.sh
 chmod +x /usr/local/bin/soc_ai_v2.sh
 mv hosts /usr/local/bin/hosts
 chown root:root /usr/local/bin/hosts
+mv get_host_events.py /usr/local/bin/get_host_events.py
+mv get_user_events.py /usr/local/bin/get_user_events.py
+chown root:root /usr/local/bin/get_host_events.py
+chown root:root /usr/local/bin/get_user_events.py
 cronatb -e
 ```
 add lines:
