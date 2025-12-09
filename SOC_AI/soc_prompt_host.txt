@@ -10,7 +10,7 @@ You receive a JSON object with aggregated data for one or more hosts, including:
 - "Event Details" array with:
   - timestamp, agent, rule_level, rule_description, location, geo_location
   - user, ip
-  - url_address, url_user, url_time (if web activity is present)
+  - url_address, url_user, url_time, geolocation (if web activity is present)
   - Windows / OS specific metadata (logon_type, status, process_name, workstation, authentication_package)
 - Optionally, event correlation clusters based on embeddings, indicating possible attack chains.
 
