@@ -70,12 +70,14 @@ chown root:root /usr/local/bin/soc_ai_v2.py
 ```
 To get UEBA report for concrete user
 ```
+mv soc_ai_user.sh /usr/local/bin
 chown root:root /usr/local/bin/soc_ai_user.sh
 chmod +x /usr/local/bin/soc_ai_user.sh
 /usr/local/bin/soc_ai_user.sh --help
 ```
 To get deep report for concrete host
 ```
+mv soc_ai_host.sh /usr/local/bin
 chown root:root /usr/local/bin/soc_ai_host.sh
 chmod +x /usr/local/bin/soc_ai_host.sh
 /usr/local/bin/soc_ai_host.sh --help
