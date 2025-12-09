@@ -57,6 +57,8 @@ mv get_host_events.py /usr/local/bin/get_host_events.py
 mv get_user_events.py /usr/local/bin/get_user_events.py
 chown root:root /usr/local/bin/get_host_events.py
 chown root:root /usr/local/bin/get_user_events.py
+mv vk_notifier.py /usr/local/bin # only if one want to receive alerts to VK Teams
+chown root:root /usr/local/bin/vk_notifier.py
 cronatb -e
 ```
 add lines:
