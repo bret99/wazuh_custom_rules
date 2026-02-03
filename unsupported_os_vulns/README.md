@@ -28,9 +28,9 @@ add lines to /var/ossec/etc/share/unsupported_os/agent.conf
 ```
 <agent_config>
   <localfile>
-      <location>/var/log/vulns.json</location>
-      <log_format>json</log_format>
-    </localfile>
+    <location>/var/log/vulns.json</location>
+    <log_format>json</log_format>
+  </localfile>
 </agent_config>
 ```
 ```
