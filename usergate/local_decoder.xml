@@ -18,3 +18,23 @@
   <regex type="pcre2">\S+ (\S+) utm-loganalyzer events - - \S+CEF:0\|\S+\|\S+\|(\d)\|events\|(\S+)\|(\d)\|.+ suser=(\S+) cat=(\S+) act=(\S+) src=(\d+.\d+.\d+.\d+) (.+)</regex>
   <order>usergate.node,usergate.version,event_type,usergate.severity,srcuser,event_event,event_action,srcip,event_msg</order>
 </decoder>
+
+<decoder name="usergate_3">
+  <prematch type="pcre2">\S+ \S+ \S+ utm-loganalyzer traffic - - CEF:0\|\S+\|\S+\|\d\|traffic\|\S+\|\S+\|.+proto=\S+ .+ src=\d+.\d+.\d+.\d+ spt=\d+ smac=\S+ dst=\    d+.\d+.\d+.\d+ dpt=\d+ dmac=\S+ in=\d+ out=\d+ .+</prematch>
+</decoder>
+
+<decoder name="usergate_3_child">
+  <parent>usergate_3</parent>
+  <regex type="pcre2">\S+ \S+ (\S+) utm-loganalyzer traffic - - CEF:0\|\S+\|\S+\|\d\|traffic\|(\S+)\|\S+\|.+proto=(\S+) .+ src=(\d+.\d+.\d+.\d+) spt=(\d+) smac=(\    S+) dst=(\d+.\d+.\d+.\d+) dpt=(\d+) dmac=(\S+) in=(\d+) out=(\d+) (.+)</regex>
+  <order>usergate.node,traffic_type,src_proto,srcip,src_port,src_mac,dstip,dst_port,dst_mac,traffic_in,traffic_out,traffic_msg</order>
+</decoder>
+
+<decoder name="usergate_4">
+  <prematch type="pcre2">\S+ \S+ \S+ utm-loganalyzer events - - CEF:0\|\S+\|\S+\|\d\|events\|\S+\|\d\|.+ suser=\S+ src=\d+.\d+.\d+.\d+ cat=\S+ .+ cs1=.+</prematch    >
+</decoder>
+
+<decoder name="usergate_4_child">
+  <parent>usergate_4</parent>
+  <regex type="pcre2">\S+ \S+ (\S+) utm-loganalyzer events - - CEF:0\|\S+\|\S+\|\d\|events\|(\S+)\|\d\|.+ suser=(\S+) src=(\d+.\d+.\d+.\d+) cat=(\S+) .+ cs1=(.+)<    /regex>
+  <order>usergate.node,traffic_type,srcuser,srcip,traffic_component,traffic_msg</order>
+</decoder>
