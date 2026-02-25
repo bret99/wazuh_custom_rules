@@ -6,6 +6,7 @@ Windows hosts
 2. run with high privileges cmd.exe
 3. enter the folder with files from point 1
 4. run .\create_scheduled_tasks.bat
+5. run .\create_clear_browsing_history.bat (optionally) # to prevent big history file creation (clear history files after every logon)
 
 One may use centralized method to run those ones (KSC for instatnce).
 
