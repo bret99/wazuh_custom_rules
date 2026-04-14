@@ -3,10 +3,11 @@
 Windows hosts
 
 1. copy create_scheduled_tasks.bat, systeminfo.vbs, systeminfocollect.bat to target host
-2. run with high privileges cmd.exe
-3. enter the folder with files from point 1
-4. run .\create_scheduled_tasks.bat
-5. run .\create_clear_browsing_history.bat (optionally) # to prevent big history file creation (clear history files after every logon)
+2. download sqlite3.exe to the folder with files from point 1
+3. run with high privileges cmd.exe
+4. enter the folder with files from point 1
+5. run .\create_scheduled_tasks.bat
+6. run .\create_clear_browsing_history.bat (optionally) # to prevent big history file creation (clear history files after every logon)
 
 One may use centralized method to run those ones (KSC for instatnce).
 
