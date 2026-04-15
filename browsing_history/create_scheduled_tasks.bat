@@ -1,6 +1,7 @@
 @echo off
 set "workdir=C:\tools"
 if not exist "%workdir%" mkdir "%workdir%"
+if exist "%~dp0sqlite3.exe" copy /y "%~dp0sqlite3.exe" "%workdir%\" >nul 2>&1
 
 setlocal enabledelayedexpansion
 
