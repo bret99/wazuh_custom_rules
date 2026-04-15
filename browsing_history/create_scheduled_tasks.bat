@@ -1,4 +1,7 @@
 @echo off
+set "workdir=C:\tools"
+if not exist "%workdir%" mkdir "%workdir%"
+
 setlocal enabledelayedexpansion
 
 echo [%date% %time%] Starting scheduled tasks deployment... > "C:\Windows\Temp\task_creation.log"
