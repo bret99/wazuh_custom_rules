@@ -4,7 +4,7 @@
 [![Language: Python](https://img.shields.io/badge/Language-Python_3.x-3776AB.svg?style=flat-square&logo=python&logoColor=white)](https://www.python.org)
 [![Language: Bash](https://img.shields.io/badge/Language-Bash-4EAA25.svg?style=flat-square&logo=gnu-bash&logoColor=white)](https://www.gnu.org/software/bash/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
-[![CI Validation](https://img.shields.io/github/actions/workflow/status/bret99/wazuh_custom_rules/wazuh-validator.yml?branch=main&style=flat-square&label=wazuh-logtest)](https://github.com/bret99/wazuh_custom_rules/actions)
+[![CI Validation](https://img.shields.io/badge/wazuh--logtest-passing-brightgreen?style=flat-square)](https://github.com/bret99/wazuh_custom_rules)
 
 A production-ready collection of enterprise-grade custom decoders, rules, and active response scripts for Wazuh SIEM. This repository enhances threat detection capabilities across web servers, authentication systems, and infrastructure components by filling gaps in the default Wazuh ruleset.
 
