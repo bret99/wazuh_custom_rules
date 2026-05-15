@@ -20,7 +20,7 @@ A production-ready collection of enterprise-grade custom decoders, rules, and ac
 ## 📂 Repository Structure
 
 * `local_decoder.xml` - Custom extraction logic for non-standard log formats.
-* `local_ules.xml` - Categorized XML rulesets structured by threat vectors.
+* `local_rules.xml` - Categorized XML rulesets structured by threat vectors.
 
 ---
 
