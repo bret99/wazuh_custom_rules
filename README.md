@@ -19,9 +19,8 @@ A production-ready collection of enterprise-grade custom decoders, rules, and ac
 
 ## 📂 Repository Structure
 
-* `/decoders` - Custom extraction logic for non-standard log formats.
-* `/rules` - Categorized XML rulesets structured by threat vectors.
-* `/active-response` - Shell and Python scripts triggered by high-severity alerts.
+* `local_decoder.xml` - Custom extraction logic for non-standard log formats.
+* `local_ules.xml` - Categorized XML rulesets structured by threat vectors.
 
 ---
 
@@ -32,10 +31,10 @@ Copy the required XML files to your Wazuh Manager manager instance:
 
 ```bash
 # Copy decoders
-cp decoders/*.xml /var/ossec/etc/decoders/
+cp local_decoder.xml /var/ossec/etc/decoders/
 
 # Copy rules
-cp rules/*.xml /var/ossec/etc/rules/
+cp local_rules.xml /var/ossec/etc/rules/
 ```
 
 ### 2. Verify and Restart
