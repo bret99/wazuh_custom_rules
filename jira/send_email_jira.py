@@ -55,7 +55,7 @@ def fetch_user_info(client):
         "query": {
             "bool": {
                 "must": [
-                    {"term": {"rule.id": "100305"}},
+                    {"term": {"rule.id": "100103"}},
                     {"range": {"@timestamp": {"gte": "now-30m/m", "lt": "now"}}}
                 ]
             }
