@@ -3,11 +3,21 @@ from datetime import datetime, timedelta
 import smtplib
 from email.mime.text import MIMEText
 from email.header import Header
-import ssl
 from secret_tokens import HOST, INDEX, OS_USERNAME, OS_PASSWORD, SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SENDER, DOMAIN
+import ssl
+import logging
 
-# ====== BASE EMAIL TEXT ======
-EMAIL_SUBJECT = 'Publication of restricted access information'
+# ====== LOGGING CONFIGURATIONS ======
+LOG_FILE = '/var/log/send_mail_log.log'
+logging.basicConfig(
+    filename=LOG_FILE,
+    level=logging.INFO,
+    format='%(asctime)s [%(levelname)s] %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
+
+# ====== MAIL TEXT ======
+EMAIL_SUBJECT = 'Sensitive information publication'
 BASE_EMAIL_BODY = (
     'Hello!\n\n'
     'We draw your attention to the established fact of violation of the company\'s Information Security Policy: in {jira_task} placement of restricted access information on a non-corporate resource {jira_secret} in open access was detected, which poses a threat to the confidentiality and integrity of information assets of company.\n\n'
@@ -35,26 +45,18 @@ def get_opensearch_client():
         hosts=[HOST],
         http_auth=(OS_USERNAME, OS_PASSWORD),
         use_ssl=True,
-        verify_certs=False  # set to True if you have valid certificates
+        verify_certs=False
     )
 
 def fetch_user_info(client):
-    # Query for the last 5 minutes
     query = {
         "size": 10000,
         "sort": [{"@timestamp": {"order": "desc"}}],
         "query": {
             "bool": {
                 "must": [
-                    {
-                        "bool": {
-                            "should": [
-                                {"match_phrase": {"rule.id": "100104"}} # Change rule id if necessary
-                            ],
-                            "minimum_should_match": 1
-                        }
-                    },
-                    {"range": {"@timestamp": {"gte": "now-30m/m", "lt": "now"}}} # Change time period if necessary
+                    {"term": {"rule.id": "100305"}},
+                    {"range": {"@timestamp": {"gte": "now-30m/m", "lt": "now"}}}
                 ]
             }
         }
@@ -63,19 +65,18 @@ def fetch_user_info(client):
     resp = client.search(index=INDEX, body=query)
     total = resp.get('hits', {}).get('total', {}).get('value', 0)
     if total == 0:
-        print("No documents found for the last 30 minutes.")
+        print("Events not found for last 30 minutes.")
         return {}
 
     user_info = {}
     for hit in resp.get('hits', {}).get('hits', []):
         try:
             source = hit["_source"]["data"]
-            jira_creator = source["jira_creator"]
+            jira_creator = source.get("jira_creator")
             jira_task = source.get("jira_task", "unknown")
             jira_secret = source.get("jira_secret", "unknown")
 
             if jira_creator and isinstance(jira_creator, str):
-                # Normalize username
                 u = jira_creator.strip()
                 if "\\" in u:
                     u = u.split("\\", 1)[1]
@@ -83,7 +84,7 @@ def fetch_user_info(client):
                     continue
                 if "@" in u:
                     u = u.split("@", 1)[0]
-
+                
                 if u not in user_info:
                     user_info[u] = {
                         'jira_task': jira_task,
@@ -91,7 +92,7 @@ def fetch_user_info(client):
                     }
         except KeyError:
             continue
-
+    
     return user_info
 
 def send_email(recipient_email, subject, body):
@@ -116,15 +117,20 @@ def main():
     for username, info in sorted(user_info.items()):
         email = f"{username}@{DOMAIN}"
         try:
-            # Form email body with specific connection data
             email_body = BASE_EMAIL_BODY.format(
                 jira_task=info['jira_task'],
                 jira_secret=info['jira_secret']
             )
             send_email(email, EMAIL_SUBJECT, email_body)
-            print(f"Sent: {email} (Task: {info['jira_task']}, secret: {info['jira_secret']})")
+            
+            success_msg = f"Successfully sent: {email} (Task: {info['jira_task']}, Secret: {info['jira_secret']})"
+            print(success_msg)
+            logging.info(success_msg)
+            
         except Exception as e:
-            print(f"Sending error for {email}: {e}")
+            error_msg = f"Error of sending for {email}: {e}"
+            print(error_msg)
+            logging.error(error_msg)
 
 if __name__ == "__main__":
     main()
