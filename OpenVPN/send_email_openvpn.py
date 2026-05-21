@@ -3,11 +3,21 @@ from datetime import datetime, timedelta
 import smtplib
 from email.mime.text import MIMEText
 from email.header import Header
-import ssl
 from secret_tokens import HOST, INDEX, OS_USERNAME, OS_PASSWORD, SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SENDER, DOMAIN
+import ssl
+import logging
 
-# ====== BASE EMAIL TEXT ======
-EMAIL_SUBJECT = 'Connection from abroad or hosting'
+# ====== LOGGING CONFIGURATIONS ======
+LOG_FILE = '/var/log/send_mail_log.log'
+logging.basicConfig(
+    filename=LOG_FILE,
+    level=logging.INFO,
+    format='%(asctime)s [%(levelname)s] %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
+
+# ====== MAIL TEXT======
+EMAIL_SUBJECT = 'Foreign or connection from hosting'
 BASE_EMAIL_BODY = (
     'Hello!\n\n'
     'We hereby notify you that the monitoring systems of company have recorded access with your account to corporate resources from foreign IP addresses. This violates the internal policy, which allows access only from the territory of the Russian Federation and using corporate computing means.\n\n'
@@ -23,7 +33,7 @@ BASE_EMAIL_BODY = (
     '2. dates and times of your connections to the Company\'s networks/resources;\n'
     '3. your use of non-corporate VPNs and equipment for access;\n'
     '4. whether your account was compromised (suspicions of compromise).\n\n'
-    'If information is not received within two (2) hours, your account [Your login] will be temporarily blocked until the circumstances are clarified. If the compromise hypothesis is confirmed, the incident will be transferred to the security service for further consideration.\n\n'
+    'If information is not received within two (2) hours, your account {src_user} will be temporarily blocked until the circumstances are clarified. If the compromise hypothesis is confirmed, the incident will be transferred to the security service for further consideration.\n\n'
     'To record the fact of receiving this letter and your actions to correct the situation, please indicate in the response the list of all correspondence participants and explain the reason for the violation.\n\n'
     'Thank you in advance for your understanding and cooperation.\n\n'
     'Best regards,\n'
@@ -35,26 +45,18 @@ def get_opensearch_client():
         hosts=[HOST],
         http_auth=(OS_USERNAME, OS_PASSWORD),
         use_ssl=True,
-        verify_certs=False  # set to True if you have valid certificates
+        verify_certs=False
     )
 
 def fetch_user_info(client):
-    # Query for the last 5 minutes
     query = {
         "size": 10000,
         "sort": [{"@timestamp": {"order": "desc"}}],
         "query": {
             "bool": {
                 "must": [
-                    {
-                        "bool": {
-                            "should": [
-                                {"match_phrase": {"rule.groups": "openvpn_foreign"}} # Change time period if necessary 
-                            ],
-                            "minimum_should_match": 1
-                        }
-                    },
-                    {"range": {"@timestamp": {"gte": "now-10m/m", "lt": "now"}}} # Change time period if necessary 
+                    {"term": {"rule.groups": "openvpn_not_ru"}},
+                    {"range": {"@timestamp": {"gte": "now-10m/m", "lt": "now"}}}
                 ]
             }
         }
@@ -63,7 +65,7 @@ def fetch_user_info(client):
     resp = client.search(index=INDEX, body=query)
     total = resp.get('hits', {}).get('total', {}).get('value', 0)
     if total == 0:
-        print("No documents found for the last 10 minutes.")
+        print("Events not found for last 10 minutes.")
         return {}
 
     user_info = {}
@@ -72,10 +74,10 @@ def fetch_user_info(client):
             source = hit["_source"]["data"]
             src_user = source["src_user"]
             srcip = source.get("srcip", "unknown")
-            country_name = source.get("abuesIPDB.countryName", "unknown")
+            
+            country_name = source.get("abuesIPDB", {}).get("countryName", "unknown")
 
             if src_user and isinstance(src_user, str):
-                # Normalize username
                 u = src_user.strip()
                 if "\\" in u:
                     u = u.split("\\", 1)[1]
@@ -116,15 +118,21 @@ def main():
     for username, info in sorted(user_info.items()):
         email = f"{username}@{DOMAIN}"
         try:
-            # Form email body with specific connection data
             email_body = BASE_EMAIL_BODY.format(
+                src_user=username,
                 srcip=info['srcip'],
                 country_name=info['country_name']
             )
             send_email(email, EMAIL_SUBJECT, email_body)
-            print(f"Sent: {email} (Connection IP: {info['srcip']}, country: {info['country_name']})")
+            
+            success_msg = f"Successfully sent: {email} (IP: {info['srcip']}, Страна: {info['country_name']})"
+            print(success_msg)
+            logging.info(success_msg)
+            
         except Exception as e:
-            print(f"Sending error for {email}: {e}")
+            error_msg = f"Error of sending for {email}: {e}"
+            print(error_msg)
+            logging.error(error_msg)
 
 if __name__ == "__main__":
     main()
