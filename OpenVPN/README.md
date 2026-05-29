@@ -76,3 +76,30 @@ add lines:
 # Important
 
 One should make CDB lists cities.cdb (to detect foreign connections) and dch_providers.cdb (to detect hosting connections). Those ones should be got from ip2location DBs. Also one should substitute country code to actual one in group "openvpn_foreign" at local_rules.xml
+
+## Check if IP2Location and AbuseIPDB API responces are accessable [optional]
+
+For group "check_ip_api"" one should make the next on Wazuh-manager:
+```
+mv check_ip_api.sh /usr/local/bin && chown root:root /usr/local/check_ip_api.sh
+chmod +x /usr/local/bin/check_ip_api.sh
+```
+
+make Wazuh agents group called as one like and add the next lines to agent.conf:
+```xml
+<agent_config>
+  <localfile>
+    <log_format>json</log_format>
+    <location>/var/log/openvpn/users_connections.json</location>
+  </localfile>
+</agent_config>
+```
+add host with preinstalled wazuh agent to the target group
+```
+crontab -e
+```
+add lines:
+```
+*/11 * * * * sudo bash -c "/usr/local/bin/check_ip_api.sh" # run every 11 minutes
+```
+
