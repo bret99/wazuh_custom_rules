@@ -50,3 +50,18 @@
     <description>OpenVPN: user $(dstuser) connected from $(srcip):$(srcport) with intrenal IP $(dstip).</description>
   </rule>
 </group>
+
+<!-- Check accessability for IP2Location and AbuseIPDB API -->
+<group name="check_ip_api">
+  <rule id="100005" level="8">
+    <decoded_as>json</decoded_as>
+    <field name="ip2location_api_response">unaccessable</field>
+    <description>IP2Location API is unaccessable [OpenVPN].</description>
+  </rule>
+ 
+  <rule id="100006" level="8">
+    <decoded_as>json</decoded_as>
+    <field name="abuseipdb_api_response">unaccessable</field>
+    <description>AbuseIPDB API is unaccessable [OpenVPN].</description>
+  </rule>
+</group>
