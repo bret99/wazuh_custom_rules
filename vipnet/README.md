@@ -5,10 +5,8 @@ Run commands on target Vipnet coordinator:
 firewall local add src 10.10.10.10 dst 192.168.10.10 udp dport 514 pass
 ```
 ```Substitute coordinator IP [10.10.10.10] and Wazuh manager IP [192.168.10.10] to actual ones☝️```
-```
-machine set loghost 192.168.10.10
-```
-```Substitute Wazuh manager IP [192.168.10.10] to actual one☝️```
+
+Configure sending events using CEF format.
 
 add to Wazuh manager ossec.conf:
  <!-- Vipnet coordinator events -->
