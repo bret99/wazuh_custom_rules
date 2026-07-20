@@ -100,6 +100,18 @@ crontab -e
 ```
 add lines:
 ```
-*/11 * * * * sudo bash -c "/usr/local/bin/check_ip_api.sh" # run every 11 minutes
+*/3 * * * * sudo bash -c "/usr/local/bin/check_ip_api.sh" # run every 3 minutes
 ```
-
+add script to get DCH providers:
+```
+mv get_dch_providers.sh /usr/local/bin/
+chmod +x usr/local/bin/get_dch_providers.sh
+```
+add task to cron:
+```
+crontab -e 
+```
+add lines:
+```
+0 0 * * 7 sudo bash -c "/usr/local/bin/get_dch_providers.sh" # run every sunday
+```
