@@ -65,27 +65,3 @@
     <description>AbuseIPDB API is unaccessable [OpenVPN].</description>
   </rule>
 </group>
-
-  <!-- OpenVPN sessions -->
-<!-- OpenVPN sessions -->
-<group name="openvpn_sessions,">
-  <rule id="100007" level="11">
-    <decoded_as>windows-date-format-openvpn-kill</decoded_as>
-    <description>OpenVPN: $(dstuser) session killed by admin.</description>
-  </rule>
-
-  <rule id="100008" level="3">
-    <decoded_as>windows-date-format-openvpn-sigterm-delayed</decoded_as>
-    <description>OpenVPN: $(srcip) session delayed and dropped.</description>
-  </rule>
-
-  <rule id="100009" level="3">
-    <decoded_as>windows-date-format-openvpn-sigterm-remote</decoded_as>
-    <description>OpenVPN: $(dstuser)/$(srcip) ended session.</description>
-  </rule>
-
-  <rule id="100010" level="11">
-    <decoded_as>windows-date-format-openvpn-sigterm-remote-killed</decoded_as>
-    <description>OpenVPN: $(dstuser)/$(srcip) session dropped by server.</description>
-  </rule>
-</group>
