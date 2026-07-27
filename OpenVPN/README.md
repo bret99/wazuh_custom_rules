@@ -23,7 +23,7 @@ crontab -e
 ```
 add lines:
 ```
-*/5 * * * * sudo bash -c "/usr/local/bin/get_openvpn_users_connections.sh"
+*/1 * * * * sudo bash -c "/usr/local/bin/get_openvpn_users_connections.sh" # run script every minute
 ```
 Scenario №2 [with AbuseIPDB, IP2location API integration]
 
@@ -48,7 +48,7 @@ crontab -e
 ```
 add lines:
 ```
-*/5 * * * * sudo bash -c "/usr/local/bin/get_openvpn_users_connections_2.sh"
+*/1 * * * * sudo bash -c "/usr/local/bin/get_openvpn_users_connections_2.sh" # run script every minute
 ```
 # Raw OpenVPN connections
 
@@ -70,7 +70,7 @@ crontab -e
 ```
 add lines:
 ```
-*/10 * * * * sudo bash -c "python3 /usr/local/bin/send_email_openvpn.py"
+*/1 * * * * sudo bash -c "python3 /usr/local/bin/send_email_openvpn.py" # run script every minute
 ```
 
 # Important
@@ -100,7 +100,7 @@ crontab -e
 ```
 add lines:
 ```
-*/3 * * * * sudo bash -c "/usr/local/bin/check_ip_api.sh" # run every 3 minutes
+*/1 * * * * sudo bash -c "/usr/local/bin/check_ip_api.sh" # run script every minute
 ```
 add script to get DCH providers:
 ```
@@ -114,4 +114,48 @@ crontab -e
 add lines:
 ```
 0 0 * * 7 sudo bash -c "/usr/local/bin/get_dch_providers.sh" # run every sunday
+```
+
+## Get OpenVPN users sessions
+
+add to the end of file /var/osse/ruleset/decoders/0380-windows_decoders.xml
+```
+<!-- OpenVPN kill command -->
+<decoder name="windows-date-format-openvpn-kill">
+   <parent>windows-date-format</parent>
+   <type>syslog</type>
+   <use_own_name>true</use_own_name>
+   <prematch offset="after_parent">MANAGEMENT: CMD 'kill </prematch>
+   <regex offset="after_parent">MANAGEMENT: CMD 'kill (\S+)'</regex>
+   <order>dstuser</order>
+</decoder>
+
+<!-- OpenVPN SIGTERM soft,delayed-exit (IP only) -->
+<decoder name="windows-date-format-openvpn-sigterm-delayed">
+   <parent>windows-date-format</parent>
+   <type>syslog</type>
+   <use_own_name>true</use_own_name>
+   <prematch offset="after_parent">\S+:\d+ SIGTERM\Ssoft,delayed-exit\S received</prematch>
+   <regex offset="after_parent">(\S+):\d+ SIGTERM\Ssoft,delayed-exit\S received</regex>
+   <order>srcip</order>
+</decoder>
+
+<!-- OpenVPN SIGTERM soft,remote-exit (username/IP) -->
+<decoder name="windows-date-format-openvpn-sigterm-remote">
+   <parent>windows-date-format</parent>
+   <type>syslog</type>
+   <use_own_name>true</use_own_name>
+   <prematch offset="after_parent">SIGTERM\Ssoft,remote-exit\S received</prematch>
+   <regex offset="after_parent">(\S+)/(\S+):\d+ SIGTERM\Ssoft,remote-exit\S received</regex>
+   <order>dstuser,srcip</order>
+</decoder>
+
+<decoder name="windows-date-format-openvpn-sigterm-remote-killed">
+   <parent>windows-date-format</parent>
+   <type>syslog</type>
+   <use_own_name>true</use_own_name>
+   <prematch offset="after_parent">\S+/\S+:\d+ SIGTERM\Ssoft,\S received</prematch>
+   <regex offset="after_parent">(\S+)/(\S+):\d+ SIGTERM\Ssoft,\S received</regex>
+   <order>dstuser,srcip</order>
+</decoder>
 ```
