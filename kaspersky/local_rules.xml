@@ -59,7 +59,7 @@
 
   <rule id="100107" level="11" ignore="1">
     <if_group>securitycenter</if_group>
-    <field name="win.eventdata.data">SECURITY_PRODUCT_STATE_OND$</field>
+    <field name="win.eventdata.data">SECURITY_PRODUCT_STATE_ON$</field>
     <options>no_full_log</options>
     <description>Kaspersky Security Center: KESW started.</description>
     <group>pci_dss_10.2.1,pci_dss_10.2.5,pci_dss_10.2.6,pci_dss_10.6.1,hipaa_164.312.a.2.i,hipaa_164.312.a.2.ii,hipaa_164.312.b,hipaa_164.312.d,gdpr_IV_32.1,gdpr_IV_32.2,tsc_CC6.1,tsc_CC6.2,tsc_CC7.2,tsc_CC7.3,nist_800_53_AU.6,nist_800_53_AU.12,nist_800_53_SI.4,nist_800_53_SC.7</group>
