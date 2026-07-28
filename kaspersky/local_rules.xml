@@ -57,8 +57,19 @@
     </mitre>
   </rule>
 
+  <rule id="100107" level="11" ignore="1">
+    <if_group>securitycenter</if_group>
+    <field name="win.eventdata.data">SECURITY_PRODUCT_STATE_OND$</field>
+    <options>no_full_log</options>
+    <description>Kaspersky Security Center: KESW started.</description>
+    <group>pci_dss_10.2.1,pci_dss_10.2.5,pci_dss_10.2.6,pci_dss_10.6.1,hipaa_164.312.a.2.i,hipaa_164.312.a.2.ii,hipaa_164.312.b,hipaa_164.312.d,gdpr_IV_32.1,gdpr_IV_32.2,tsc_CC6.1,tsc_CC6.2,tsc_CC7.2,tsc_CC7.3,nist_800_53_AU.6,nist_800_53_AU.12,nist_800_53_SI.4,nist_800_53_SC.7</group>
+    <mitre>
+      <id>T1562.001</id>
+    </mitre>
+  </rule>
+
   <!-- KESL [Linux] events detection -->
-  <rule id="100107" level="12">
+  <rule id="100108" level="12">
     <if_sid>5402</if_sid>
     <match>stop kesl|kesl stop</match>
     <description>Kaspersky CLI: command "$(command)" run by $(pwd).</description>
@@ -68,7 +79,7 @@
    </mitre>
   </rule>
 
-  <rule id="100108" level="12">
+  <rule id="100109" level="12">
     <if_sid>5403</if_sid>
     <match>stop kesl|kesl stop</match>
     <description>Kaspersky CLI: command "$(command)" run by $(pwd).</description>
@@ -78,7 +89,7 @@
    </mitre>
   </rule>
 
-  <rule id="100109" level="12">
+  <rule id="100110" level="12">
     <if_sid>80700</if_sid>
     <field name="audit.type">SERVICE_STOP</field>
     <field name="audit.res">success</field>
@@ -91,7 +102,7 @@
   </rule>
 
   <!-- klnagent stop -->
-  <rule id="100110" level="12">
+  <rule id="100111" level="12">
     <if_sid>5402</if_sid>
     <match>stop klnagent|klnagent stop|stop klnagent64|klnagent64 stop</match>
     <description>Kaspersky CLI: command "$(command)" run by $(pwd).</description>
@@ -101,7 +112,7 @@
    </mitre>
   </rule>
 
-  <rule id="100111" level="12">
+  <rule id="100112" level="12">
     <if_sid>5403</if_sid>
     <match>stop klnagent|klnagent stop|stop klnagent64|klnagent64 stop</match>
     <description>Kaspersky CLI: command "$(command)" run by $(pwd).</description>
@@ -111,7 +122,7 @@
    </mitre>
   </rule>
 
-  <rule id="100112" level="12">
+  <rule id="100113" level="12">
     <if_sid>80700</if_sid>
     <field name="audit.type">SERVICE_STOP</field>
     <field name="audit.res">success</field>
@@ -124,7 +135,7 @@
   </rule>
 
   <!-- kesl-control -->
-  <rule id="100113" level="11">
+  <rule id="100114" level="11">
     <if_sid>80792</if_sid>
     <match>kesl-control</match>
     <description>Kaspersky CLI: command "kesl-control" run.</description>
@@ -134,7 +145,7 @@
    </mitre>
   </rule>
 
-  <rule id="100114" level="11">
+  <rule id="100115" level="11">
     <if_sid>80700</if_sid>
     <field name="audit.type">SERVICE_START</field>
     <field name="audit.res">success</field>
@@ -146,7 +157,7 @@
     </mitre>
   </rule>
 
-  <rule id="100115" level="11">
+  <rule id="100116" level="11">
     <if_sid>80700</if_sid>
     <field name="audit.type">SERVICE_START</field>
     <field name="audit.res">success</field>
